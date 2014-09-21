@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Bootstrap.php">
+    <testsuites>
+        <testsuite name="Tests">
+            <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <php>
+            <ini name="memory_limit" value="2048M"/>
+        </php>
+        <whitelist>
+            <directory suffix=".php">../module/Library</directory>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Bootstrap.php">
+    <testsuites>
+        <testsuite name="LibraryTests">
+            <directory>./LibraryTest</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix='.php'>../src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>
