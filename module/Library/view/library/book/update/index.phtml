@@ -1,0 +1,13 @@
+<?php
+$title = 'Update book';
+$this->headTitle($title);
+?>
+    <h3><?= $title; ?></h3>
+    <hr/>
+    <p>
+        <a href="<?= $this->url('library/book'); ?>" class="btn btn-primary" role="button">Back to index</a>
+    </p>
+    <hr/>
+<?php if ($this->form): ?>
+    <?= $this->formTwb($this->form, 'vertical'); ?>
+<?php endif; ?>

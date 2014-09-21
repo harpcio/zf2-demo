@@ -1,0 +1,50 @@
+<?php
+/**
+ * @var $book Library\Entity\BookEntity
+ */
+$book = $this->book;
+
+$title = 'Delete book';
+$this->headTitle($title);
+?>
+    <h3><?= $title; ?></h3>
+    <hr/>
+    <p>
+        <a href="<?= $this->url('library/book'); ?>" class="btn btn-primary" role="button">Back to index</a>
+    </p>
+    <hr/>
+    <h4>Are you sure you want to delete this book?</h4>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <td><?= $this->escapeHtml($book->getId()); ?></td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td><?= $this->escapeHtml($book->getTitle()); ?></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><?= $this->escapeHtml($book->getDescription()); ?></td>
+        </tr>
+        <tr>
+            <th>ISBN</th>
+            <td><?= $this->escapeHtml($book->getIsbn()); ?></td>
+        </tr>
+        <tr>
+            <th>Publisher</th>
+            <td><?= $this->escapeHtml($book->getPublisher()); ?></td>
+        </tr>
+        <tr>
+            <th>Year</th>
+            <td><?= $this->escapeHtml($book->getYear()); ?></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td><?= $this->escapeHtml($book->getPrice()); ?></td>
+        </tr>
+    </table>
+<?php if ($this->form): ?>
+    <?= $this->formTwb($this->form, 'vertical'); ?>
+<?php endif; ?>

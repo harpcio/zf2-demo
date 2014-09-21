@@ -1,0 +1,18 @@
+<?php foreach ($this->flashMessages(true) as $namespace => $messages) : ?>
+    <?php if (count($messages)) : ?>
+        <div class="alert alert-<?= ($namespace === 'error') ? 'danger' : $namespace; ?>">
+            <?php foreach ($messages as $message) : ?>
+                <?php if (is_scalar($message)): ?>
+                    <?= $message ?>
+                <?php elseif (is_array($message)): ?>
+                    <?php
+                    $message = current($message);
+                    if (is_scalar($message)):
+                        echo $message;
+                    endif;
+                    ?>
+                <?php endif ?><br />
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

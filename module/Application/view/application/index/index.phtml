@@ -1,0 +1,37 @@
+<div class="jumbotron">
+    <h1>This is <span class="zf-green">ZF2</span> demo</h1>
+
+    <p>Requirements: php 5.5+</p>
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?php echo $this->translate('Books in library') ?></h3>
+            </div>
+            <div class="panel-body">
+                <p>Simple library of books, you can there create new, read, update and delete existing ones.</p>
+
+                <p><a class="btn btn-success pull-right" href="<?= $this->url('library/book') ?>">Go to book
+                        index &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?php echo $this->translate('Api for books in library') ?></h3>
+            </div>
+            <div class="panel-body">
+                <p>Api for simple library of books, you can there create new, read, update and delete existing ones.</p>
+
+                <p><a class="btn btn-success pull-right" href="<?= $this->url('api/library/book') ?>">Go to book
+                        index by api &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
