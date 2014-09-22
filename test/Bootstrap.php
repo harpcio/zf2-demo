@@ -94,7 +94,7 @@ class Bootstrap
 
     protected static function findParentPath($path)
     {
-        $dir         = __DIR__;
+        $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
@@ -110,7 +110,7 @@ class Bootstrap
     protected static function setupAutoloader()
     {
         $vendorPath = ROOT_PATH . '/vendor';
-        $zf2Path    = $vendorPath . '/zendframework/zendframework/library';
+        $zf2Path = $vendorPath . '/zendframework/zendframework/library';
 
         if (!$zf2Path) {
             throw new \RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
@@ -128,9 +128,10 @@ class Bootstrap
             array(
                 'Zend\Loader\StandardAutoloader' => array(
                     'autoregister_zf' => true,
-                    'namespaces'      => array(
+                    'namespaces' => array(
                         __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
                         'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
+                        'ApiTest' => ROOT_PATH . '/module/Api/test/ApiLibraryTest',
                     ),
                 ),
             )
@@ -145,7 +146,7 @@ class Bootstrap
      */
     public static function setIdToEntity(&$entity, $id)
     {
-        $reflector  = new \ReflectionObject($entity);
+        $reflector = new \ReflectionObject($entity);
         $idProperty = $reflector->getProperty('id');
         $idProperty->setAccessible(true);
         $idProperty->setValue($entity, $id);

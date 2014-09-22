@@ -20,23 +20,14 @@ class GetController extends AbstractActionController
         $this->service = $service;
     }
 
-
     public function indexAction()
     {
         $id = $this->params()->fromRoute('id', null);
 
         try {
-            $book = $this->service->getById($id);
+            $bookEntity = $this->service->getById($id);
 
-            $data = [
-                'id'          => $book->getId(),
-                'title'       => $book->getTitle(),
-                'description' => $book->getDescription(),
-                'isbn'        => $book->getIsbn(),
-                'year'        => $book->getYear(),
-                'publisher'   => $book->getPublisher(),
-                'price'       => $book->getPrice()
-            ];
+            $data = $this->service->hydrateEntity($bookEntity);
 
             return new JsonModel($data);
         } catch (\Exception $e) {
