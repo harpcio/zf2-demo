@@ -22,20 +22,12 @@ class GetListController extends AbstractActionController
 
     public function indexAction()
     {
-        $books = $this->service->getBooks();
-        $data  = [];
+        $books = $this->service->getAll();
+        $data = [];
 
-        /** @var BookEntity $book */
-        foreach ($books as $book) {
-            $data[] = [
-                'id'          => $book->getId(),
-                'title'       => $book->getTitle(),
-                'description' => $book->getDescription(),
-                'isbn'        => $book->getIsbn(),
-                'year'        => $book->getYear(),
-                'publisher'   => $book->getPublisher(),
-                'price'       => $book->getPrice()
-            ];
+        /** @var BookEntity $bookEntity */
+        foreach ($books as $bookEntity) {
+            $data[] = $this->service->hydrateEntity($bookEntity);
         }
 
         return new JsonModel(['data' => $data]);

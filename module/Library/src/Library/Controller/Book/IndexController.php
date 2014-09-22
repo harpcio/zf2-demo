@@ -14,7 +14,7 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $books = $this->service->getBooks();
+        $books = $this->service->getAll();
 
         return [
             'books' => $books

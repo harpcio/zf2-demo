@@ -107,7 +107,7 @@ class CrudService
     /**
      * @return BookEntity[]
      */
-    public function getBooks()
+    public function getAll()
     {
         return $this->bookRepository->findAll();
     }
