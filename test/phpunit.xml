@@ -4,6 +4,7 @@
     <testsuites>
         <testsuite name="Tests">
             <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
+            <directory suffix="Test.php">../module/Api/test/ApiTest</directory>
         </testsuite>
     </testsuites>
 
@@ -13,6 +14,7 @@
         </php>
         <whitelist>
             <directory suffix=".php">../module/Library</directory>
+            <directory suffix=".php">../module/Api</directory>
         </whitelist>
     </filter>
 </phpunit>

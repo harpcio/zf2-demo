@@ -41,7 +41,7 @@ class IndexControllerTest extends AbstractControllerTestCase
         ];
 
         $this->crudServiceMock->expects($this->once())
-            ->method('getBooks')
+            ->method('getAll')
             ->will($this->returnValue($books));
 
         $result = $this->controller->dispatch(new Request());

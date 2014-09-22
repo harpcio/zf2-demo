@@ -24,7 +24,7 @@ class CreateController extends AbstractActionController
 
     public function __construct(CreateFormInputFilter $filter, CrudService $service)
     {
-        $this->filter  = $filter;
+        $this->filter = $filter;
         $this->service = $service;
     }
 
@@ -39,6 +39,7 @@ class CreateController extends AbstractActionController
 
         if ($this->filter->isValid()) {
             $bookEntity = $this->service->create($this->filter);
+            $response->setStatusCode(Response::STATUS_CODE_201);
 
             return new JsonModel($this->service->hydrateEntity($bookEntity));
         } else {
