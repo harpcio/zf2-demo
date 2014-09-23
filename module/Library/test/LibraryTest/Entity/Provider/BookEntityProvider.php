@@ -53,14 +53,15 @@ class BookEntityProvider
 
     /**
      * @param BookEntity $bookEntity
+     * @param bool       $withId
      *
      * @return array
      */
-    public function getDataFromBookEntity(BookEntity $bookEntity)
+    public function getDataFromBookEntity(BookEntity $bookEntity, $withId = true)
     {
         $data = [];
 
-        if ($bookEntity->getId()) {
+        if ($withId && $bookEntity->getId()) {
             $data['id'] = $bookEntity->getId();
         }
 

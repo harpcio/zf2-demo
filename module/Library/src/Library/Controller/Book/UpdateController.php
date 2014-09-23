@@ -2,7 +2,6 @@
 
 namespace Library\Controller\Book;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Library\Form\Book\CreateForm;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -21,7 +20,7 @@ class UpdateController extends AbstractActionController
 
     public function __construct(CreateForm $form, CrudService $service)
     {
-        $this->form    = $form;
+        $this->form = $form;
         $this->service = $service;
     }
 
@@ -29,7 +28,7 @@ class UpdateController extends AbstractActionController
     {
         /** @var \Zend\Http\Request $request */
         $request = $this->getRequest();
-        $id      = $this->params()->fromRoute('id', null);
+        $id = $this->params()->fromRoute('id', null);
 
         try {
             $bookEntity = $this->service->getById($id);
@@ -47,17 +46,15 @@ class UpdateController extends AbstractActionController
                 $data = $this->service->extractEntity($bookEntity);
                 $this->form->setData($data);
             }
-        } catch (EntityNotFoundException $e) {
-            $this->flashMessenger()->addErrorMessage(sprintf('Cannot find book by id "%s"!', $id));
 
-            return $this->redirect()->toRoute('library/book');
+            return [
+                'form' => $this->form
+            ];
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
-        }
 
-        return [
-            'form' => $this->form ? : null,
-        ];
+            return $this->redirect()->toRoute('library/book');
+        }
     }
 
 }

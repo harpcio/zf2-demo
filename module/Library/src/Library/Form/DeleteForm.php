@@ -40,7 +40,7 @@ class DeleteForm extends Form
                 'attributes' => [
                     'class' => 'btn btn-default btn-lg',
                     'type' => 'submit',
-                    'value' => 'Submit'
+                    'value' => 'Delete'
                 ],
             ]
         );

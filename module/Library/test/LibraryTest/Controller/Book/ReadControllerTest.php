@@ -5,12 +5,17 @@ namespace LibraryTest\Controller\Book;
 use Library\Controller\Book\ReadController;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractControllerTestCase;
+use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Http\Request;
 use Zend\Http\Response;
 
 class ReadControllerTest extends AbstractControllerTestCase
 {
+    /**
+     * @var BookEntityProvider
+     */
+    private $bookEntityProvider;
 
     /**
      * @var MockObject
@@ -26,6 +31,8 @@ class ReadControllerTest extends AbstractControllerTestCase
     {
         parent::setUp('read');
 
+        $this->bookEntityProvider = new BookEntityProvider();
+
         $this->crudServiceMock = $this->getMockBuilder(CrudService::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -34,21 +41,21 @@ class ReadControllerTest extends AbstractControllerTestCase
         $this->controller->setEvent($this->event);
     }
 
-    public function testIndexAction()
+    public function testIndexAction_WithValidGetRequest()
     {
-        $id   = 343;
-        $book = ['title' => 'some title', 'price' => 342.81];
+        $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
+        $id = $bookEntity->getId();
 
         $this->crudServiceMock->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->will($this->returnValue($book));
+            ->will($this->returnValue($bookEntity));
 
         $this->routeMatch->setParam('id', $id);
         $result = $this->controller->dispatch(new Request());
 
         $this->assertResponseStatusCode(Response::STATUS_CODE_200);
-        $this->assertSame(['book' => $book], $result);
+        $this->assertSame(['book' => $bookEntity], $result);
     }
 
     public function testIndexAction_WithExceptionInService()

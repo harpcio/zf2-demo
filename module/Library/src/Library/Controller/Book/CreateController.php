@@ -20,7 +20,7 @@ class CreateController extends AbstractActionController
 
     public function __construct(CreateForm $form, CrudService $service)
     {
-        $this->form    = $form;
+        $this->form = $form;
         $this->service = $service;
     }
 
@@ -28,6 +28,7 @@ class CreateController extends AbstractActionController
     {
         /** @var \Zend\Http\Request $request */
         $request = $this->getRequest();
+
         try {
             $this->form->get('submit')->setValue('Create');
 
@@ -42,13 +43,16 @@ class CreateController extends AbstractActionController
                     $this->flashMessenger()->addErrorMessage('Please fill form correctly');
                 }
             }
+
+            return [
+                'form' => $this->form
+            ];
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
+
+            return $this->redirect()->toRoute('library/book');
         }
 
-        return [
-            'form' => $this->form ? : null
-        ];
     }
 
 }

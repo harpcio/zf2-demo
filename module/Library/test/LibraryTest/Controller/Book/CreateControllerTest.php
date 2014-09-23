@@ -3,12 +3,11 @@
 namespace LibraryTest\Controller\Book;
 
 use Library\Controller\Book\CreateController;
-use Library\Entity\BookEntity;
 use Library\Form\Book\CreateForm;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractControllerTestCase;
+use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use Test\Bootstrap;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\InputFilter\InputFilterInterface;
@@ -16,6 +15,11 @@ use Zend\Stdlib\Parameters;
 
 class CreateControllerTest extends AbstractControllerTestCase
 {
+    /**
+     * @var BookEntityProvider
+     */
+    private $bookEntityProvider;
+
     /**
      * @var MockObject
      */
@@ -34,6 +38,8 @@ class CreateControllerTest extends AbstractControllerTestCase
     public function setUp()
     {
         parent::setUp('create');
+
+        $this->bookEntityProvider = new BookEntityProvider();
 
         $this->crudServiceMock = $this->getMockBuilder(CrudService::class)
             ->disableOriginalConstructor()
@@ -66,18 +72,11 @@ class CreateControllerTest extends AbstractControllerTestCase
 
     public function testIndexAction_WithValidPostRequest()
     {
-        $data = [
-            'title'       => 'Abc',
-            'description' => 'Abc',
-            'isbn'        => '978-83-246-1177-5',
-            'year'        => '1900',
-            'publisher'   => 'Abc',
-            'price'       => 0.01,
-            'csrf'        => 'df34jd83ms893l2'
-        ];
+        $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
+        $data = $this->bookEntityProvider->getDataFromBookEntity($bookEntity, false);
+        $data['csrf'] = 'csrfToken';
 
-        $entityId        = 471;
-        $bookEntity      = $this->getBookEntity($entityId);
+        $entityId = $bookEntity->getId();
         $inputFilterMock = $this->getMock(InputFilterInterface::class);
 
         $this->createFormMock->expects($this->once())
@@ -112,15 +111,9 @@ class CreateControllerTest extends AbstractControllerTestCase
 
     public function testIndexAction_WithInValidPostRequest()
     {
-        $data = [
-            'title'       => 'Abc',
-            'description' => 'Abc',
-            'isbn'        => '978-83-246-1177-5',
-            'year'        => '1900',
-            'publisher'   => 'Abc',
-            'price'       => 0.01,
-            'csrf'        => 'df34jd83ms893l2'
-        ];
+        $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
+        $data = $this->bookEntityProvider->getDataFromBookEntity($bookEntity, false);
+        $data['csrf'] = 'csrfToken';
 
         $this->createFormMock->expects($this->once())
             ->method('get')->will($this->returnSelf());
@@ -146,15 +139,9 @@ class CreateControllerTest extends AbstractControllerTestCase
 
     public function testIndexAction_WithExceptionInService()
     {
-        $data = [
-            'title'       => 'Abc',
-            'description' => 'Abc',
-            'isbn'        => '978-83-246-1177-5',
-            'year'        => '1900',
-            'publisher'   => 'Abc',
-            'price'       => 0.01,
-            'csrf'        => 'df34jd83ms893l2'
-        ];
+        $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
+        $data = $this->bookEntityProvider->getDataFromBookEntity($bookEntity, false);
+        $data['csrf'] = 'csrfToken';
 
         $inputFilterMock = $this->getMock(InputFilterInterface::class);
 
@@ -178,26 +165,13 @@ class CreateControllerTest extends AbstractControllerTestCase
             ->with($inputFilterMock)
             ->will($this->throwException(new \InvalidArgumentException('Some error')));
 
-        $result = $this->controller->dispatch(
+        $this->controller->dispatch(
             (new Request())
                 ->setMethod(Request::METHOD_POST)
                 ->setPost(new Parameters($data))
         );
 
-        $this->assertResponseStatusCode(Response::STATUS_CODE_200);
-        $this->assertSame(['form' => $this->createFormMock], $result);
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return BookEntity
-     */
-    private function getBookEntity($id)
-    {
-        $bookEntity = new BookEntity();
-        Bootstrap::setIdToEntity($bookEntity, $id);
-
-        return $bookEntity;
+        $this->assertResponseStatusCode(Response::STATUS_CODE_302);
+        $this->assertRedirectTo('/library/book');
     }
 }

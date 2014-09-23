@@ -5,12 +5,18 @@ namespace LibraryTest\Controller\Book;
 use Library\Controller\Book\IndexController;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractControllerTestCase;
+use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Http\Request;
 use Zend\Http\Response;
 
 class IndexControllerTest extends AbstractControllerTestCase
 {
+    /**
+     * @var BookEntityProvider
+     */
+    private $bookEntityProvider;
+
     /**
      * @var MockObject
      */
@@ -25,6 +31,8 @@ class IndexControllerTest extends AbstractControllerTestCase
     {
         parent::setUp('index');
 
+        $this->bookEntityProvider = new BookEntityProvider();
+
         $this->crudServiceMock = $this->getMockBuilder(CrudService::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -35,9 +43,12 @@ class IndexControllerTest extends AbstractControllerTestCase
 
     public function testIndexAction_WithGetRequest()
     {
+        $bookEntityOne = $this->bookEntityProvider->getBookEntityWithRandomData();
+        $bookEntityTwo = $this->bookEntityProvider->getBookEntityWithRandomData();
+
         $books = [
-            'book one',
-            'book two'
+            $bookEntityOne,
+            $bookEntityTwo
         ];
 
         $this->crudServiceMock->expects($this->once())
