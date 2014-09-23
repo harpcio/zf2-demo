@@ -2,13 +2,10 @@
 
 namespace ApiTest\Controller\V1\Library\Book;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Library\Entity\BookEntity;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractFunctionalControllerTestCase;
 use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use Test\Bootstrap;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Json\Json;
@@ -71,7 +68,7 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
         $this->assertResponseStatusCode(Response::STATUS_CODE_200);
     }
 
-    public function testGetRequest_WhenEntitiesDoNotExist()
+    public function testGetListRequest_WhenEntitiesDoNotExist()
     {
         $this->serviceMock->expects($this->once())
             ->method('getAll')

@@ -30,6 +30,7 @@ return [
             'Api\Controller\V1\Library\Book\Create' => function (ControllerManager $cm) {
                     /**
                      * @var $service Library\Service\Book\CrudService
+                     * @var $filter  Library\Form\Book\CreateFormInputFilter
                      */
                     $sm = $cm->getServiceLocator();
                     $filter = $sm->get(Library\Form\Book\CreateFormInputFilter::class);
@@ -49,6 +50,7 @@ return [
             'Api\Controller\V1\Library\Book\Update' => function (ControllerManager $cm) {
                     /**
                      * @var $service Library\Service\Book\CrudService
+                     * @var $filter  Library\Form\Book\CreateFormInputFilter
                      */
                     $sm = $cm->getServiceLocator();
                     $filter = $sm->get(Library\Form\Book\CreateFormInputFilter::class);

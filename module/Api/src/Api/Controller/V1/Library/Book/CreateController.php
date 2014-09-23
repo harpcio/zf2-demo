@@ -5,6 +5,7 @@ namespace Api\Controller\V1\Library\Book;
 use Api\Exception;
 use Library\Form\Book\CreateFormInputFilter;
 use Library\Service\Book\CrudService;
+use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -30,12 +31,14 @@ class CreateController extends AbstractActionController
 
     public function indexAction()
     {
-        $data = $this->params()->fromRoute('data', null);
-
-        /** @var \Zend\Http\Response $response */
+        /**
+         * @var Request  $request
+         * @var Response $response
+         */
+        $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $this->filter->setData($data);
+        $this->filter->setData($request->getPost()->toArray());
 
         if ($this->filter->isValid()) {
             $bookEntity = $this->service->create($this->filter);

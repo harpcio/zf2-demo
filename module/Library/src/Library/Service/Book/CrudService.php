@@ -99,9 +99,7 @@ class CrudService
      */
     public function hydrateEntity(BookEntity $bookEntity)
     {
-        $data = $this->bookRepository->extract($bookEntity);
-
-        return $data;
+        return $this->bookRepository->extract($bookEntity);
     }
 
     /**

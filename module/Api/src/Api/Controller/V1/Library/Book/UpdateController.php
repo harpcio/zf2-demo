@@ -5,6 +5,7 @@ namespace Api\Controller\V1\Library\Book;
 use Api\Exception;
 use Library\Form\Book\CreateFormInputFilter;
 use Library\Service\Book\CrudService;
+use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -30,35 +31,29 @@ class UpdateController extends AbstractActionController
 
     public function indexAction()
     {
-        $id = $this->params()->fromRoute('id', null);
-        $data = $this->params()->fromRoute('data', null);
-        /** @var CreateFormInputFilter $filter */
-        $filter = $this->getServiceLocator()->get(CreateFormInputFilter::class);
-        /** @var \Zend\Http\Response $response */
+        /**
+         * @var Request  $request
+         * @var Response $response
+         */
+        $request = $this->getRequest();
         $response = $this->getResponse();
 
-        $bookEntity = $this->service->getById($id);
+        $id = $this->params()->fromRoute('id', null);
 
-        $entityData = [
-            'id' => $bookEntity->getId(),
-            'title' => $bookEntity->getTitle(),
-            'description' => $bookEntity->getDescription(),
-            'isbn' => $bookEntity->getIsbn(),
-            'year' => $bookEntity->getYear(),
-            'publisher' => $bookEntity->getPublisher(),
-            'price' => $bookEntity->getPrice()
-        ];
+        try {
+            $bookEntity = $this->service->getById($id);
+        } catch (\Exception $e) {
+            throw new Exception\NotFoundException;
+        }
 
-        $data = array_merge($entityData, $data);
+        $this->filter->setData($request->getPost()->toArray());
 
-        $filter->setData($data);
-
-        if ($filter->isValid()) {
-            $this->service->update($bookEntity, $filter);
+        if ($this->filter->isValid()) {
+            $bookEntity = $this->service->update($bookEntity, $this->filter);
 
             return new JsonModel($this->service->hydrateEntity($bookEntity));
         } else {
-            $messages = $filter->getMessages();
+            $messages = $this->filter->getMessages();
             $response->setStatusCode(Response::STATUS_CODE_400);
 
             return new JsonModel([

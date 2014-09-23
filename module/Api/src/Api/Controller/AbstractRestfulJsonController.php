@@ -9,6 +9,7 @@ use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Exception as MvcException;
+use Zend\Stdlib\Parameters;
 
 abstract class AbstractRestfulJsonController extends AbstractRestfulController
 {
@@ -135,10 +136,11 @@ abstract class AbstractRestfulJsonController extends AbstractRestfulController
             case Request::METHOD_PATCH:
                 $id = $this->getIdentifier($routeMatch, $request);
                 $data = $this->processBodyContent($request);
+                $request->setPost(new Parameters($data));
 
                 if ($id !== false) {
                     $controller = static::prepareControllerName($namespace, 'patch');
-                    $return = $this->reDispatch($controller, ['id' => $id, 'data' => $data]);
+                    $return = $this->reDispatch($controller, ['id' => $id]);
                     break;
                 }
 
@@ -147,7 +149,7 @@ abstract class AbstractRestfulJsonController extends AbstractRestfulController
                 // instead of going to patchList
                 try {
                     $controller = static::prepareControllerName($namespace, 'patchList');
-                    $return = $this->reDispatch($controller, ['data' => $data]);
+                    $return = $this->reDispatch($controller);
                 } catch (MvcException\RuntimeException $ex) {
                     $response->setStatusCode(405);
                     return $response;
@@ -157,21 +159,23 @@ abstract class AbstractRestfulJsonController extends AbstractRestfulController
             case Request::METHOD_POST:
                 $controller = static::prepareControllerName($namespace, 'create');
                 $data = $this->preparePostOrJsonData($request);
-                $return = $this->reDispatch($controller, ['data' => $data]);
+                $request->setPost(new Parameters($data));
+                $return = $this->reDispatch($controller);
                 break;
 
             case Request::METHOD_PUT:
                 $id = $this->getIdentifier($routeMatch, $request);
                 $data = $this->processBodyContent($request);
+                $request->setPost(new Parameters($data));
 
                 if ($id !== false) {
                     $controller = static::prepareControllerName($namespace, 'update');
-                    $return = $this->reDispatch($controller, ['id' => $id, 'data' => $data]);
+                    $return = $this->reDispatch($controller, ['id' => $id]);
                     break;
                 }
 
                 $controller = static::prepareControllerName($namespace, 'replaceList');
-                $return = $this->reDispatch($controller, ['data' => $data]);
+                $return = $this->reDispatch($controller);
                 break;
             default:
                 $response->setStatusCode(405);
