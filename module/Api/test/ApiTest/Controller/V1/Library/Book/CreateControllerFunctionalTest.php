@@ -14,7 +14,7 @@ use Zend\Json\Json;
 
 class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const POST_URL = '/api/library/book';
+    const CREATE_URL = '/api/library/book';
 
     /**
      * @var MockObject
@@ -53,19 +53,19 @@ class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         Bootstrap::setIdToEntity($bookEntity, mt_rand(1, 999));
         $dataAfterSaving = $this->bookEntityProvider->getDataFromBookEntity($bookEntity);
 
+        $this->filter->setData($dataBeforeSaving);
+
         $this->serviceMock->expects($this->once())
             ->method('create')
             ->with($this->filter)
             ->will($this->returnValue($bookEntity));
-
-        $this->filter->setData($dataBeforeSaving);
 
         $this->serviceMock->expects($this->once())
             ->method('hydrateEntity')
             ->with($bookEntity)
             ->will($this->returnValue($dataAfterSaving));
 
-        $this->dispatch(self::POST_URL, Request::METHOD_POST, $dataBeforeSaving);
+        $this->dispatch(self::CREATE_URL, Request::METHOD_POST, $dataBeforeSaving);
 
         $expectedJson = Json::encode($dataAfterSaving);
 
@@ -78,7 +78,7 @@ class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $data = [];
         $this->filter->setData($data);
 
-        $this->dispatch(self::POST_URL, Request::METHOD_POST, $data);
+        $this->dispatch(self::CREATE_URL, Request::METHOD_POST, $data);
 
         $expectedJson = Json::encode(['error' => ['messages' => $this->filter->getMessages()]]);
 
