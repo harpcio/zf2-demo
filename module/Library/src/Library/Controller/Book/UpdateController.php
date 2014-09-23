@@ -44,7 +44,7 @@ class UpdateController extends AbstractActionController
                     $this->flashMessenger()->addErrorMessage('Please fill form correctly');
                 }
             } else {
-                $data = $this->service->hydrateEntity($bookEntity);
+                $data = $this->service->extractEntity($bookEntity);
                 $this->form->setData($data);
             }
         } catch (EntityNotFoundException $e) {

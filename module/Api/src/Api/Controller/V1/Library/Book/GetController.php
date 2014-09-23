@@ -27,7 +27,7 @@ class GetController extends AbstractActionController
         try {
             $bookEntity = $this->service->getById($id);
 
-            $data = $this->service->hydrateEntity($bookEntity);
+            $data = $this->service->extractEntity($bookEntity);
 
             return new JsonModel($data);
         } catch (\Exception $e) {

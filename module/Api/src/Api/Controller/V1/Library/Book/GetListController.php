@@ -27,7 +27,7 @@ class GetListController extends AbstractActionController
 
         /** @var BookEntity $bookEntity */
         foreach ($books as $bookEntity) {
-            $data[] = $this->service->hydrateEntity($bookEntity);
+            $data[] = $this->service->extractEntity($bookEntity);
         }
 
         return new JsonModel(['data' => $data]);

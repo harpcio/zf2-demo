@@ -69,7 +69,7 @@ class UpdateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
             ->will($this->returnValue($newBookEntity));
 
         $this->serviceMock->expects($this->once())
-            ->method('hydrateEntity')
+            ->method('extractEntity')
             ->with($newBookEntity)
             ->will($this->returnValue($dataAfterSaving));
 

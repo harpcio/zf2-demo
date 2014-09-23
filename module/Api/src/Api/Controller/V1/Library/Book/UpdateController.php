@@ -51,7 +51,7 @@ class UpdateController extends AbstractActionController
         if ($this->filter->isValid()) {
             $bookEntity = $this->service->update($bookEntity, $this->filter);
 
-            return new JsonModel($this->service->hydrateEntity($bookEntity));
+            return new JsonModel($this->service->extractEntity($bookEntity));
         } else {
             $messages = $this->filter->getMessages();
             $response->setStatusCode(Response::STATUS_CODE_400);

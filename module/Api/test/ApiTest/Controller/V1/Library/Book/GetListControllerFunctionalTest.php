@@ -51,12 +51,12 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
             ->will($this->returnValue($bookEntities));
 
         $this->serviceMock->expects($this->at(1))
-            ->method('hydrateEntity')
+            ->method('extractEntity')
             ->with($bookEntities[0])
             ->will($this->returnValue($data[0]));
 
         $this->serviceMock->expects($this->at(2))
-            ->method('hydrateEntity')
+            ->method('extractEntity')
             ->with($bookEntities[1])
             ->will($this->returnValue($data[1]));
 

@@ -44,7 +44,7 @@ class CreateController extends AbstractActionController
             $bookEntity = $this->service->create($this->filter);
             $response->setStatusCode(Response::STATUS_CODE_201);
 
-            return new JsonModel($this->service->hydrateEntity($bookEntity));
+            return new JsonModel($this->service->extractEntity($bookEntity));
         } else {
             $messages = $this->filter->getMessages();
             $response->setStatusCode(Response::STATUS_CODE_400);
