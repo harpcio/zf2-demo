@@ -13,6 +13,21 @@ return [
         'aliases' => [
         ],
         'factories' => [
+            Library\Repository\BookRepository::class => function (ServiceManager $sm) {
+                    /**
+                     * @var $em             Doctrine\ORM\EntityManager
+                     * @var $bookRepository Library\Repository\BookRepository
+                     */
+                    $em = $sm->get(Doctrine\ORM\EntityManager::class);
+                    $bookRepository = $em->getRepository(Library\Entity\BookEntity::class);
+                    $hydrator = new DoctrineModule\Stdlib\Hydrator\DoctrineObject(
+                        $em,
+                        Library\Entity\BookEntity::class
+                    );
+                    $bookRepository->setHydrator($hydrator);
+
+                    return $bookRepository;
+                },
             Library\Form\Book\CreateForm::class => function (ServiceManager $sm) {
                     /**
                      * @var $filter Library\Form\Book\CreateFormInputFilter
@@ -37,11 +52,9 @@ return [
                 },
             Library\Service\Book\CrudService::class => function (ServiceManager $sm) {
                     /**
-                     * @var $em             Doctrine\ORM\EntityManager
                      * @var $bookRepository Library\Repository\BookRepository
                      */
-                    $em = $sm->get(Doctrine\ORM\EntityManager::class);
-                    $bookRepository = $em->getRepository(Library\Entity\BookEntity::class);
+                    $bookRepository = $sm->get(Library\Repository\BookRepository::class);
 
                     return new \Library\Service\Book\CrudService($bookRepository);
                 },

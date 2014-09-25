@@ -2,12 +2,15 @@
 
 namespace Library\Repository;
 
+use Application\Library\Traits\DoctrineHydratorAwareInterface;
+use Application\Library\Traits\DoctrineHydratorAwareTrait;
 use Doctrine\ORM\EntityRepository;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Library\Entity\BookEntity;
 
-class BookRepository extends EntityRepository implements BookRepositoryInterface
+class BookRepository extends EntityRepository implements BookRepositoryInterface, DoctrineHydratorAwareInterface
 {
+    use DoctrineHydratorAwareTrait;
+
     /**
      * @return BookEntity
      */
@@ -24,9 +27,7 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
      */
     public function hydrate(BookEntity $bookEntity, array $data)
     {
-        $hydrator = new DoctrineObject($this->getEntityManager(), BookEntity::class);
-
-        return $hydrator->hydrate($data, $bookEntity);
+        return $this->getHydrator()->hydrate($data, $bookEntity);
     }
 
     /**
@@ -36,9 +37,7 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
      */
     public function extract(BookEntity $bookEntity)
     {
-        $hydrator = new DoctrineObject($this->getEntityManager(), BookEntity::class);
-
-        return $hydrator->extract($bookEntity);
+        return $this->getHydrator()->extract($bookEntity);
     }
 
     /**
