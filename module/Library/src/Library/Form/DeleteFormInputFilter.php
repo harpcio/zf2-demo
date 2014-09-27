@@ -18,7 +18,6 @@ class DeleteFormInputFilter extends InputFilter
                     'required' => true,
                     'filters' => [
                         ['name' => 'Digits'],
-                        ['name' => 'StringTrim'],
                     ],
                     'validators' => [
                         [
@@ -26,7 +25,7 @@ class DeleteFormInputFilter extends InputFilter
                             'options' => [
                                 'encoding' => 'UTF-8',
                                 'min' => 0,
-                                'inclusive' => true,
+                                'inclusive' => false,
                             ],
                         ],
                     ],
