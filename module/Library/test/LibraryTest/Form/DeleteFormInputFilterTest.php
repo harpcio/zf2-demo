@@ -16,8 +16,6 @@ class DeleteFormInputFilterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-//        var_dump((int)'adf324'); exit;
-
         $this->testedObj = new DeleteFormInputFilter();
     }
 
