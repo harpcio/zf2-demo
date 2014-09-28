@@ -2,6 +2,7 @@
 
 namespace ApiTest\Controller\V1\Library\Book;
 
+use Api\Exception\NotFoundException;
 use Library\Form\Book\CreateFormInputFilter;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractFunctionalControllerTestCase;
@@ -95,6 +96,26 @@ class UpdateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
 
         $this->assertSame($expectedJson, $this->getResponse()->getContent());
         $this->assertResponseStatusCode(Response::STATUS_CODE_400);
+    }
+
+    public function testUpdateRequest_WithInvalidId()
+    {
+        $id = 154;
+
+        $postData = [];
+        $this->filter->setData($postData);
+
+        $this->serviceMock->expects($this->once())
+            ->method('getById')
+            ->with($id)
+            ->will($this->throwException(new NotFoundException()));
+
+        $this->dispatch(sprintf(self::UPDATE_URL, $id), Request::METHOD_PUT, $postData);
+
+        $expectedJson = '{"errorCode":404,"message":"The specified resource does not exist."}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_404);
     }
 
 }
