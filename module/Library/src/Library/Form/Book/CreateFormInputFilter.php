@@ -122,11 +122,15 @@ class CreateFormInputFilter extends InputFilter
                 ]
             )
         );
+
         $this->add(
             $factory->createInput(
                 [
                     'name'       => 'price',
-                    'required'   => true,
+                    'required'   => false,
+                    'filters'    => [
+                        ['name' => 'StringTrim'],
+                    ],
                     'validators' => [
                         [
                             'name'    => 'Regex',
