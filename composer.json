@@ -1,12 +1,23 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
+    "name": "Zend Framework 2 Advanced Demo",
+    "description": "Skeleton Application for ZF2 with API based on 'Single Action Per Controller' standards, using PHP5.5, Doctrine2",
+    "license": "MIT",
     "keywords": [
         "framework",
-        "zf2"
+        "zf2",
+        "skeleton",
+        "advanced",
+        "single action per controller",
+        "solid",
+        "doctrine2",
+        "phpunit",
+        "tdd",
+        "api"
     ],
-    "homepage": "http://framework.zend.com/",
+    "authors": [
+        "Rafal Ksiazek <harpcio@gmail.com>"
+    ],
+    "homepage": "https://github.com/harpcio/zf2-demo",
     "require": {
         "php": ">=5.5.0",
         "zendframework/zendframework": "2.3.*",
