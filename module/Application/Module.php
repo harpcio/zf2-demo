@@ -3,6 +3,7 @@
 namespace Application;
 
 use Application\View\Helper\FlashMessages;
+use Zend\Log\Logger;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
@@ -12,9 +13,24 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $sharedManager = $eventManager->getSharedManager();
+        $sm = $e->getApplication()->getServiceManager();
+
+        $sharedManager->attach(
+            'Zend\Mvc\Application',
+            MvcEvent::EVENT_DISPATCH_ERROR,
+            function (MvcEvent $e) use ($sm) {
+                if ($e->getParam('exception')) {
+                    /** @var Logger $logger */
+                    $logger = $sm->get('Application\Logger');
+                    $logger->crit($e->getParam('exception'));
+                }
+            }
+        );
     }
 
     public function getConfig()

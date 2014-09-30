@@ -1,6 +1,7 @@
 <?php
 
 use Zend\Mvc\Application;
+use Zend\Log\Logger;
 
 /**
  * This makes our life easier when dealing with paths. Everything is relative
@@ -26,13 +27,19 @@ require ROOT_PATH . '/init_autoloader.php';
 
 $config = require ROOT_PATH . '/config/application.config.php';
 
-// Run the application!
+/** @var Application $app */
 $app = Application::init($config);
 
 try {
+    // Run the application!
     $app->run();
 } catch (\Exception $e) {
+    /** @var Logger $logger */
+    $logger = $app->getServiceManager()->get('Application\Logger');
+    $logger->crit($e);
+
     echo 'There was an error, please contact with the administrator.';
+
     if (DEVELOPMENT_ENV) {
         echo PHP_EOL . PHP_EOL;
         echo $e;
