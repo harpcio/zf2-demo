@@ -86,4 +86,23 @@ class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $this->assertResponseStatusCode(Response::STATUS_CODE_400);
     }
 
+    public function testCreateRequest_WhenServiceThrowPDOException()
+    {
+        $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData(false);
+        $dataBeforeSaving = $this->bookEntityProvider->getDataFromBookEntity($bookEntity);
+
+        $this->filter->setData($dataBeforeSaving);
+
+        $this->serviceMock->expects($this->once())
+            ->method('create')
+            ->with($this->filter)
+            ->will($this->throwException(new \PDOException()));
+
+        $this->dispatch(self::CREATE_URL, Request::METHOD_POST, $dataBeforeSaving);
+
+        $expectedJson = '{"errorCode":503,"message":"PDO Service Unavailable"}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_503);
+    }
 }

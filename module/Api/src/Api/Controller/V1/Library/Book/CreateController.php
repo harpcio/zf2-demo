@@ -40,12 +40,7 @@ class CreateController extends AbstractActionController
 
         $this->filter->setData($request->getPost()->toArray());
 
-        if ($this->filter->isValid()) {
-            $bookEntity = $this->service->create($this->filter);
-            $response->setStatusCode(Response::STATUS_CODE_201);
-
-            return new JsonModel($this->service->extractEntity($bookEntity));
-        } else {
+        if (!$this->filter->isValid()) {
             $messages = $this->filter->getMessages();
             $response->setStatusCode(Response::STATUS_CODE_400);
 
@@ -54,6 +49,15 @@ class CreateController extends AbstractActionController
                     'messages' => $messages
                 ]
             ]);
+        }
+
+        try {
+            $bookEntity = $this->service->create($this->filter);
+            $response->setStatusCode(Response::STATUS_CODE_201);
+
+            return new JsonModel($this->service->extractEntity($bookEntity));
+        } catch (\PDOException $e) {
+            throw new Exception\PDOServiceUnavailableException();
         }
     }
 }

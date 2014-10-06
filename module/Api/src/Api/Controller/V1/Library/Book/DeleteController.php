@@ -3,6 +3,7 @@
 namespace Api\Controller\V1\Library\Book;
 
 use Api\Exception;
+use Doctrine\ORM\EntityNotFoundException;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -27,12 +28,14 @@ class DeleteController extends AbstractActionController
         try {
             $bookEntity = $this->service->getById($id);
             $this->service->delete($bookEntity);
-        } catch (\Exception $e) {
+            
+            return new JsonModel([
+                'data' => "Book with id {$id} has been deleted"
+            ]);
+        } catch (EntityNotFoundException $e) {
             throw new Exception\NotFoundException();
+        } catch (\PDOException $e) {
+            throw new Exception\PDOServiceUnavailableException();
         }
-
-        return new JsonModel([
-            'data' => "Book with id {$id} has been deleted"
-        ]);
     }
 }

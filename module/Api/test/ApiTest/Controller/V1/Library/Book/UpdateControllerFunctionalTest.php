@@ -118,4 +118,23 @@ class UpdateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $this->assertResponseStatusCode(Response::STATUS_CODE_404);
     }
 
+    public function testUpdateRequest_WhenServiceThrowPDOException()
+    {
+        $id = 154;
+
+        $postData = [];
+        $this->filter->setData($postData);
+
+        $this->serviceMock->expects($this->once())
+            ->method('getById')
+            ->with($id)
+            ->will($this->throwException(new \PDOException()));
+
+        $this->dispatch(sprintf(self::UPDATE_URL, $id), Request::METHOD_PUT, $postData);
+
+        $expectedJson = '{"errorCode":503,"message":"PDO Service Unavailable"}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_503);
+    }
 }

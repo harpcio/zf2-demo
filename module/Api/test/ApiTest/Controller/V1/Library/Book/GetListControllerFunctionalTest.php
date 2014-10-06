@@ -82,4 +82,18 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
         $this->assertResponseStatusCode(Response::STATUS_CODE_200);
     }
 
+    public function testGetListRequest_WhenServiceThrowException()
+    {
+        $this->serviceMock->expects($this->once())
+            ->method('getAll')
+            ->will($this->throwException(new \PDOException()));
+
+        $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);
+
+        $expectedJson = '{"errorCode":503,"message":"PDO Service Unavailable"}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_503);
+    }
+
 }

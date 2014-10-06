@@ -77,4 +77,20 @@ class DeleteControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $this->assertResponseStatusCode(Response::STATUS_CODE_404);
     }
 
+    public function testDeleteRequest_WhenServiceThrowPDOException()
+    {
+        $id = 5;
+
+        $this->serviceMock->expects($this->once())
+            ->method('getById')
+            ->with($id)
+            ->will($this->throwException(new \PDOException()));
+
+        $this->dispatch(sprintf(self::DELETE_URL, $id), Request::METHOD_DELETE);
+
+        $expectedJson = '{"errorCode":503,"message":"PDO Service Unavailable"}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_503);
+    }
 }

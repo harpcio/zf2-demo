@@ -79,4 +79,21 @@ class GetControllerFunctionalTest extends AbstractFunctionalControllerTestCase
         $this->assertResponseStatusCode(Response::STATUS_CODE_404);
     }
 
+    public function testGetRequest_WhenServiceThrowPDOException()
+    {
+        $id = 5;
+
+        $this->serviceMock->expects($this->once())
+            ->method('getById')
+            ->with($id)
+            ->will($this->throwException(new \PDOException()));
+
+        $this->dispatch(sprintf(self::GET_URL, $id), Request::METHOD_GET);
+
+        $expectedJson = '{"errorCode":503,"message":"PDO Service Unavailable"}';
+
+        $this->assertSame($expectedJson, $this->getResponse()->getContent());
+        $this->assertResponseStatusCode(Response::STATUS_CODE_503);
+    }
+
 }
