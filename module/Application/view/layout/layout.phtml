@@ -49,6 +49,28 @@
                 <li><a href="<?= $this->url('library/book') ?>">Books in library</a></li>
                 <li><a href="<?= $this->url('api/library/book') ?>">Api for books in library</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+            <?php /** @var \User\Entity\UserEntity $identity */ ?>
+            <?php if (($identity = $this->identity())): ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <?= $identity->getName(); ?>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Edit profile</a></li>
+                        <li class="divider"></li>
+                        <li><a href="<?= $this->url('auth/default', ['controller' => 'logout']); ?>">
+                            <span class="glyphicon glyphicon-off"></span> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            <?php else: ?>
+                <li><a href="<?= $this->url('auth/default', ['controller' => 'login']); ?>">Login</a></li>
+            <?php endif; ?>
+            </ul>
         </div>
     </div>
 </nav>

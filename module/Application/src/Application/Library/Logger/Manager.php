@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Logger;
+namespace Application\Library\Logger;
 
 use Zend\Log\Filter\Priority;
 use Zend\Log\Logger;

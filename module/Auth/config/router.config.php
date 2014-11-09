@@ -5,12 +5,12 @@ use Zend\Mvc\Router\Http;
 return [
     'router' => [
         'routes' => [
-            'home' => [
+            'auth' => [
                 'type'          => Http\Literal::class,
                 'options'       => [
-                    'route'    => '/',
+                    'route'    => '/auth',
                     'defaults' => [
-                        '__NAMESPACE__' => 'Application\Controller',
+                        '__NAMESPACE__' => 'Auth\Controller',
                         'controller'    => 'index',
                         'action'        => 'index',
                     ],

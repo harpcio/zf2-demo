@@ -1,10 +1,13 @@
 <?php
+
 $config = [
     'modules' => [
         'DoctrineModule',
         'DoctrineORMModule',
         'DluTwBootstrap',
+        'Auth',
         'Application',
+        'User',
         'Library',
         'Api',
     ],

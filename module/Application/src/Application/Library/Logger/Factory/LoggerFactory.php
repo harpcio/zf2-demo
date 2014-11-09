@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Factory;
+namespace Application\Library\Logger\Factory;
 
-use Application\Logger\Manager;
+use Application\Library\Logger\Manager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -18,7 +18,7 @@ class LoggerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /** @var Manager $loggerManager */
+        /** @var \Application\Library\Logger\Manager $loggerManager */
         $loggerManager = $serviceLocator->get(Manager::class);
 
         return $loggerManager->createErrorInfoLog('app');

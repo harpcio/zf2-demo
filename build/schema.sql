@@ -35,3 +35,25 @@ INSERT INTO `book` (`id`, `title`, `description`, `isbn`, `year`, `publisher`, `
 (6, 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Even bad code can function. But if code isnâ€™t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it doesnâ€™t have to be that way.\r\n\r\nNoted software expert Robert C. Martin presents a revolutionary paradigm with Clean Code: A Handbook of Agile Software Craftsmanship . Martin has teamed up with his colleagues from Object Mentor to distill their best agile practice of cleaning code â€œon the flyâ€ into a book that will instill within you the values of a software craftsman and make you a better programmerâ€”but only if you work at it.\r\n\r\nWhat kind of work will you be doing? Youâ€™ll be reading codeâ€”lots of code. And you will be challenged to think about whatâ€™s right about that code, and whatâ€™s wrong with it. More importantly, you will be challenged to reassess your professional values and your commitment to your craft.\r\n\r\nClean Code is divided into three parts. The first describes the principles, patterns, and practices of writing clean code. The second part consists of several case studies of increasing complexity. Each case study is an exercise in cleaning up codeâ€”of transforming a code base that has some problems into one that is sound and efficient. The third part is the payoff: a single chapter containing a list of heuristics and â€œsmellsâ€ gathered while creating the case studies. The result is a knowledge base that describes the way we think when we write, read, and clean code.', '000-01-323-5088-2', 2008, 'Prentice Hall', 38.85),
 (7, 'Refactoring: Improving the Design of Existing Code', 'Refactoring is about improving the design of existing code. It is the process of changing a software system in such a way that it does not alter the external behavior of the code, yet improves its internal structure. With refactoring you can even take a bad design and rework it into a good one. This book offers a thorough discussion of the principles of refactoring, including where to spot opportunities for refactoring, and how to set up the required tests. There is also a catalog of more than 40 proven refactorings with details as to when and why to use the refactoring, step by step instructions for implementing it, and an example illustrating how it works The book is written using Java as its principle language, but the ideas are applicable to any OO language.', '978-02-014-8567-7', 1999, 'Addison-Wesley Professional', 48.33),
 (8, 'Head First Design Patterns', 'Whatâ€™s so special about design patterns?\r\n\r\nAt any given moment, someone struggles with the same software design problems you have. And, chances are, someone else has already solved your problem. This edition of Head First Design Patternsâ€”now updated for Java 8â€”shows you the tried-and-true, road-tested patterns used by developers to create functional, elegant, reusable, and flexible software. By the time you finish this book, youâ€™ll be able to take advantage of the best design practices and experiences of those who have fought the beast of software design and triumphed.\r\n\r\nWhatâ€™s so special about this book?\r\n\r\nWe think your time is too valuable to spend struggling with new concepts. Using the latest research in cognitive science and learning theory to craft a multi-sensory learning experience, Head First Design Patterns uses a visually rich format designed for the way your brain works, not a text-heavy approach that puts you to sleep.', '978-05-960-0712-6', 2004, 'O''Reilly Media', 37.99);
+
+
+--
+-- Struktura tabeli dla tabeli `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `login` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Zrzut danych tabeli `user`
+--
+
+INSERT INTO `user` (`id`, `name`, `login`, `email`, `password`) VALUES
+(1, 'Administrator', 'admin', 'admin@zf2-demo.local', '$2y$10$f/mSA9WnIRem2IHLtQWjROgvchksKtJwwbx4aB8ga2xnnEOWbj66i');

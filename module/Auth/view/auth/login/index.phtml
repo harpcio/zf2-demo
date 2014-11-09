@@ -1,0 +1,9 @@
+<?php
+$title = 'Login page';
+$this->headTitle($title);
+?>
+    <h3><?= $title; ?></h3>
+    <hr/>
+<?php if ($this->form): ?>
+    <?= $this->formTwb($this->form, 'vertical'); ?>
+<?php endif; ?>
