@@ -15,5 +15,8 @@ TODO
 1. ~~write the rest of tests~~
 2. ~~implement logs~~
 3. implement cache
-4. implement authorization (zfcommon/zfcuser)
+4. ~~implement authorization~~
+5. implement acl
+6. implement admin panel
+7. transfer updating/creating/deleting privileges of books to administrator
 
