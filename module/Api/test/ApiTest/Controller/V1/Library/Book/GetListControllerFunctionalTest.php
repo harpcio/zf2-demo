@@ -12,7 +12,7 @@ use Zend\Json\Json;
 
 class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const GET_LIST_URL = '/api/library/book';
+    const GET_LIST_URL = '/api/library/books';
 
     /**
      * @var MockObject
@@ -47,7 +47,7 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
         }
 
         $this->serviceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getFilteredResults')
             ->will($this->returnValue($bookEntities));
 
         $this->serviceMock->expects($this->at(1))
@@ -71,7 +71,7 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
     public function testGetListRequest_WhenEntitiesDoNotExist()
     {
         $this->serviceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getFilteredResults')
             ->will($this->returnValue([]));
 
         $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);
@@ -85,7 +85,7 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
     public function testGetListRequest_WhenServiceThrowException()
     {
         $this->serviceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getFilteredResults')
             ->will($this->throwException(new \PDOException()));
 
         $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);

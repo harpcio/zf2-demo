@@ -7,9 +7,9 @@ $book = $this->book;
 <h3>Read the book</h3>
 <hr/>
 <p>
-    <a href="<?= $this->url('library/book'); ?>" class="btn btn-primary" role="button">Back to index</a>
-    <a href="<?= $this->url('library/book/update', ['id' => $book->getId()]); ?>" class="btn btn-warning" role="button">Update</a>
-    <a href="<?= $this->url('library/book/delete', ['id' => $book->getId()]); ?>" class="btn btn-danger" role="button">Delete</a>
+    <a href="<?= $this->url('library/books'); ?>" class="btn btn-primary" role="button">Back to index</a>
+    <a href="<?= $this->url('library/books/update', ['id' => $book->getId()]); ?>" class="btn btn-warning" role="button">Update</a>
+    <a href="<?= $this->url('library/books/delete', ['id' => $book->getId()]); ?>" class="btn btn-danger" role="button">Delete</a>
 </p>
 <hr/>
 <table class="table table-bordered">

@@ -13,7 +13,7 @@ use Zend\Json\Json;
 
 class DeleteControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const DELETE_URL = '/api/library/book/%s';
+    const DELETE_URL = '/api/library/books/%s';
 
     /**
      * @var MockObject

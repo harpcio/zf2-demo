@@ -3,6 +3,7 @@
 namespace Api\Controller\V1\Library\Book\Factory;
 
 use Api\Controller\V1\Library\Book\GetListController;
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\FactoryInterface;
@@ -23,10 +24,12 @@ class GetListControllerFactory implements FactoryInterface
         $serviceLocator = $serviceLocator->getServiceLocator();
 
         /**
-         * @var $service CrudService
+         * @var $service     CrudService
+         * @var $queryFilter QueryFilter
          */
         $service = $serviceLocator->get(CrudService::class);
+        $queryFilter = $serviceLocator->get(QueryFilter::class);
 
-        return new GetListController($service);
+        return new GetListController($service, $queryFilter);
     }
 }

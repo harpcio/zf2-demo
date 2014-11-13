@@ -38,13 +38,13 @@ class Manager
 
         $logger = new Logger();
 
-        $filePathName = $this->path . date('Ymd') . sprintf('%s.error.log', $name);
+        $filePathName = $this->path . date('Ymd') . sprintf('.%s.error.log', $name);
         $errorWriter = new Stream($filePathName, null, $this->separator);
         $errorFilter = new Priority(Logger::ERR, '<=');
         $errorWriter->addFilter($errorFilter);
         $logger->addWriter($errorWriter);
 
-        $filePathName = $this->path . date('Ymd') . sprintf('%s.info.log', $name);
+        $filePathName = $this->path . date('Ymd') . sprintf('.%s.info.log', $name);
         $errorWriter = new Stream($filePathName, null, $this->separator);
         $errorFilter = new Priority(Logger::WARN, '>=');
         $errorWriter->addFilter($errorFilter);
@@ -67,7 +67,7 @@ class Manager
 
         $logger = new Logger();
 
-        $filePathName = $this->path . date('Ymd') . sprintf('%s.log', $name);
+        $filePathName = $this->path . date('Ymd') . sprintf('.%s.log', $name);
         $errorWriter = new Stream($filePathName, null, $this->separator);
         $logger->addWriter($errorWriter);
 

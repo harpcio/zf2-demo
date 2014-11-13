@@ -106,7 +106,7 @@ class CreateControllerTest extends AbstractControllerTestCase
         );
 
         $this->assertResponseStatusCode(Response::STATUS_CODE_302);
-        $this->assertRedirectTo('/library/book/update/' . $entityId);
+        $this->assertRedirectTo('/library/books/update/' . $entityId);
     }
 
     public function testIndexAction_WithInValidPostRequest()
@@ -172,6 +172,6 @@ class CreateControllerTest extends AbstractControllerTestCase
         );
 
         $this->assertResponseStatusCode(Response::STATUS_CODE_302);
-        $this->assertRedirectTo('/library/book');
+        $this->assertRedirectTo('/library/books');
     }
 }

@@ -6,7 +6,7 @@
 <h3>Index of books</h3>
 <hr/>
 <p>
-    <a href="<?= $this->url('library/book/create'); ?>" class="btn btn-primary" role="button">Create new book</a>
+    <a href="<?= $this->url('library/books/create'); ?>" class="btn btn-primary" role="button">Create new book</a>
 </p>
 <hr/>
 <table class="table table-striped">
@@ -29,7 +29,7 @@
                     <?= $this->escapeHtml($book->getId()); ?>
                 </td>
                 <td>
-                    <a href="<?= $this->url('library/book/read', ['id' => $book->getId()]); ?>" title="Read about the book">
+                    <a href="<?= $this->url('library/books/read', ['id' => $book->getId()]); ?>" title="Read about the book">
                         <?= $this->escapeHtml($book->getTitle()); ?>
                     </a>
                 </td>
@@ -51,8 +51,8 @@
                             Actions <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?= $this->url('library/book/update', ['id' => $book->getId()]); ?>">Update</a></li>
-                            <li><a href="<?= $this->url('library/book/delete', ['id' => $book->getId()]); ?>">Delete</a></li>
+                            <li><a href="<?= $this->url('library/books/update', ['id' => $book->getId()]); ?>">Update</a></li>
+                            <li><a href="<?= $this->url('library/books/delete', ['id' => $book->getId()]); ?>">Delete</a></li>
                         </ul>
                     </div>
                 </td>

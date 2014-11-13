@@ -2,6 +2,7 @@
 
 namespace Library\Controller\Book\Factory;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Controller\Book\IndexController;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\ControllerManager;
@@ -24,10 +25,12 @@ class IndexControllerFactory implements FactoryInterface
         $serviceLocator = $serviceLocator->getServiceLocator();
 
         /**
-         * @var $service CrudService
+         * @var $service     CrudService
+         * @var $queryFilter QueryFilter
          */
         $service = $serviceLocator->get(CrudService::class);
+        $queryFilter = $serviceLocator->get(QueryFilter::class);
 
-        return new IndexController($service);
+        return new IndexController($service, $queryFilter);
     }
 }

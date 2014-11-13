@@ -15,7 +15,7 @@ use Zend\Json\Json;
 
 class UpdateControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const UPDATE_URL = '/api/library/book/%s';
+    const UPDATE_URL = '/api/library/books/%s';
 
     /**
      * @var MockObject

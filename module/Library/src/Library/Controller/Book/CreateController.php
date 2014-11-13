@@ -38,7 +38,7 @@ class CreateController extends AbstractActionController
                     $bookEntity = $this->service->create($this->form->getInputFilter());
                     $this->flashMessenger()->addSuccessMessage('Book saved successfully!');
 
-                    return $this->redirect()->toRoute('library/book/update', ['id' => $bookEntity->getId()]);
+                    return $this->redirect()->toRoute('library/books/update', ['id' => $bookEntity->getId()]);
                 } else {
                     $this->flashMessenger()->addErrorMessage('Please fill form correctly');
                 }
@@ -50,7 +50,7 @@ class CreateController extends AbstractActionController
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
 
-            return $this->redirect()->toRoute('library/book');
+            return $this->redirect()->toRoute('library/books');
         }
 
     }

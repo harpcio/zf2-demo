@@ -2,6 +2,7 @@
 
 namespace LibraryTest\Service\Book;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Entity\BookEntity;
 use Library\Repository\BookRepositoryInterface;
 use Library\Service\Book\CrudService;
@@ -178,7 +179,7 @@ class CrudServiceTest extends \PHPUnit_Framework_TestCase
         $this->testedObj->getById($id);
     }
 
-    public function testGetAll()
+    public function testGetFilteredResult()
     {
         $bookEntity1 = $this->bookEntityProvider->getBookEntityWithRandomData();
         $bookEntity2 = $this->bookEntityProvider->getBookEntityWithRandomData();
@@ -186,10 +187,10 @@ class CrudServiceTest extends \PHPUnit_Framework_TestCase
         $books = [$bookEntity1, $bookEntity2];
 
         $this->bookRepositoryMock->expects($this->once())
-            ->method('findAll')
+            ->method('findBy')
             ->will($this->returnValue($books));
 
-        $result = $this->testedObj->getAll();
+        $result = $this->testedObj->getFilteredResults(new QueryFilter());
 
         $this->assertSame($books, $result);
     }

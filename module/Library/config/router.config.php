@@ -38,10 +38,10 @@ return [
                             ],
                         ]
                     ],
-                    'book'    => [
+                    'books'    => [
                         'type'          => Http\Literal::class,
                         'options'       => [
-                            'route'    => '/book',
+                            'route'    => '/books',
                             'defaults' => [
                                 '__NAMESPACE__' => 'Library\Controller\Book',
                                 'controller'    => 'index',

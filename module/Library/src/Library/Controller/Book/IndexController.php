@@ -2,19 +2,33 @@
 
 namespace Library\Controller\Book;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class IndexController extends AbstractActionController
 {
-    public function __construct(CrudService $service)
+    /**
+     * @var CrudService
+     */
+    private $service;
+
+    /**
+     * @var QueryFilter
+     */
+    private $queryFilter;
+
+    public function __construct(CrudService $service, QueryFilter $queryFilter)
     {
         $this->service = $service;
+        $this->queryFilter = $queryFilter;
     }
 
     public function indexAction()
     {
-        $books = $this->service->getAll();
+        $this->queryFilter->setQuery($this->params()->fromQuery());
+
+        $books = $this->service->getFilteredResults($this->queryFilter);
 
         return [
             'books' => $books

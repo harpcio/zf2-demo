@@ -71,7 +71,7 @@ class ReadControllerTest extends AbstractControllerTestCase
         $this->controller->dispatch(new Request());
 
         $this->assertResponseStatusCode(Response::STATUS_CODE_302);
-        $this->assertRedirectTo('/library/book');
+        $this->assertRedirectTo('/library/books');
     }
 
 }

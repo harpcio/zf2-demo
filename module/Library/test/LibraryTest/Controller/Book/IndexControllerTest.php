@@ -2,6 +2,7 @@
 
 namespace LibraryTest\Controller\Book;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Controller\Book\IndexController;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractControllerTestCase;
@@ -23,6 +24,11 @@ class IndexControllerTest extends AbstractControllerTestCase
     private $crudServiceMock;
 
     /**
+     * @var QueryFilter
+     */
+    private $queryFilter;
+
+    /**
      * @var IndexController
      */
     protected $controller;
@@ -37,7 +43,9 @@ class IndexControllerTest extends AbstractControllerTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controller = new IndexController($this->crudServiceMock);
+        $this->queryFilter = new QueryFilter();
+
+        $this->controller = new IndexController($this->crudServiceMock, $this->queryFilter);
         $this->controller->setEvent($this->event);
     }
 
@@ -52,7 +60,7 @@ class IndexControllerTest extends AbstractControllerTestCase
         ];
 
         $this->crudServiceMock->expects($this->once())
-            ->method('getAll')
+            ->method('getFilteredResults')
             ->will($this->returnValue($books));
 
         $result = $this->controller->dispatch(new Request());

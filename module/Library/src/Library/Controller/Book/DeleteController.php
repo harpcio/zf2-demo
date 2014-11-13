@@ -39,7 +39,7 @@ class DeleteController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage('Book deleted successfully');
                     $this->service->delete($bookEntity);
 
-                    return $this->redirect()->toRoute('library/book');
+                    return $this->redirect()->toRoute('library/books');
                 } else {
                     $this->flashMessenger()->addErrorMessage('Please fill form correctly');
                 }
@@ -54,7 +54,7 @@ class DeleteController extends AbstractActionController
         } catch (\Exception $e) {
             $this->flashMessenger()->addSuccessMessage($e->getMessage());
 
-            return $this->redirect()->toRoute('library/book');
+            return $this->redirect()->toRoute('library/books');
         }
     }
 }

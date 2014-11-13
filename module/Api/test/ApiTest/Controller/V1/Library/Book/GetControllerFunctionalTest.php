@@ -13,7 +13,7 @@ use Zend\Json\Json;
 
 class GetControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const GET_URL = '/api/library/book/%s';
+    const GET_URL = '/api/library/books/%s';
 
     /**
      * @var MockObject

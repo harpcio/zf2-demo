@@ -21,7 +21,7 @@ class ReadController extends AbstractActionController
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
 
-            return $this->redirect()->toRoute('library/book');
+            return $this->redirect()->toRoute('library/books');
         }
 
         return [

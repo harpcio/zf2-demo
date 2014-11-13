@@ -8,8 +8,8 @@ use Zend\Http\Response;
 
 class BookControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const WITHOUT_IDENTIFIER_URL = '/api/library/book';
-    const WITH_IDENTIFIER_URL = '/api/library/book/1';
+    const WITHOUT_IDENTIFIER_URL = '/api/library/books';
+    const WITH_IDENTIFIER_URL = '/api/library/books/1';
 
     public function setUp()
     {

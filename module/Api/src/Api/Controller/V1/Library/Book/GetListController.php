@@ -2,6 +2,7 @@
 
 namespace Api\Controller\V1\Library\Book;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Library\Entity\BookEntity;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -16,15 +17,23 @@ class GetListController extends AbstractActionController
      */
     private $service;
 
-    public function __construct(CrudService $service)
+    /**
+     * @var QueryFilter
+     */
+    private $queryFilter;
+
+    public function __construct(CrudService $service, QueryFilter $queryFilter)
     {
         $this->service = $service;
+        $this->queryFilter = $queryFilter;
     }
 
     public function indexAction()
     {
+        $this->queryFilter->setQuery($this->params()->fromQuery());
+
         try {
-            $books = $this->service->getAll();
+            $books = $this->service->getFilteredResults($this->queryFilter);
             $data = [];
 
             /** @var BookEntity $bookEntity */

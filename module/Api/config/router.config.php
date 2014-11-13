@@ -39,10 +39,10 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
-                            'book' => [
+                            'books' => [
                                 'type' => Http\Segment::class,
                                 'options' => [
-                                    'route' => '/book[/:id]',
+                                    'route' => '/books[/:id]',
                                     'constraints' => [
                                         'id' => '[0-9]+',
                                     ],

@@ -2,6 +2,7 @@
 
 namespace Library\Service\Book;
 
+use Application\Library\QueryFilter\QueryFilter;
 use Doctrine\ORM\EntityNotFoundException;
 use Library\Entity\BookEntity;
 use Library\Repository\BookRepositoryInterface;
@@ -31,9 +32,9 @@ class CrudService
             throw new \LogicException('Form is not valid!');
         }
 
-        $data          = $filter->getValues();
+        $data = $filter->getValues();
         $newBookEntity = $this->bookRepository->createNewEntity();
-        $bookEntity    = $this->bookRepository->hydrate($newBookEntity, $data);
+        $bookEntity = $this->bookRepository->hydrate($newBookEntity, $data);
 
         $this->bookRepository->save($bookEntity);
 
@@ -53,7 +54,7 @@ class CrudService
             throw new \LogicException('Form is not valid!');
         }
 
-        $data       = $filter->getValues();
+        $data = $filter->getValues();
         $bookEntity = $this->bookRepository->hydrate($bookEntity, $data);
 
         $this->bookRepository->save($bookEntity);
@@ -103,10 +104,17 @@ class CrudService
     }
 
     /**
-     * @return BookEntity[]
+     * @param QueryFilter $queryFilter
+     *
+     * @return BookEntity[]|null
      */
-    public function getAll()
+    public function getFilteredResults(QueryFilter $queryFilter)
     {
-        return $this->bookRepository->findAll();
+        return $this->bookRepository->findBy(
+            $queryFilter->getCriteria(),
+            $queryFilter->getOrderBy(),
+            $queryFilter->getLimit(),
+            $queryFilter->getOffset()
+        );
     }
 }

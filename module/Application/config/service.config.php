@@ -4,6 +4,7 @@ return [
     'service_manager' => [
         'invokables' => [
             \Application\Library\Logger\Manager::class => \Application\Library\Logger\Manager::class,
+           \Application\Library\QueryFilter\QueryFilter::class => \Application\Library\QueryFilter\QueryFilter::class,
         ],
         'abstract_factories' => [
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

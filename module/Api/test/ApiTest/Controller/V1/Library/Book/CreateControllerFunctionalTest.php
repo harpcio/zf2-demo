@@ -14,7 +14,7 @@ use Zend\Json\Json;
 
 class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const CREATE_URL = '/api/library/book';
+    const CREATE_URL = '/api/library/books';
 
     /**
      * @var MockObject
