@@ -8,7 +8,10 @@ ZF2 advanced structure:
 - DI, SOLID
 
 API:
-/api/library/book[/:id]
+/api/library/books[/:id]
+
+Filtering, ordering, limiting:
+/api/library/books?year=2004,2008,2011&sort=-year&limit=2&offset=1
 
 TODO
 -----------------------
@@ -19,4 +22,5 @@ TODO
 5. implement acl
 6. implement admin panel
 7. transfer updating/creating/deleting privileges of books to administrator
+8. ~~implement query filtering in API with limit, offset, sort options~~
 
