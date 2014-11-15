@@ -2,7 +2,9 @@
 
 namespace ApplicationTest\Library;
 
+use Application\Library\QueryFilter\Condition;
 use Application\Library\QueryFilter\QueryFilter;
+use Application\Library\QueryFilter\Command;
 
 class QueryFilterTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +15,20 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->testedObject = new QueryFilter();
+        $this->testedObject = new QueryFilter(
+            [
+                new Command\Special\SortCommand(),
+                new Command\Special\LimitCommand(),
+                new Command\Special\OffsetCommand(),
+            ],
+            [
+                new Command\Criteria\BetweenCommand(),
+                new Command\Criteria\MinMaxCommand(),
+                new Command\Criteria\StartsEndsWithCommand(),
+                new Command\Criteria\EqualCommand(),
+                new Command\Criteria\InArrayCommand() // this must the last command
+            ]
+        );
     }
 
     public function testSetQueryWithCollection()
@@ -22,50 +37,45 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
             'color' => 'red,blue,white'
         ];
 
-        $this->testedObject->setQuery($data);
+        $this->testedObject->setExpectedFields(['color']);
+        $this->testedObject->setQueryParameters($data);
 
         $result = $this->testedObject->getCriteria();
 
-        $expected = [
-            'color' => [
-                'red',
-                'blue',
-                'white'
-            ]
-        ];
-
-        $this->assertSame($expected, $result);
+        $this->assertArrayHasKey('color', $result);
+        /** @var Condition $condition */
+        $condition = $result['color'];
+        $this->assertSame(Condition::TYPE_IN_ARRAY, $condition->getType());
+        $this->assertSame(['red', 'blue', 'white'], $condition->getData());
     }
 
     public function testSetQueryWithCollectionAndSpecialUrlCharacters()
     {
         $data = [
-            'color' => ' red,+blue+,%25white%'
+            'color' => ' red,% +blue+%25,white%'
         ];
 
-        $this->testedObject->setQuery($data);
+        $this->testedObject->setExpectedFields(['color']);
+        $this->testedObject->setQueryParameters($data);
 
-        $result = $this->testedObject->getCriteria();
+        $resultCriteria = $this->testedObject->getCriteria();
 
-        $expected = [
-            'color' => [
-                'red',
-                'blue',
-                '%white%'
-            ]
-        ];
+        $this->assertArrayHasKey('color', $resultCriteria);
+        /** @var Condition $condition */
+        $condition = $resultCriteria['color'];
 
-        $this->assertSame($expected, $result);
+        $this->assertSame(Condition::TYPE_IN_ARRAY, $condition->getType());
+        $this->assertSame(['red', '%  blue %', 'white%'], $condition->getData());
     }
 
     public function testSetQueryWithLimitAndOffset()
     {
         $data = [
-            'limit' => '100',
-            'offset' => '99'
+            '$limit' => '100',
+            '$offset' => '99'
         ];
 
-        $this->testedObject->setQuery($data);
+        $this->testedObject->setQueryParameters($data);
 
         $resultCriteria = $this->testedObject->getCriteria();
         $this->assertSame([], $resultCriteria);
@@ -80,10 +90,11 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
     public function testSetQueryWithSort()
     {
         $data = [
-            'sort' => '-author,title',
+            '$sort' => '-author,title',
         ];
 
-        $this->testedObject->setQuery($data);
+        $this->testedObject->setExpectedFields(['author', 'title']);
+        $this->testedObject->setQueryParameters($data);
 
         $expected = [
             'author' => 'desc',

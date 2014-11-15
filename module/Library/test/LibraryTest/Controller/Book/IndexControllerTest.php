@@ -43,7 +43,7 @@ class IndexControllerTest extends AbstractControllerTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->queryFilter = new QueryFilter();
+        $this->queryFilter = new QueryFilter([], []);
 
         $this->controller = new IndexController($this->crudServiceMock, $this->queryFilter);
         $this->controller->setEvent($this->event);

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   `isbn` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `year` year(4) NOT NULL,
   `publisher` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `price` float NOT NULL,
+  `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 

@@ -2,6 +2,8 @@
 
 namespace Library\Repository;
 
+use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
+use Application\Library\QueryFilter\QueryFilter;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Library\Entity\BookEntity;
 
@@ -38,5 +40,13 @@ interface BookRepositoryInterface extends ObjectRepository
      * @param bool       $flush
      */
     public function delete(BookEntity $bookEntity, $flush = true);
+
+    /**
+     * @param QueryFilter $queryFilter
+     *
+     * @return array|BookEntity[]
+     * @throws UnsupportedTypeException
+     */
+    public function findByQueryFilter(QueryFilter $queryFilter);
 
 }

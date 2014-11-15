@@ -2,6 +2,8 @@
 
 namespace Library\Controller\Book;
 
+use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
+use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
 use Library\Service\Book\CrudService;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -26,9 +28,17 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $this->queryFilter->setQuery($this->params()->fromQuery());
+        $books = [];
 
-        $books = $this->service->getFilteredResults($this->queryFilter);
+        try {
+            $this->queryFilter->setQueryParameters($this->params()->fromQuery());
+
+            $books = $this->service->getFilteredResults($this->queryFilter);
+        } catch (UnrecognizedFieldException $e) {
+            $this->flashMessenger()->addErrorMessage($e->getMessage());
+        } catch (UnsupportedTypeException $e) {
+            $this->flashMessenger()->addErrorMessage($e->getMessage());
+        }
 
         return [
             'books' => $books

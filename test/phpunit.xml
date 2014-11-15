@@ -3,6 +3,7 @@
 <phpunit bootstrap="Bootstrap.php">
     <testsuites>
         <testsuite name="Tests">
+            <directory suffix="Test.php">../module/Application/test/ApplicationTest</directory>
             <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
             <directory suffix="Test.php">../module/Api/test/ApiTest</directory>
         </testsuite>
@@ -13,6 +14,7 @@
             <ini name="memory_limit" value="2048M"/>
         </php>
         <whitelist>
+            <directory suffix=".php">../module/Application</directory>
             <directory suffix=".php">../module/Library</directory>
             <directory suffix=".php">../module/Api</directory>
         </whitelist>

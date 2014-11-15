@@ -2,8 +2,25 @@
 
 namespace Application\Library\QueryFilter;
 
+use Application\Library\QueryFilter\Command\CommandInterface;
+
 class QueryFilter
 {
+    /**
+     * @var array
+     */
+    private $specialCommands = [];
+
+    /**
+     * @var array
+     */
+    private $criteriaCommands = [];
+
+    /**
+     * @var array
+     */
+    private $expectedFields = [];
+
     /**
      * @var array
      */
@@ -24,69 +41,34 @@ class QueryFilter
      */
     private $offset = null;
 
-    public function setQuery(array $query)
+    public function __construct(array $specialCommands, array $criteriaCommands)
     {
-        foreach ($query as $key => $values) {
-            $valuesParts = explode(',', $values);
+        $this->specialCommands = $specialCommands;
+        $this->criteriaCommands = $criteriaCommands;
+    }
 
-            $valuesParts = array_map('urldecode', $valuesParts);
-            $valuesParts = array_map('trim', $valuesParts);
-
-            $this->add($key, $valuesParts);
-        }
+    public function setExpectedFields(array $expectedFields)
+    {
+        $this->expectedFields = $expectedFields;
     }
 
     /**
-     * @param string    $key
-     * @param int|array $values
+     * @param string $expectedField
+     *
+     * @return bool
      */
-    private function add($key, $values)
+    public function expectedFieldExists($expectedField)
     {
-        if (count($values) === 1) {
-            $values = reset($values);
-        }
-
-        switch ($key) {
-            case 'sort':
-                $this->setOrderBy($values);
-                break;
-
-            case 'limit':
-                $this->limit = is_numeric($values) ? (int)$values : null;
-                break;
-
-            case 'offset':
-                $this->offset = is_numeric($values) ? (int)$values : null;
-                break;
-
-            default:
-                $this->criteria[$key] = $values;
-                break;
-        }
+        return in_array($expectedField, $this->expectedFields);
     }
 
     /**
-     * @param $values
+     * @param string $sort
+     * @param string $order
      */
-    private function setOrderBy($values)
+    public function addOrderBy($sort, $order)
     {
-        foreach ((array)$values as $elem) {
-            $order = 'asc';
-            if ($elem[0] === '-') {
-                $elem = substr($elem, 1);
-                $order = 'desc';
-            }
-
-            $this->orderBy[$elem] = $order;
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getCriteria()
-    {
-        return $this->criteria;
+        $this->orderBy[$sort] = $order;
     }
 
     /**
@@ -98,6 +80,14 @@ class QueryFilter
     }
 
     /**
+     * @param int $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = (int)$limit;
+    }
+
+    /**
      * @return int|null
      */
     public function getLimit()
@@ -106,10 +96,66 @@ class QueryFilter
     }
 
     /**
+     * @param int $offset
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = (int)$offset;
+    }
+
+    /**
      * @return int|null
      */
     public function getOffset()
     {
         return $this->offset;
+    }
+
+    /**
+     * @param string    $key
+     * @param Condition $condition
+     */
+    public function addCriteria($key, Condition $condition)
+    {
+        $this->criteria[$key] = $condition;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCriteria()
+    {
+        return $this->criteria;
+    }
+
+    public function setQueryParameters(array $query)
+    {
+        foreach ($query as $key => $value) {
+            $value = trim(urldecode($value));
+
+            if (empty($value)) {
+                continue;
+            }
+
+            /** @var CommandInterface $command */
+            foreach ($this->specialCommands as $command) {
+                if ($command->execute($key, $value, $this)) {
+                    continue 2;
+                }
+            }
+
+            if (!$this->expectedFieldExists($key)) {
+                throw new Exception\UnrecognizedFieldException(
+                    sprintf('Unrecognized field "%s"', $key)
+                );
+            }
+
+            /** @var CommandInterface $command */
+            foreach ($this->criteriaCommands as $command) {
+                if ($command->execute($key, $value, $this)) {
+                    continue 2;
+                }
+            }
+        }
     }
 }

@@ -110,11 +110,6 @@ class CrudService
      */
     public function getFilteredResults(QueryFilter $queryFilter)
     {
-        return $this->bookRepository->findBy(
-            $queryFilter->getCriteria(),
-            $queryFilter->getOrderBy(),
-            $queryFilter->getLimit(),
-            $queryFilter->getOffset()
-        );
+        return $this->bookRepository->findByQueryFilter($queryFilter);
     }
 }
