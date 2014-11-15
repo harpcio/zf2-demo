@@ -21,8 +21,11 @@ Filtering:
     - $endswith(x) (ie: /api/library/books?title=$endswith(sql))
     - $min(x) (ie: /api/library/books?price=$min(37.99))
     - $max(x) (ie: /api/library/books?price=$max(40.44))
-- in array options:
+- in array option:
     - ie: /api/library/books?year=2004,2008,2014
+    - ie: /api/library/books?status=completed,running,pending
+- equal option:
+    - ie: /api/library/books?title="Software, Development"
 
 We can combine all commands:
 - ie: /api/library/books?year=2004,2008,2014&$sort=-year&$limit=2&$offset=1
