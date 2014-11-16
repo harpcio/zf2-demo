@@ -103,13 +103,4 @@ class CrudService
         return $this->bookRepository->extract($bookEntity);
     }
 
-    /**
-     * @param QueryFilter $queryFilter
-     *
-     * @return BookEntity[]|null
-     */
-    public function getFilteredResults(QueryFilter $queryFilter)
-    {
-        return $this->bookRepository->findByQueryFilter($queryFilter);
-    }
 }

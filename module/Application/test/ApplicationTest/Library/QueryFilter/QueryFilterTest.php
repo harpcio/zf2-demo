@@ -37,7 +37,6 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
             'color' => 'red,blue,white'
         ];
 
-        $this->testedObject->setExpectedFields(['color']);
         $this->testedObject->setQueryParameters($data);
 
         $result = $this->testedObject->getCriteria();
@@ -55,7 +54,6 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
             'color' => ' red,% +blue+%25,white%'
         ];
 
-        $this->testedObject->setExpectedFields(['color']);
         $this->testedObject->setQueryParameters($data);
 
         $resultCriteria = $this->testedObject->getCriteria();
@@ -93,7 +91,6 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
             '$sort' => '-author,title',
         ];
 
-        $this->testedObject->setExpectedFields(['author', 'title']);
         $this->testedObject->setQueryParameters($data);
 
         $expected = [

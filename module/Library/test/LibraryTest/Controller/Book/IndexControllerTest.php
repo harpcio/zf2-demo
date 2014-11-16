@@ -5,6 +5,7 @@ namespace LibraryTest\Controller\Book;
 use Application\Library\QueryFilter\QueryFilter;
 use Library\Controller\Book\IndexController;
 use Library\Service\Book\CrudService;
+use Library\Service\Book\FilterResultsService;
 use LibraryTest\Controller\AbstractControllerTestCase;
 use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -21,7 +22,7 @@ class IndexControllerTest extends AbstractControllerTestCase
     /**
      * @var MockObject
      */
-    private $crudServiceMock;
+    private $filterResultsServiceMock;
 
     /**
      * @var QueryFilter
@@ -39,13 +40,13 @@ class IndexControllerTest extends AbstractControllerTestCase
 
         $this->bookEntityProvider = new BookEntityProvider();
 
-        $this->crudServiceMock = $this->getMockBuilder(CrudService::class)
+        $this->filterResultsServiceMock = $this->getMockBuilder(FilterResultsService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->queryFilter = new QueryFilter([], []);
 
-        $this->controller = new IndexController($this->crudServiceMock, $this->queryFilter);
+        $this->controller = new IndexController($this->filterResultsServiceMock, $this->queryFilter);
         $this->controller->setEvent($this->event);
     }
 
@@ -59,7 +60,7 @@ class IndexControllerTest extends AbstractControllerTestCase
             $bookEntityTwo
         ];
 
-        $this->crudServiceMock->expects($this->once())
+        $this->filterResultsServiceMock->expects($this->once())
             ->method('getFilteredResults')
             ->will($this->returnValue($books));
 

@@ -3,6 +3,7 @@
 namespace ApiTest\Controller\V1\Library\Book;
 
 use Library\Service\Book\CrudService;
+use Library\Service\Book\FilterResultsService;
 use LibraryTest\Controller\AbstractFunctionalControllerTestCase;
 use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -30,35 +31,24 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
 
         $this->bookEntityProvider = new BookEntityProvider();
 
-        $this->serviceMock = $this->getMockBuilder(CrudService::class)
+        $this->serviceMock = $this->getMockBuilder(FilterResultsService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->setMockToServiceLocator(CrudService::class, $this->serviceMock);
+        $this->setMockToServiceLocator(FilterResultsService::class, $this->serviceMock);
     }
 
     public function testGetListRequest_WhenEntitiesExists()
     {
-        $bookEntities = [];
         $data = [];
         for ($i = 0; $i < 2; $i += 1) {
-            $bookEntities[] = $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
+            $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
             $data[] = $this->bookEntityProvider->getDataFromBookEntity($bookEntity);
         }
 
         $this->serviceMock->expects($this->once())
             ->method('getFilteredResults')
-            ->will($this->returnValue($bookEntities));
-
-        $this->serviceMock->expects($this->at(1))
-            ->method('extractEntity')
-            ->with($bookEntities[0])
-            ->will($this->returnValue($data[0]));
-
-        $this->serviceMock->expects($this->at(2))
-            ->method('extractEntity')
-            ->with($bookEntities[1])
-            ->will($this->returnValue($data[1]));
+            ->will($this->returnValue($data));
 
         $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);
 

@@ -39,12 +39,6 @@ class SortCommand implements CommandInterface
                 $order = 'desc';
             }
 
-            if (!$queryFilter->expectedFieldExists($sortColumn)) {
-                throw new Exception\UnrecognizedFieldException(
-                    sprintf('Unrecognized field "%s"', $sortColumn)
-                );
-            }
-
             $queryFilter->addOrderBy($sortColumn, $order);
         }
     }

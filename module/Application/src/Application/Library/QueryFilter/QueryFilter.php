@@ -19,11 +19,6 @@ class QueryFilter
     /**
      * @var array
      */
-    private $expectedFields = [];
-
-    /**
-     * @var array
-     */
     private $criteria = [];
 
     /**
@@ -45,21 +40,6 @@ class QueryFilter
     {
         $this->specialCommands = $specialCommands;
         $this->criteriaCommands = $criteriaCommands;
-    }
-
-    public function setExpectedFields(array $expectedFields)
-    {
-        $this->expectedFields = $expectedFields;
-    }
-
-    /**
-     * @param string $expectedField
-     *
-     * @return bool
-     */
-    public function expectedFieldExists($expectedField)
-    {
-        return in_array($expectedField, $this->expectedFields);
     }
 
     /**
@@ -142,12 +122,6 @@ class QueryFilter
                 if ($command->execute($key, $value, $this)) {
                     continue 2;
                 }
-            }
-
-            if (!$this->expectedFieldExists($key)) {
-                throw new Exception\UnrecognizedFieldException(
-                    sprintf('Unrecognized field "%s"', $key)
-                );
             }
 
             /** @var CommandInterface $command */

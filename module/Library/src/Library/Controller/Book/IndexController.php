@@ -5,13 +5,13 @@ namespace Library\Controller\Book;
 use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
 use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
-use Library\Service\Book\CrudService;
+use Library\Service\Book\FilterResultsService;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class IndexController extends AbstractActionController
 {
     /**
-     * @var CrudService
+     * @var FilterResultsService
      */
     private $service;
 
@@ -20,7 +20,7 @@ class IndexController extends AbstractActionController
      */
     private $queryFilter;
 
-    public function __construct(CrudService $service, QueryFilter $queryFilter)
+    public function __construct(FilterResultsService $service, QueryFilter $queryFilter)
     {
         $this->service = $service;
         $this->queryFilter = $queryFilter;

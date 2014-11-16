@@ -5,8 +5,10 @@ namespace Api\Controller\V1\Library\Book;
 use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
 use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
+use Doctrine\ORM\Query;
 use Library\Entity\BookEntity;
 use Library\Service\Book\CrudService;
+use Library\Service\Book\FilterResultsService;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -16,7 +18,7 @@ class GetListController extends AbstractActionController
 {
 
     /**
-     * @var CrudService
+     * @var FilterResultsService
      */
     private $service;
 
@@ -25,7 +27,7 @@ class GetListController extends AbstractActionController
      */
     private $queryFilter;
 
-    public function __construct(CrudService $service, QueryFilter $queryFilter)
+    public function __construct(FilterResultsService $service, QueryFilter $queryFilter)
     {
         $this->service = $service;
         $this->queryFilter = $queryFilter;
@@ -35,15 +37,9 @@ class GetListController extends AbstractActionController
     {
         try {
             $this->queryFilter->setQueryParameters($this->params()->fromQuery());
-            $books = $this->service->getFilteredResults($this->queryFilter);
-            $data = [];
+            $books = $this->service->getFilteredResults($this->queryFilter, $hydrationMode = Query::HYDRATE_ARRAY);
 
-            /** @var BookEntity $bookEntity */
-            foreach ($books as $bookEntity) {
-                $data[] = $this->service->extractEntity($bookEntity);
-            }
-
-            return new JsonModel(['data' => $data]);
+            return new JsonModel(['data' => $books]);
         } catch (UnrecognizedFieldException $e) {
             throw new Exception\BadRequestException($e->getMessage(), Response::STATUS_CODE_400, $e);
         } catch (UnsupportedTypeException $e) {

@@ -3,11 +3,15 @@
 namespace Library\Repository;
 
 use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
 use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
+use Application\Library\Repository\Command\CommandCollection;
+use Application\Library\Repository\Command\CommandInterface;
 use Application\Library\Traits\DoctrineHydratorAwareInterface;
 use Application\Library\Traits\DoctrineHydratorAwareTrait;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Library\Entity\BookEntity;
 
 class BookRepository extends EntityRepository implements BookRepositoryInterface, DoctrineHydratorAwareInterface
@@ -70,98 +74,71 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
     }
 
     /**
-     * @param QueryFilter $queryFilter
+     * @param QueryFilter       $queryFilter
+     * @param CommandCollection $criteriaCommands
+     * @param int               $hydrationMode
      *
-     * @return array|BookEntity[]
+     * @throws UnrecognizedFieldException
      * @throws UnsupportedTypeException
+     * @return array|BookEntity[]
      */
-    public function findByQueryFilter(QueryFilter $queryFilter)
-    {
+    public function findByQueryFilter(
+        QueryFilter $queryFilter,
+        CommandCollection $criteriaCommands,
+        $hydrationMode = Query::HYDRATE_OBJECT
+    ) {
         $i = 0;
-        $bookTableAlias = 'b';
-        $qb = $this->createQueryBuilder($bookTableAlias);
+        $alias = 'b';
+        $qb = $this->createQueryBuilder($alias);
+
+        $entityFieldNames = $this->getEntityManager()
+            ->getClassMetadata($this->getEntityName())
+            ->getFieldNames();
 
         /** @var $condition Condition */
         foreach ($queryFilter->getCriteria() as $columnName => $condition) {
-            $preparedColumnName = $this->prepareColumnName($bookTableAlias, $columnName);
-            switch ($condition->getType()) {
-                case Condition::TYPE_BETWEEN:
-                    $paramLeft = ':betweenLeft' . $i;
-                    $paramRight = ':betweenRight' . $i;
-                    $qb->andWhere($qb->expr()->between($preparedColumnName, $paramLeft, $paramRight))
-                        ->setParameters(
-                            [
-                                $paramLeft => $condition->getData()[0],
-                                $paramRight => $condition->getData()[1]
-                            ]
-                        );
-                    break;
+            $this->checkColumnNameInEntityFieldNames($columnName, $entityFieldNames);
+            $columnNameWithAlias = $alias . '.' . $columnName;
 
-                case Condition::TYPE_MIN:
-                    $param = ':min' . $i;
-                    $qb->andWhere($qb->expr()->gte($preparedColumnName, $param))
-                        ->setParameter($param, $condition->getData());
-                    break;
-
-                case Condition::TYPE_MAX:
-                    $param = ':max' . $i;
-                    $qb->andWhere($qb->expr()->lte($preparedColumnName, $param))
-                        ->setParameter($param, $condition->getData());
-                    break;
-
-                case Condition::TYPE_STARTS_WITH:
-                    $param = ':startsWith' . $i;
-                    $qb->andWhere($qb->expr()->like($preparedColumnName, $param))
-                        ->setParameter($param, $condition->getData() . '%');
-                    break;
-
-                case Condition::TYPE_ENDS_WITH:
-                    $param = ':endsWith' . $i;
-                    $qb->andWhere($qb->expr()->like($preparedColumnName, $param))
-                        ->setParameter($param, '%' . $condition->getData());
-                    break;
-
-                case Condition::TYPE_EQUAL:
-                    $param = ':eq' . $i;
-                    $qb->andWhere($qb->expr()->eq($preparedColumnName, $param))
-                        ->setParameter($param, $condition->getData());
-                    break;
-
-                case Condition::TYPE_IN_ARRAY:
-                    $param = ':in' . $i;
-                    $qb->andWhere($qb->expr()->in($preparedColumnName, $param))
-                        ->setParameter($param, $condition->getData());
-                    break;
-
-                default:
-                    throw new UnsupportedTypeException(sprintf(
-                        'Unsupported condition type: %s',
-                        $condition->getType()
-                    ));
-                    break;
+            /** @var CommandInterface $command */
+            foreach ($criteriaCommands as $command) {
+                if ($command->execute($qb, $condition, $columnNameWithAlias, $i)) {
+                    $i += 1;
+                    continue 2;
+                }
             }
-            $i += 1;
+
+            throw new UnsupportedTypeException(sprintf(
+                'Unsupported condition type: %s',
+                $condition->getType()
+            ));
         }
 
         foreach ($queryFilter->getOrderBy() as $columnName => $order) {
-            $preparedColumnName = $this->prepareColumnName($bookTableAlias, $columnName);
-            $qb->addOrderBy($preparedColumnName, $order);
+            $this->checkColumnNameInEntityFieldNames($columnName, $entityFieldNames);
+            $columnNameWithAlias = $alias . '.' . $columnName;
+            $qb->addOrderBy($columnNameWithAlias, $order);
         }
 
         $qb->setMaxResults($queryFilter->getLimit())
             ->setFirstResult($queryFilter->getOffset());
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult($hydrationMode);
     }
 
     /**
-     * @param string $alias
-     * @param string $column
+     * @param string $columnName
+     * @param array  $fieldNames
      *
-     * @return string
+     * @throws UnrecognizedFieldException
      */
-    private function prepareColumnName($alias, $column)
+    private function checkColumnNameInEntityFieldNames($columnName, array $fieldNames)
     {
-        return $alias . '.' . $column;
+        if (!in_array($columnName, $fieldNames)) {
+            throw new UnrecognizedFieldException(
+                sprintf('Unrecognized field "%s"', $columnName)
+            );
+        }
     }
+
 }

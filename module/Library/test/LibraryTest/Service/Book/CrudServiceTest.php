@@ -179,22 +179,6 @@ class CrudServiceTest extends \PHPUnit_Framework_TestCase
         $this->testedObj->getById($id);
     }
 
-    public function testGetFilteredResult()
-    {
-        $bookEntity1 = $this->bookEntityProvider->getBookEntityWithRandomData();
-        $bookEntity2 = $this->bookEntityProvider->getBookEntityWithRandomData();
-
-        $books = [$bookEntity1, $bookEntity2];
-
-        $this->bookRepositoryMock->expects($this->once())
-            ->method('findByQueryFilter')
-            ->will($this->returnValue($books));
-
-        $result = $this->testedObj->getFilteredResults(new QueryFilter([], []));
-
-        $this->assertSame($books, $result);
-    }
-
     public function testExtractEntity()
     {
         $bookEntity = $this->bookEntityProvider->getBookEntityWithRandomData();
