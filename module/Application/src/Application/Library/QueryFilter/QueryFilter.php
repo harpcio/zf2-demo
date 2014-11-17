@@ -9,95 +9,24 @@ class QueryFilter
     /**
      * @var array
      */
-    private $specialCommands = [];
-
-    /**
-     * @var array
-     */
-    private $criteriaCommands = [];
+    private $commands = [];
 
     /**
      * @var array
      */
     private $criteria = [];
 
-    /**
-     * @var array
-     */
-    private $orderBy = [];
-
-    /**
-     * @var int|null
-     */
-    private $limit = null;
-
-    /**
-     * @var int|null
-     */
-    private $offset = null;
-
-    public function __construct(array $specialCommands, array $criteriaCommands)
+    public function __construct(array $commands)
     {
-        $this->specialCommands = $specialCommands;
-        $this->criteriaCommands = $criteriaCommands;
+        $this->commands = $commands;
     }
 
     /**
-     * @param string $sort
-     * @param string $order
+     * @param Criteria $condition
      */
-    public function addOrderBy($sort, $order)
+    public function addCriteria(Criteria $condition)
     {
-        $this->orderBy[$sort] = $order;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOrderBy()
-    {
-        return $this->orderBy;
-    }
-
-    /**
-     * @param int $limit
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = (int)$limit;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    /**
-     * @param int $offset
-     */
-    public function setOffset($offset)
-    {
-        $this->offset = (int)$offset;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getOffset()
-    {
-        return $this->offset;
-    }
-
-    /**
-     * @param string    $key
-     * @param Condition $condition
-     */
-    public function addCriteria($key, Condition $condition)
-    {
-        $this->criteria[$key] = $condition;
+        $this->criteria[] = $condition;
     }
 
     /**
@@ -108,27 +37,58 @@ class QueryFilter
         return $this->criteria;
     }
 
+    /**
+     * @param array $query
+     */
     public function setQueryParameters(array $query)
     {
         foreach ($query as $key => $value) {
+            if (is_array($value)) {
+                $this->checkQueryMultipleParameters($key, $value);
+                continue;
+            }
+
             $value = trim(urldecode($value));
 
             if (empty($value)) {
                 continue;
             }
 
-            /** @var CommandInterface $command */
-            foreach ($this->specialCommands as $command) {
-                if ($command->execute($key, $value, $this)) {
-                    continue 2;
-                }
+            $this->runCommands($key, $value);
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param array  $values
+     */
+    private function checkQueryMultipleParameters($key, array $values)
+    {
+        foreach ($values as $value) {
+            if (is_array($value)) {
+                continue;
             }
 
-            /** @var CommandInterface $command */
-            foreach ($this->criteriaCommands as $command) {
-                if ($command->execute($key, $value, $this)) {
-                    continue 2;
-                }
+            $value = trim(urldecode($value));
+
+            if (empty($value)) {
+                continue;
+            }
+
+            $this->runCommands($key, $value);
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     */
+    private function runCommands($key, $value)
+    {
+        /** @var CommandInterface $command */
+        foreach ($this->commands as $command) {
+            if ($command->execute($key, $value, $this)) {
+                break;
             }
         }
     }

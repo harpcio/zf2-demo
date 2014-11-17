@@ -3,7 +3,7 @@
 namespace LibraryTest\Service\Book;
 
 use Application\Library\QueryFilter\QueryFilter;
-use Application\Library\Repository\Command\CommandCollection;
+use Application\Library\QueryFilter\Command\Repository\CommandCollection;
 use Library\Repository\BookRepositoryInterface;
 use Library\Service\Book\FilterResultsService;
 use LibraryTest\Entity\Provider\BookEntityProvider;

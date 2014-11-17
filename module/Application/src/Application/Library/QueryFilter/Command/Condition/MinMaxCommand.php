@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Library\QueryFilter\Command\Criteria;
+namespace Application\Library\QueryFilter\Command\Condition;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
 class MinMaxCommand implements CommandInterface
@@ -19,7 +19,7 @@ class MinMaxCommand implements CommandInterface
         $command = trim($matches[1]);
         $data = trim($matches[2]);
 
-        $queryFilter->addCriteria($key, new Condition($command, $data));
+        $queryFilter->addCriteria(new Criteria($command, $key, $data));
 
         return true;
     }

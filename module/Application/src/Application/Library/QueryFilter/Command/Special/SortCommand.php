@@ -3,6 +3,7 @@
 namespace Application\Library\QueryFilter\Command\Special;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 use Application\Library\QueryFilter\Exception;
 
@@ -39,7 +40,7 @@ class SortCommand implements CommandInterface
                 $order = 'desc';
             }
 
-            $queryFilter->addOrderBy($sortColumn, $order);
+            $queryFilter->addCriteria(new Criteria(Criteria::TYPE_SPECIAL_SORT, $sortColumn, $order));
         }
     }
 }

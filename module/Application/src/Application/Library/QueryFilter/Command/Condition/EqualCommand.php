@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Library\QueryFilter\Command\Criteria;
+namespace Application\Library\QueryFilter\Command\Condition;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
 class EqualCommand implements CommandInterface
@@ -17,7 +17,7 @@ class EqualCommand implements CommandInterface
         }
 
         $data = trim($matches[1]);
-        $queryFilter->addCriteria($key, new Condition(Condition::TYPE_EQUAL, $data));
+        $queryFilter->addCriteria(new Criteria(Criteria::TYPE_CONDITION_EQUAL, $key, $data));
 
         return true;
     }

@@ -6,9 +6,9 @@ use Application\Library\QueryFilter\Command\CommandInterface;
 use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
-class OffsetCommand implements CommandInterface
+class FieldsCommand implements CommandInterface
 {
-    public static $commandName = '$offset';
+    public static $commandName = '$fields';
 
     public function execute($key, $value, QueryFilter $queryFilter)
     {
@@ -16,7 +16,10 @@ class OffsetCommand implements CommandInterface
             return false;
         }
 
-        $queryFilter->addCriteria(new Criteria(Criteria::TYPE_SPECIAL_OFFSET, null, (int)$value));
+        $value = explode(',', $value);
+        $value = array_map('trim', $value);
+
+        $queryFilter->addCriteria(new Criteria(Criteria::TYPE_SPECIAL_FIELDS, null, $value));
 
         return true;
     }

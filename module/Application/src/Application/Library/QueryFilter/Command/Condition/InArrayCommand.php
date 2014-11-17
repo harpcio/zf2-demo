@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Library\QueryFilter\Command\Criteria;
+namespace Application\Library\QueryFilter\Command\Condition;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
 class InArrayCommand implements CommandInterface
@@ -19,7 +19,7 @@ class InArrayCommand implements CommandInterface
             }
         );
 
-        $queryFilter->addCriteria($key, new Condition(Condition::TYPE_IN_ARRAY, $value));
+        $queryFilter->addCriteria(new Criteria(Criteria::TYPE_CONDITION_IN_ARRAY, $key, $value));
 
         return true;
     }

@@ -3,7 +3,7 @@
 namespace Library\Service\Book;
 
 use Application\Library\QueryFilter\QueryFilter;
-use Application\Library\Repository\Command\CommandCollection;
+use Application\Library\QueryFilter\Command\Repository\CommandCollection;
 use Doctrine\ORM\Query;
 use Library\Entity\BookEntity;
 use Library\Repository\BookRepositoryInterface;
@@ -17,7 +17,7 @@ class FilterResultsService
     private $bookRepository;
 
     /**
-     * @var CommandCollection
+     * @var \Application\Library\QueryFilter\Command\Repository\CommandCollection
      */
     private $commandCollection;
 

@@ -2,7 +2,7 @@
 
 namespace ApplicationTest\Library;
 
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 use Application\Library\QueryFilter\Command;
 
@@ -17,16 +17,17 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
     {
         $this->testedObject = new QueryFilter(
             [
+                // special
+                new Command\Special\FieldsCommand(),
                 new Command\Special\SortCommand(),
                 new Command\Special\LimitCommand(),
                 new Command\Special\OffsetCommand(),
-            ],
-            [
-                new Command\Criteria\BetweenCommand(),
-                new Command\Criteria\MinMaxCommand(),
-                new Command\Criteria\StartsEndsWithCommand(),
-                new Command\Criteria\EqualCommand(),
-                new Command\Criteria\InArrayCommand() // this must the last command
+                // condition
+                new Command\Condition\BetweenCommand(),
+                new Command\Condition\MinMaxCommand(),
+                new Command\Condition\StartsEndsWithCommand(),
+                new Command\Condition\EqualCommand(),
+                new Command\Condition\InArrayCommand() // this must the last command
             ]
         );
     }
@@ -39,13 +40,14 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
 
         $this->testedObject->setQueryParameters($data);
 
-        $result = $this->testedObject->getCriteria();
+        $resultCriteria = $this->testedObject->getCriteria();
 
-        $this->assertArrayHasKey('color', $result);
-        /** @var Condition $condition */
-        $condition = $result['color'];
-        $this->assertSame(Condition::TYPE_IN_ARRAY, $condition->getType());
-        $this->assertSame(['red', 'blue', 'white'], $condition->getData());
+        /** @var Criteria $firstCriteria */
+        $firstCriteria = $resultCriteria[0];
+
+        $this->assertSame(Criteria::TYPE_CONDITION_IN_ARRAY, $firstCriteria->getType());
+        $this->assertSame('color', $firstCriteria->getKey());
+        $this->assertSame(['red', 'blue', 'white'], $firstCriteria->getValue());
     }
 
     public function testSetQueryWithCollectionAndSpecialUrlCharacters()
@@ -57,32 +59,39 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
         $this->testedObject->setQueryParameters($data);
 
         $resultCriteria = $this->testedObject->getCriteria();
+        /** @var Criteria $firstCriteria */
+        $firstCriteria = $resultCriteria[0];
 
-        $this->assertArrayHasKey('color', $resultCriteria);
-        /** @var Condition $condition */
-        $condition = $resultCriteria['color'];
-
-        $this->assertSame(Condition::TYPE_IN_ARRAY, $condition->getType());
-        $this->assertSame(['red', '%  blue %', 'white%'], $condition->getData());
+        $this->assertSame(Criteria::TYPE_CONDITION_IN_ARRAY, $firstCriteria->getType());
+        $this->assertSame('color', $firstCriteria->getKey());
+        $this->assertSame(['red', '%  blue %', 'white%'], $firstCriteria->getValue());
     }
 
     public function testSetQueryWithLimitAndOffset()
     {
+        $limit = mt_rand(1, 100);
+        $offset = mt_rand(1, 100);
+
         $data = [
-            '$limit' => '100',
-            '$offset' => '99'
+            '$limit' => (string)$limit,
+            '$offset' => (string)$offset
         ];
 
         $this->testedObject->setQueryParameters($data);
 
         $resultCriteria = $this->testedObject->getCriteria();
-        $this->assertSame([], $resultCriteria);
+        /** @var Criteria $firstCriteria */
+        $firstCriteria = $resultCriteria[0];
+        /** @var Criteria $secondCriteria */
+        $secondCriteria = $resultCriteria[1];
 
-        $resultLimit = $this->testedObject->getLimit();
-        $this->assertSame(100, $resultLimit);
+        $this->assertSame(Criteria::TYPE_SPECIAL_LIMIT, $firstCriteria->getType());
+        $this->assertSame(null, $firstCriteria->getKey());
+        $this->assertSame($limit, $firstCriteria->getValue());
 
-        $resultOffset = $this->testedObject->getOffset();
-        $this->assertSame(99, $resultOffset);
+        $this->assertSame(Criteria::TYPE_SPECIAL_OFFSET, $secondCriteria->getType());
+        $this->assertSame(null, $secondCriteria->getKey());
+        $this->assertSame($offset, $secondCriteria->getValue());
     }
 
     public function testSetQueryWithSort()
@@ -93,22 +102,19 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
 
         $this->testedObject->setQueryParameters($data);
 
-        $expected = [
-            'author' => 'desc',
-            'title' => 'asc'
-        ];
-
-        $resultSort = $this->testedObject->getOrderBy();
-        $this->assertSame($expected, $resultSort);
-
         $resultCriteria = $this->testedObject->getCriteria();
-        $this->assertSame([], $resultCriteria);
+        /** @var Criteria $firstCriteria */
+        $firstCriteria = $resultCriteria[0];
+        /** @var Criteria $secondCriteria */
+        $secondCriteria = $resultCriteria[1];
 
-        $resultLimit = $this->testedObject->getLimit();
-        $this->assertSame(null, $resultLimit);
+        $this->assertSame(Criteria::TYPE_SPECIAL_SORT, $firstCriteria->getType());
+        $this->assertSame('author', $firstCriteria->getKey());
+        $this->assertSame('desc', $firstCriteria->getValue());
 
-        $resultOffset = $this->testedObject->getOffset();
-        $this->assertSame(null, $resultOffset);
+        $this->assertSame(Criteria::TYPE_SPECIAL_SORT, $secondCriteria->getType());
+        $this->assertSame('title', $secondCriteria->getKey());
+        $this->assertSame('asc', $secondCriteria->getValue());
     }
 
 }

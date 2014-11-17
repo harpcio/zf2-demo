@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Library\QueryFilter\Command\Criteria;
+namespace Application\Library\QueryFilter\Command\Condition;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
 class BetweenCommand implements CommandInterface
@@ -24,7 +24,7 @@ class BetweenCommand implements CommandInterface
             list($start, $end) = [$end, $start];
         }
 
-        $queryFilter->addCriteria($key, new Condition($command, [$start, $end]));
+        $queryFilter->addCriteria(new Criteria($command, $key, [$start, $end]));
 
         return true;
     }

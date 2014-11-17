@@ -20,16 +20,15 @@ class QueryFilterSLFactory implements FactoryInterface
     {
         return new QueryFilter(
             [
+                new Command\Special\FieldsCommand(),
                 new Command\Special\SortCommand(),
                 new Command\Special\LimitCommand(),
                 new Command\Special\OffsetCommand(),
-            ],
-            [
-                new Command\Criteria\BetweenCommand(),
-                new Command\Criteria\MinMaxCommand(),
-                new Command\Criteria\StartsEndsWithCommand(),
-                new Command\Criteria\EqualCommand(),
-                new Command\Criteria\InArrayCommand() // this must the last command
+                new Command\Condition\BetweenCommand(),
+                new Command\Condition\MinMaxCommand(),
+                new Command\Condition\StartsEndsWithCommand(),
+                new Command\Condition\EqualCommand(),
+                new Command\Condition\InArrayCommand() // this must the last command
             ]
         );
     }

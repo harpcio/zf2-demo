@@ -2,12 +2,12 @@
 
 namespace Library\Repository;
 
-use Application\Library\QueryFilter\Condition;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
 use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
-use Application\Library\Repository\Command\CommandCollection;
-use Application\Library\Repository\Command\CommandInterface;
+use Application\Library\QueryFilter\Command\Repository\CommandCollection;
+use Application\Library\QueryFilter\Command\Repository\CommandInterface;
 use Application\Library\Traits\DoctrineHydratorAwareInterface;
 use Application\Library\Traits\DoctrineHydratorAwareTrait;
 use Doctrine\ORM\EntityRepository;
@@ -91,18 +91,13 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
         $alias = 'b';
         $qb = $this->createQueryBuilder($alias);
 
-        $entityFieldNames = $this->getEntityManager()
-            ->getClassMetadata($this->getEntityName())
-            ->getFieldNames();
+        $entityFieldNames = $this->getEntityFieldNames();
 
-        /** @var $condition Condition */
-        foreach ($queryFilter->getCriteria() as $columnName => $condition) {
-            $this->checkColumnNameInEntityFieldNames($columnName, $entityFieldNames);
-            $columnNameWithAlias = $alias . '.' . $columnName;
-
+        /** @var $criteria Criteria */
+        foreach ($queryFilter->getCriteria() as $criteria) {
             /** @var CommandInterface $command */
             foreach ($criteriaCommands as $command) {
-                if ($command->execute($qb, $condition, $columnNameWithAlias, $i)) {
+                if ($command->execute($qb, $criteria, $entityFieldNames, $alias, $i)) {
                     $i += 1;
                     continue 2;
                 }
@@ -110,35 +105,21 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
 
             throw new UnsupportedTypeException(sprintf(
                 'Unsupported condition type: %s',
-                $condition->getType()
+                $criteria->getType()
             ));
         }
-
-        foreach ($queryFilter->getOrderBy() as $columnName => $order) {
-            $this->checkColumnNameInEntityFieldNames($columnName, $entityFieldNames);
-            $columnNameWithAlias = $alias . '.' . $columnName;
-            $qb->addOrderBy($columnNameWithAlias, $order);
-        }
-
-        $qb->setMaxResults($queryFilter->getLimit())
-            ->setFirstResult($queryFilter->getOffset());
 
         return $qb->getQuery()->getResult($hydrationMode);
     }
 
     /**
-     * @param string $columnName
-     * @param array  $fieldNames
-     *
-     * @throws UnrecognizedFieldException
+     * @return array
      */
-    private function checkColumnNameInEntityFieldNames($columnName, array $fieldNames)
+    private function getEntityFieldNames()
     {
-        if (!in_array($columnName, $fieldNames)) {
-            throw new UnrecognizedFieldException(
-                sprintf('Unrecognized field "%s"', $columnName)
-            );
-        }
+        return $this->getEntityManager()
+            ->getClassMetadata($this->getEntityName())
+            ->getFieldNames();
     }
 
 }

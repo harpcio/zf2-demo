@@ -3,6 +3,7 @@
 namespace Application\Library\QueryFilter\Command\Special;
 
 use Application\Library\QueryFilter\Command\CommandInterface;
+use Application\Library\QueryFilter\Criteria;
 use Application\Library\QueryFilter\QueryFilter;
 
 class LimitCommand implements CommandInterface
@@ -15,7 +16,7 @@ class LimitCommand implements CommandInterface
             return false;
         }
 
-        $queryFilter->setLimit($value);
+        $queryFilter->addCriteria(new Criteria(Criteria::TYPE_SPECIAL_LIMIT, null, (int)$value));
 
         return true;
     }
