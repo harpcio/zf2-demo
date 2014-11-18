@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/harpcio/zf2-demo.svg?branch=master)](https://travis-ci.org/harpcio/zf2-demo)
+[![Coverage Status](https://coveralls.io/repos/harpcio/zf2-demo/badge.png)](https://coveralls.io/r/harpcio/zf2-demo)
 ZF2 Advanced demo
 =======================
 
