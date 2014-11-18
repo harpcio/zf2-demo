@@ -1,4 +1,5 @@
-ZF2 Adv. demo
+[![Build Status]]
+ZF2 Advanced demo
 =======================
 
 This is simple example of management books in library, with UI (twitter bootstrap) and API.
