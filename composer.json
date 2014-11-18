@@ -28,6 +28,7 @@
         "dlu/dlutwbootstrap": "dev-master"
     },
     "require-dev": {
-        "zendframework/zend-developer-tools": "dev-master"
+        "zendframework/zend-developer-tools": "dev-master",
+        "satooshi/php-coveralls": "dev-master"
     }
 }
