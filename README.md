@@ -1,4 +1,4 @@
-[![Build Status]]
+[![Build Status](https://travis-ci.org/harpcio/zf2-demo.svg?branch=master)](https://travis-ci.org/harpcio/zf2-demo)
 ZF2 Advanced demo
 =======================
 
