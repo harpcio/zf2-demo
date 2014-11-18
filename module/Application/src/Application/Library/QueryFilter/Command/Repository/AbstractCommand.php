@@ -29,7 +29,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         if (!in_array($columnName, $fieldNames)) {
             throw new UnrecognizedFieldException(
-                sprintf('Unrecognized field "%s"', $columnName)
+                sprintf('Field unrecognized in entity: %s', $columnName)
             );
         }
     }

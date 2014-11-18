@@ -122,13 +122,17 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
         $data = [
             'name' => [
                 '$startswith("a")',
-                '$endswith("z")'
+                '$endswith("z")',
+                ' ++ '
             ]
         ];
 
         $this->testedObject->setQueryParameters($data);
 
         $resultCriteria = $this->testedObject->getCriteria();
+
+        $this->assertCount(2, $resultCriteria);
+
         /** @var Criteria $firstCriteria */
         $firstCriteria = $resultCriteria[0];
         /** @var Criteria $secondCriteria */
@@ -142,5 +146,4 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('name', $secondCriteria->getKey());
         $this->assertSame('z', $secondCriteria->getValue());
     }
-
 }

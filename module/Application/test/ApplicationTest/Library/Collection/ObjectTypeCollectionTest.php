@@ -3,6 +3,7 @@
 namespace ApplicationTest\Library\Collection;
 
 use ApplicationTest\Library\Collection\Provider;
+use Test\Bootstrap;
 
 class ObjectTypeCollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -66,5 +67,24 @@ class ObjectTypeCollectionTest extends \PHPUnit_Framework_TestCase
             'Illegal class name, expected: ApplicationTest\\Library\\Collection\\Provider\\MyClass, got ApplicationTest\\Library\\Collection\\Provider\\HisClass'
         );
         $this->testedObject->offsetSet(2, new Provider\HisClass(2, 5));
+    }
+
+    public function testGetIterator()
+    {
+        $result = $this->testedObject->getIterator();
+
+        $this->assertInstanceOf(\ArrayIterator::class, $result);
+    }
+
+    public function testInitializeObjectTypeCollectionWithoutType()
+    {
+        $this->setExpectedException('LogicException', 'Type not defined');
+
+        $objectTypeCollection = new Provider\InvalidMyClassObjectCollection(
+            [
+                new Provider\MyClass('a', 'b'),
+                new Provider\MyClass(1, 2)
+            ]
+        );
     }
 }

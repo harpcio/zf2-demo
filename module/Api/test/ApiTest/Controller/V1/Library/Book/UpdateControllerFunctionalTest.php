@@ -2,7 +2,7 @@
 
 namespace ApiTest\Controller\V1\Library\Book;
 
-use Api\Exception\NotFoundException;
+use Doctrine\ORM\EntityNotFoundException;
 use Library\Form\Book\CreateFormInputFilter;
 use Library\Service\Book\CrudService;
 use LibraryTest\Controller\AbstractFunctionalControllerTestCase;
@@ -108,7 +108,7 @@ class UpdateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $this->serviceMock->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->will($this->throwException(new NotFoundException()));
+            ->will($this->throwException(new EntityNotFoundException()));
 
         $this->dispatch(sprintf(self::UPDATE_URL, $id), Request::METHOD_PUT, $postData);
 

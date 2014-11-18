@@ -67,4 +67,23 @@ class InterfaceTypeCollectionTest extends \PHPUnit_Framework_TestCase
         );
         $this->testedObject->offsetSet(2, new Provider\NotMyClass(true, new \DateTime()));
     }
+
+    public function testGetIterator()
+    {
+        $result = $this->testedObject->getIterator();
+
+        $this->assertInstanceOf(\ArrayIterator::class, $result);
+    }
+
+    public function testInitializeInterfaceTypeCollectionWithoutType()
+    {
+        $this->setExpectedException('LogicException', 'Type not defined');
+
+        new Provider\InvalidMyClassInterfaceCollection(
+            [
+                new Provider\HisClass('a', 'b'),
+                new Provider\HisClass(1, 2)
+            ]
+        );
+    }
 }
