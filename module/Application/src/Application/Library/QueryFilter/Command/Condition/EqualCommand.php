@@ -8,7 +8,7 @@ use Application\Library\QueryFilter\QueryFilter;
 
 class EqualCommand implements CommandInterface
 {
-    public static $commandRegex = '/^\"([^\"]*)\"/';
+    public static $commandRegex = '/^\"([^\"]*)\"$/';
 
     public function execute($key, $value, QueryFilter $queryFilter)
     {

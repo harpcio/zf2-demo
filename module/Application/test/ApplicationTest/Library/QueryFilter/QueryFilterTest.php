@@ -146,4 +146,30 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('name', $secondCriteria->getKey());
         $this->assertSame('z', $secondCriteria->getValue());
     }
+
+    public function testSetQueryParametersWithAllPossibleOptions()
+    {
+        $data = [
+            '$field' => 'id,author,title',
+            '$sort' => '-year,price',
+            '$limit' => '5',
+            '$offset' => '1',
+            'year' => '$between(2001,2011)',
+            'price' => [
+                '$min(20)',
+                '$max(50)'
+            ],
+            'name' => [
+                '$startswith("a")',
+                '$endswith("z")',
+            ],
+            'status' => 'packaging,shipping',
+            'author' => '"Robert C. Marting"'
+        ];
+
+        $this->testedObject->setQueryParameters($data);
+        $resultCriteria = $this->testedObject->getCriteria();
+
+        $this->assertCount(12, $resultCriteria);
+    }
 }
