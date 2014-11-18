@@ -14,9 +14,18 @@
             <ini name="memory_limit" value="2048M"/>
         </php>
         <whitelist>
-            <directory suffix=".php">../module/Application</directory>
-            <directory suffix=".php">../module/Library</directory>
             <directory suffix=".php">../module/Api</directory>
+            <directory suffix=".php">../module/Application</directory>
+            <directory suffix=".php">../module/Auth</directory>
+            <directory suffix=".php">../module/Library</directory>
+            <directory suffix=".php">../module/User</directory>
+            <exclude>
+                <directory suffix=".php">../module/Api/test</directory>
+                <directory suffix=".php">../module/Application/test</directory>
+                <directory suffix=".php">../module/Auth/test</directory>
+                <directory suffix=".php">../module/Library/test</directory>
+                <directory suffix=".php">../module/User/test</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

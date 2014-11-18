@@ -29,7 +29,7 @@ class ReadControllerTest extends AbstractControllerTestCase
 
     public function setUp()
     {
-        parent::setUp('read');
+        $this->init('read');
 
         $this->bookEntityProvider = new BookEntityProvider();
 

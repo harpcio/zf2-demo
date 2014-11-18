@@ -36,7 +36,7 @@ class IndexControllerTest extends AbstractControllerTestCase
 
     public function setUp()
     {
-        parent::setUp('index');
+        $this->init('index');
 
         $this->bookEntityProvider = new BookEntityProvider();
 

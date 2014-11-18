@@ -38,7 +38,7 @@ class UpdateControllerTest extends AbstractControllerTestCase
 
     public function setUp()
     {
-        parent::setUp('update');
+        $this->init('update');
 
         $this->bookEntityProvider = new BookEntityProvider();
 

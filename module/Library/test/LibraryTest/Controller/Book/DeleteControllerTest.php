@@ -37,7 +37,7 @@ class DeleteControllerTest extends AbstractControllerTestCase
 
     public function setUp()
     {
-        parent::setUp('delete');
+        $this->init('delete');
 
         $this->bookEntityProvider = new BookEntityProvider();
 

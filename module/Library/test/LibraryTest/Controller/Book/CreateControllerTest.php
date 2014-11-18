@@ -37,7 +37,7 @@ class CreateControllerTest extends AbstractControllerTestCase
 
     public function setUp()
     {
-        parent::setUp('create');
+        $this->init('create');
 
         $this->bookEntityProvider = new BookEntityProvider();
 

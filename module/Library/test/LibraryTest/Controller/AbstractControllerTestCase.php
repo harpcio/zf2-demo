@@ -27,7 +27,7 @@ abstract class AbstractControllerTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $controller;
 
-    public function setUp($controllerName, $actionName = 'index')
+    public function init($controllerName, $actionName = 'index')
     {
         $this->routeMatch = new RouteMatch([
             'controller' => $controllerName,
