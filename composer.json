@@ -15,7 +15,10 @@
         "api"
     ],
     "authors": [
-        "Rafal Ksiazek <harpcio@gmail.com>"
+        {
+            "name": "Rafal Ksiazek",
+            "email": "harpcio@gmail.com"
+        }
     ],
     "homepage": "https://github.com/harpcio/zf2-demo",
     "require": {
