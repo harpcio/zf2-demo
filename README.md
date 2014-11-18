@@ -26,8 +26,8 @@ Filtering:
     - ie: /api/library/books?publisher=O'Reilly Media,Packt Publishing
 - equal option:
     - ie: /api/library/books?title="Software, Development"
-- two option on the same column
-    - ie: /api/library/books?price[]=$min(32)&price[]=$max(40)
+- two options on the same column
+    - ie: /api/library/books?title[]=$startswith("clean")&title[]=$endswith("ship")
 
 We can also combine all commands:
 - ie: /api/library/books?year=$between(2000,2014)&price[]=$min(32)&price[]=$max(40)&$sort=-year&$limit=2&$offset=1

@@ -62,8 +62,6 @@ class Bootstrap
         // Load the user-defined test configuration file, if it exists; otherwise, load
         if (is_readable(__DIR__ . '/TestConfig.php')) {
             $testConfig = include __DIR__ . '/TestConfig.php';
-        } else {
-            $testConfig = include __DIR__ . '/TestConfig.php.dist';
         }
 
         $zf2ModulePaths = array();
@@ -130,6 +128,7 @@ class Bootstrap
                     'autoregister_zf' => true,
                     'namespaces' => array(
                         __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+                        'ApplicationTest' => ROOT_PATH . '/module/Application/test/ApplicationTest',
                         'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
                         'ApiTest' => ROOT_PATH . '/module/Api/test/ApiLibraryTest',
                     ),

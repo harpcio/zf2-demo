@@ -2,7 +2,7 @@
 
 namespace Application\Library\Collection;
 
-abstract class ObjectCollection implements \ArrayAccess, \IteratorAggregate
+abstract class AbstractTypeCollection implements \ArrayAccess, \IteratorAggregate
 {
     protected $type = null;
 
@@ -15,14 +15,8 @@ abstract class ObjectCollection implements \ArrayAccess, \IteratorAggregate
         }
 
         foreach ($elements as $element) {
-            if ($this->type && !is_a($element, $this->type)) {
-                throw new \UnexpectedValueException(
-                    sprintf('Illegal object. Expected: %s, got %s', $this->type, get_class($element))
-                );
-            }
+            $this->offsetSet(null, $element);
         }
-
-        $this->elements = $elements;
     }
 
     public function offsetExists($offset)
@@ -42,17 +36,21 @@ abstract class ObjectCollection implements \ArrayAccess, \IteratorAggregate
 
     public function offsetSet($offset, $value)
     {
-        if ($this->type && !is_a($value, $this->type)) {
-            throw new \UnexpectedValueException(
-                sprintf('Illegal class name, expected: %s, got %s', $this->type, get_class($value))
-            );
-        }
+        $this->checkType($value);
+
         if (is_null($offset)) {
             $this->elements[] = $value;
         } else {
             $this->elements[$offset] = $value;
         }
     }
+
+    /**
+     * @param mixed $value
+     *
+     * @throws \UnexpectedValueException
+     */
+    abstract public function checkType($value);
 
     public function getIterator()
     {

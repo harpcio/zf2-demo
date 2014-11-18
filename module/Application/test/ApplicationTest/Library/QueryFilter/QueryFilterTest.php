@@ -117,4 +117,30 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('asc', $secondCriteria->getValue());
     }
 
+    public function testSetQueryWithMultipleOptionsInTheSameColumn()
+    {
+        $data = [
+            'name' => [
+                '$startswith("a")',
+                '$endswith("z")'
+            ]
+        ];
+
+        $this->testedObject->setQueryParameters($data);
+
+        $resultCriteria = $this->testedObject->getCriteria();
+        /** @var Criteria $firstCriteria */
+        $firstCriteria = $resultCriteria[0];
+        /** @var Criteria $secondCriteria */
+        $secondCriteria = $resultCriteria[1];
+
+        $this->assertSame(Criteria::TYPE_CONDITION_STARTS_WITH, $firstCriteria->getType());
+        $this->assertSame('name', $firstCriteria->getKey());
+        $this->assertSame('a', $firstCriteria->getValue());
+
+        $this->assertSame(Criteria::TYPE_CONDITION_ENDS_WITH, $secondCriteria->getType());
+        $this->assertSame('name', $secondCriteria->getKey());
+        $this->assertSame('z', $secondCriteria->getValue());
+    }
+
 }

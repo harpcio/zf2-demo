@@ -2,10 +2,9 @@
 
 namespace Application\Library\QueryFilter\Command\Repository;
 
-use Application\Library\Collection\InterfaceCollection;
-use Application\Library\QueryFilter\Command\Repository\CommandInterface;
+use Application\Library\Collection\AbstractInterfaceTypeCollection;
 
-class CommandCollection extends InterfaceCollection
+class CommandCollection extends AbstractInterfaceTypeCollection
 {
-    protected $interface = CommandInterface::class;
+    protected $type = CommandInterface::class;
 }

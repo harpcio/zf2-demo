@@ -42,30 +42,20 @@ class QueryFilter
      */
     public function setQueryParameters(array $query)
     {
-        foreach ($query as $key => $value) {
-            if (is_array($value)) {
-                $this->checkQueryMultipleParameters($key, $value);
-                continue;
-            }
-
-            $value = trim(urldecode($value));
-
-            if (empty($value)) {
-                continue;
-            }
-
-            $this->runCommands($key, $value);
-        }
+        $this->checkQueryParameters($query);
     }
 
     /**
-     * @param string $key
-     * @param array  $values
+     * @param array  $query
+     * @param string $parentKey
      */
-    private function checkQueryMultipleParameters($key, array $values)
+    private function checkQueryParameters(array $query, $parentKey = null)
     {
-        foreach ($values as $value) {
+        foreach ($query as $key => $value) {
             if (is_array($value)) {
+                if (null === $parentKey) {
+                    $this->checkQueryParameters($value, $key);
+                }
                 continue;
             }
 
@@ -75,7 +65,7 @@ class QueryFilter
                 continue;
             }
 
-            $this->runCommands($key, $value);
+            $this->runCommands($parentKey ? : $key, $value);
         }
     }
 
