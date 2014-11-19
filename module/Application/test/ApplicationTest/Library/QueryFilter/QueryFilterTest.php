@@ -150,11 +150,12 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
     public function testSetQueryParametersWithAllPossibleOptions()
     {
         $data = [
-            '$field' => 'id,author,title',
+            '$fields' => 'id,author,title',
             '$sort' => '-year,price',
             '$limit' => '5',
             '$offset' => '1',
-            'year' => '$between(2001,2011)',
+            'year' => '$between(2005,2014)',
+            'order_date' => '$between(2011-01-01,2001-01-01)',
             'price' => [
                 '$min(20)',
                 '$max(50)'
