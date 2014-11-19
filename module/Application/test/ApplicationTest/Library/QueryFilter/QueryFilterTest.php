@@ -154,8 +154,7 @@ class QueryFilterTest extends \PHPUnit_Framework_TestCase
             '$sort' => '-year,price',
             '$limit' => '5',
             '$offset' => '1',
-            'year' => '$between(2005,2014)',
-            'order_date' => '$between(2011-01-01,2001-01-01)',
+            'year' => '$between(2014,2005)',
             'price' => [
                 '$min(20)',
                 '$max(50)'
