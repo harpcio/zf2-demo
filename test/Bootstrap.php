@@ -130,7 +130,8 @@ class Bootstrap
                         __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
                         'ApplicationTest' => ROOT_PATH . '/module/Application/test/ApplicationTest',
                         'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
-                        'ApiTest' => ROOT_PATH . '/module/Api/test/ApiLibraryTest',
+                        'ApiTest' => ROOT_PATH . '/module/Api/test/ApiTest',
+                        'AuthTest' => ROOT_PATH . '/module/Api/test/AuthTest',
                     ),
                 ),
             )

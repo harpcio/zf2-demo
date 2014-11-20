@@ -4,7 +4,6 @@ namespace Auth\Service;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\AuthenticationServiceInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 class LogoutService
 {

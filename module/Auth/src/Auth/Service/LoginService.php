@@ -2,8 +2,7 @@
 
 namespace Auth\Service;
 
-use Auth\Adapter\DbAdapter;
-use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\InputFilter\InputFilterInterface;
@@ -11,7 +10,7 @@ use Zend\InputFilter\InputFilterInterface;
 class LoginService
 {
     /**
-     * @var DbAdapter
+     * @var AbstractAdapter
      */
     private $authAdapter;
 
@@ -22,7 +21,7 @@ class LoginService
 
     public function __construct(
         AuthenticationServiceInterface $authenticationService,
-        AdapterInterface $authenticationAdapter
+        AbstractAdapter $authenticationAdapter
     ) {
         $this->authenticationService = $authenticationService;
         $this->authAdapter = $authenticationAdapter;
