@@ -35,7 +35,7 @@ class LoginController extends AbstractActionController
                 if ($this->form->isValid()) {
                     if ($this->service->login($this->form->getInputFilter())) {
                         $this->flashMessenger()->addSuccessMessage('User login successfully');
-                        $this->redirect()->toRoute('home');
+                        return $this->redirect()->toRoute('home');
                     } else {
                         $this->flashMessenger()->addErrorMessage('User name/email or password are incorrect');
                     }
@@ -45,7 +45,9 @@ class LoginController extends AbstractActionController
                 }
             }
         } catch (\Exception $e) {
-            $this->flashMessenger()->addErrorMessage($e->getMessage());
+            $this->flashMessenger()->addErrorMessage(
+                'An unexpected error has occurred, please contact your system administrator'
+            );
         }
 
         return [

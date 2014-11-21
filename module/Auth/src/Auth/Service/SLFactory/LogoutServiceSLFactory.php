@@ -3,7 +3,7 @@
 namespace Auth\Service\SLFactory;
 
 use Auth\Service\LogoutService;
-use Auth\Storage\DbStorage;
+use Auth\Service\Storage\DbStorage;
 use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -19,7 +19,7 @@ class LogoutServiceSLFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /** @var \Auth\Storage\DbStorage $storage */
+        /** @var \Auth\Service\Storage\DbStorage $storage */
         $storage = $serviceLocator->get(DbStorage::class);
         $authService = new AuthenticationService($storage);
 

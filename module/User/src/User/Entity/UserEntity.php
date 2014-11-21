@@ -57,10 +57,14 @@ class UserEntity
 
     /**
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -73,10 +77,14 @@ class UserEntity
 
     /**
      * @param string $login
+     *
+     * @return $this
      */
     public function setLogin($login)
     {
         $this->login = $login;
+
+        return $this;
     }
 
     /**
@@ -89,10 +97,14 @@ class UserEntity
 
     /**
      * @param string $email
+     *
+     * @return $this
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -105,10 +117,14 @@ class UserEntity
 
     /**
      * @param string $password
+     *
+     * @return $this
      */
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
     }
 
     /**

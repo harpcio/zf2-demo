@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Adapter;
+namespace Auth\Service\Adapter;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;

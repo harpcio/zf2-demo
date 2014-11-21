@@ -14,8 +14,8 @@ return [
     'controller_plugins' => [
         'factories' => [
             'identity' => function (ServiceManager $sm) {
-                    /** @var \Auth\Storage\DbStorage $storage */
-                    $storage = $sm->get(\Auth\Storage\DbStorage::class);
+                    /** @var \Auth\Service\Storage\DbStorage $storage */
+                    $storage = $sm->get(\Auth\Service\Storage\DbStorage::class);
                     $authentication = new \Zend\Authentication\AuthenticationService($storage);
 
                     $identity = new \Zend\Mvc\Controller\Plugin\Identity();

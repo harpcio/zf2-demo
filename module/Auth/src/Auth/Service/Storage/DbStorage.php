@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Storage;
+namespace Auth\Service\Storage;
 
 use User\Repository\UserRepositoryInterface;
 use Zend\Authentication\Storage;
@@ -113,12 +113,12 @@ class DbStorage implements StorageInterface
      *
      * @param Storage\StorageInterface $storage
      *
-     * @access public
-     * @return Db
+     * @return $this
      */
     public function setStorage(Storage\StorageInterface $storage)
     {
         $this->storage = $storage;
+
         return $this;
     }
 

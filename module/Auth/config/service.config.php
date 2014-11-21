@@ -12,9 +12,9 @@ return [
         'factories' => [
             \Auth\Form\LoginForm::class => \Auth\Form\SLFactory\LoginFormSLFactory::class,
             \Auth\Service\LoginService::class => \Auth\Service\SLFactory\LoginServiceSLFactory::class,
-            \Auth\Storage\DbStorage::class => \Auth\Storage\SLFactory\DbStorageSLFactory::class,
+            \Auth\Service\Storage\DbStorage::class => \Auth\Service\Storage\SLFactory\DbStorageSLFactory::class,
             \Auth\Service\LogoutService::class => \Auth\Service\SLFactory\LogoutServiceSLFactory::class,
-            \Auth\Adapter\DbAdapter::class => \Auth\Adapter\SLFactory\DbAdapterSLFactory::class,
+            \Auth\Service\Adapter\DbAdapter::class => \Auth\Service\Adapter\SLFactory\DbAdapterSLFactory::class,
         ],
     ]
 ];

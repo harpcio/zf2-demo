@@ -1,26 +1,28 @@
 <?php
 
-namespace Auth\Storage\SLFactory;
+namespace Auth\Service\Adapter\SLFactory;
 
-use Auth\Storage\DbStorage;
+use Auth\Service\Adapter\DbAdapter;
 use User\Repository\UserRepository;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class DbStorageSLFactory implements FactoryInterface
+class DbAdapterSLFactory implements FactoryInterface
 {
     /**
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return DbStorage
+     * @return DbAdapter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /** @var \User\Repository\UserRepository $userRepository */
         $userRepository = $serviceLocator->get(UserRepository::class);
+        $passwordCrypt = new Bcrypt();
 
-        return new DbStorage($userRepository);
+        return new DbAdapter($userRepository, $passwordCrypt);
     }
 }

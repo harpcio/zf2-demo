@@ -19,8 +19,14 @@ class LogoutController extends AbstractActionController
 
     public function indexAction()
     {
-        $this->service->logout();
+        try {
+            $this->service->logout();
 
-        $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home');
+        } catch (\Exception $e) {
+            return $this->flashMessenger()->addErrorMessage(
+                'An unexpected error has occurred, please contact your system administrator'
+            );
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AuthTest\Service;
 
-use Auth\Adapter\DbAdapter;
+use Auth\Service\Adapter\DbAdapter;
 use Auth\Form\LoginFormInputFilter;
 use Auth\Service\LoginService;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;

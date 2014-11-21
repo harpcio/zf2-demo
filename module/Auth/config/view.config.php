@@ -12,8 +12,8 @@ return [
         'factories' => [
             'identity' => function (HelperPluginManager $hpm) {
                     $sm = $hpm->getServiceLocator();
-                    /** @var \Auth\Storage\DbStorage $storage */
-                    $storage = $sm->get(\Auth\Storage\DbStorage::class);
+                    /** @var \Auth\Service\Storage\DbStorage $storage */
+                    $storage = $sm->get(\Auth\Service\Storage\DbStorage::class);
                     $authentication = new \Zend\Authentication\AuthenticationService($storage);
 
                     $identity = new \Zend\View\Helper\Identity();

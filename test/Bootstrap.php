@@ -131,7 +131,8 @@ class Bootstrap
                         'ApplicationTest' => ROOT_PATH . '/module/Application/test/ApplicationTest',
                         'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
                         'ApiTest' => ROOT_PATH . '/module/Api/test/ApiTest',
-                        'AuthTest' => ROOT_PATH . '/module/Api/test/AuthTest',
+                        'AuthTest' => ROOT_PATH . '/module/Auth/test/AuthTest',
+                        'UserTest' => ROOT_PATH . '/module/User/test/UserTest',
                     ),
                 ),
             )
