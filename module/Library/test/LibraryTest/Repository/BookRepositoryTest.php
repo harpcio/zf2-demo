@@ -2,30 +2,23 @@
 
 namespace LibraryTest\Repository;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Application\Library\QueryFilter\QueryFilter;
+use Application\Library\QueryFilter\Command\Repository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Library\Entity\BookEntity;
 use Library\Repository\BookRepository;
 use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Test\Bootstrap;
 
-class BookRepositoryTest extends \PHPUnit_Framework_TestCase
+class BookRepositoryTestCase extends AbstractRepositoryTestCase
 {
     /**
      * @var BookRepository
      */
     private $testedObj;
-
-    /**
-     * @var MockObject
-     */
-    private $entityManagerMock;
-
-    /**
-     * @var ClassMetadata
-     */
-    private $classMetadata;
 
     /**
      * @var MockObject
@@ -39,20 +32,17 @@ class BookRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->bookEntityProvider = new BookEntityProvider();
+        parent::setUp();
 
-        $this->entityManagerMock = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->bookEntityProvider = new BookEntityProvider();
 
         $this->hydratorMock = $this->getMockBuilder(DoctrineObject::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->classMetadata = new ClassMetadata(BookEntity::class);
-
-        $this->testedObj = new BookRepository($this->entityManagerMock, $this->classMetadata);
+        $this->testedObj = new BookRepository($this->entityManagerMock, $this->classMetadataMock);
         $this->testedObj->setHydrator($this->hydratorMock);
+
     }
 
     public function testCreateNewEntity()
@@ -81,7 +71,7 @@ class BookRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('LogicException', 'Hydrator has not been injected!');
 
-        $testedObj = new BookRepository($this->entityManagerMock, $this->classMetadata);
+        $testedObj = new BookRepository($this->entityManagerMock, $this->classMetadataMock);
         $testedObj->hydrate($bookEntity, $data);
     }
 
@@ -102,7 +92,7 @@ class BookRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('LogicException', 'Hydrator has not been injected!');
 
-        $testedObj = new BookRepository($this->entityManagerMock, $this->classMetadata);
+        $testedObj = new BookRepository($this->entityManagerMock, $this->classMetadataMock);
         $testedObj->extract($bookEntity);
     }
 
@@ -162,4 +152,65 @@ class BookRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->testedObj->delete($bookEntity, false);
     }
 
+    public function testFindByQueryFilter()
+    {
+        $sm = Bootstrap::getServiceManager();
+
+        $queryData = [
+            '$fields' => 'id,author,title',
+            '$sort' => '-year,price',
+            '$limit' => '5',
+            '$offset' => '1',
+            'year' => '$between(2014,2005)',
+            'price' => [
+                '$min(20)',
+                '$max(50)'
+            ],
+            'name' => [
+                '$startswith("a")',
+                '$endswith("z")',
+            ],
+            'status' => 'packaging,shipping',
+            'author' => '"Robert C. Marting"'
+        ];
+
+        $fieldNames = [
+            'id',
+            'author',
+            'title',
+            'year',
+            'price',
+            'name',
+            'status'
+        ];
+
+        /** @var QueryFilter $queryFilter */
+        $queryFilter = $sm->get(QueryFilter::class);
+        $queryFilter->setQueryParameters($queryData);
+
+        $commandCollection = $sm->get(Repository\CommandCollection::class);
+
+        $this->classMetadataMock->expects($this->any())
+            ->method('getFieldNames')
+            ->will($this->returnValue($fieldNames));
+
+        // here we are checking private method that provide us QueryBuilder
+        $reflector = new \ReflectionObject($this->testedObj);
+        $method = $reflector->getMethod('provideQueryBuilderToFindByQueryFilter');
+        $method->setAccessible(true);
+
+        /** @var QueryBuilder $qb */
+        $qb = $method->invoke($this->testedObj, $queryFilter, $commandCollection);
+
+        $this->assertSame(
+            "SELECT b.id, b.author, b.title FROM  b WHERE (b.year BETWEEN '2005' AND '2014') AND b.price >= '20' AND b.price <= '50' AND b.name LIKE 'a%' AND b.name LIKE '%z' AND b.status IN('packaging', 'shipping') AND b.author = 'Robert C. Marting' ORDER BY b.year desc, b.price asc",
+            $this->getRawSQLFromORMQueryBuilder($qb)
+        );
+
+        $this->queryMock->expects($this->once())
+            ->method('getResult')
+            ->with($hydrationMode = Query::HYDRATE_OBJECT);
+
+        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+    }
 }

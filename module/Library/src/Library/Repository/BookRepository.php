@@ -87,6 +87,22 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
         CommandCollection $criteriaCommands,
         $hydrationMode = Query::HYDRATE_OBJECT
     ) {
+        $qb = $this->provideQueryBuilderToFindByQueryFilter($queryFilter, $criteriaCommands);
+
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+
+    /**
+     * @param QueryFilter       $queryFilter
+     * @param CommandCollection $criteriaCommands
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     * @throws \Application\Library\QueryFilter\Exception\UnsupportedTypeException
+     */
+    private function provideQueryBuilderToFindByQueryFilter(
+        QueryFilter $queryFilter,
+        CommandCollection $criteriaCommands
+    ) {
         $i = 0;
         $alias = 'b';
         $qb = $this->createQueryBuilder($alias);
@@ -109,7 +125,7 @@ class BookRepository extends EntityRepository implements BookRepositoryInterface
             ));
         }
 
-        return $qb->getQuery()->getResult($hydrationMode);
+        return $qb;
     }
 
     /**
