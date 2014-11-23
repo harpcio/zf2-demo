@@ -2,8 +2,10 @@
 
 namespace LibraryTest\Repository;
 
+use Application\Library\QueryFilter\Exception\UnrecognizedFieldException;
+use Application\Library\QueryFilter\Exception\UnsupportedTypeException;
 use Application\Library\QueryFilter\QueryFilter;
-use Application\Library\QueryFilter\Command\Repository;
+use Application\Library\QueryFilter\Command;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
@@ -13,7 +15,7 @@ use LibraryTest\Entity\Provider\BookEntityProvider;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Test\Bootstrap;
 
-class BookRepositoryTestCase extends AbstractRepositoryTestCase
+class BookRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
      * @var BookRepository
@@ -152,7 +154,7 @@ class BookRepositoryTestCase extends AbstractRepositoryTestCase
         $this->testedObj->delete($bookEntity, false);
     }
 
-    public function testFindByQueryFilter()
+    public function testFindByQueryFilter_WithValidQueryData()
     {
         $sm = Bootstrap::getServiceManager();
 
@@ -188,7 +190,7 @@ class BookRepositoryTestCase extends AbstractRepositoryTestCase
         $queryFilter = $sm->get(QueryFilter::class);
         $queryFilter->setQueryParameters($queryData);
 
-        $commandCollection = $sm->get(Repository\CommandCollection::class);
+        $commandCollection = $sm->get(Command\Repository\CommandCollection::class);
 
         $this->classMetadataMock->expects($this->any())
             ->method('getFieldNames')
@@ -210,6 +212,71 @@ class BookRepositoryTestCase extends AbstractRepositoryTestCase
         $this->queryMock->expects($this->once())
             ->method('getResult')
             ->with($hydrationMode = Query::HYDRATE_OBJECT);
+
+        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+    }
+
+    public function testFindByQueryFilter_WithNotFoundCriteriaCommand()
+    {
+        $sm = Bootstrap::getServiceManager();
+
+        $queryData = [
+            '$fields' => 'id,author,title',
+        ];
+
+        $fieldNames = [
+            'id',
+            'author',
+            'title',
+            'year',
+            'price',
+            'name',
+            'status'
+        ];
+
+        /** @var QueryFilter $queryFilter */
+        $queryFilter = $sm->get(QueryFilter::class);
+        $queryFilter->setQueryParameters($queryData);
+
+        $commandCollection = new Command\Repository\CommandCollection(
+            [
+                new Command\Repository\BetweenCommand()
+            ]
+        );
+
+        $this->classMetadataMock->expects($this->any())
+            ->method('getFieldNames')
+            ->will($this->returnValue($fieldNames));
+
+        $this->setExpectedException(UnsupportedTypeException::class, 'Unsupported condition type: fields');
+
+        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+    }
+
+    public function testFindByQueryFilter_WithUnrecognizedField()
+    {
+        $sm = Bootstrap::getServiceManager();
+
+        $queryData = [
+            '$fields' => 'id,author,title',
+        ];
+
+        $fieldNames = [
+            'author',
+            'title',
+        ];
+
+        /** @var QueryFilter $queryFilter */
+        $queryFilter = $sm->get(QueryFilter::class);
+        $queryFilter->setQueryParameters($queryData);
+
+        $commandCollection = $sm->get(Command\Repository\CommandCollection::class);
+
+        $this->classMetadataMock->expects($this->any())
+            ->method('getFieldNames')
+            ->will($this->returnValue($fieldNames));
+
+        $this->setExpectedException(UnrecognizedFieldException::class, 'Field unrecognized in entity: id');
 
         $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
     }

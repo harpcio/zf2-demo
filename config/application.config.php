@@ -5,6 +5,7 @@ $config = [
         'DoctrineModule',
         'DoctrineORMModule',
         'DluTwBootstrap',
+        'Acl',
         'Auth',
         'Application',
         'User',

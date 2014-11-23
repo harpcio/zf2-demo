@@ -49,13 +49,14 @@ class DbStorageTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($userEntity));
 
         $result = $this->testedObject->read();
+        $this->assertSame($userEntity, $result);
 
+        // read again without searching in repository
+        $result = $this->testedObject->read();
         $this->assertSame($userEntity, $result);
 
         $this->testedObject->clear();
-
         $result = $this->testedObject->read();
-
         $this->assertSame(null, $result);
     }
 

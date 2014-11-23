@@ -163,4 +163,38 @@ class LoginControllerTest extends AbstractControllerTestCase
         $this->assertNotRedirect();
     }
 
+    public function testAction_WhenLoginIsFailed()
+    {
+        $data = [
+            'login' => uniqid('login'),
+            'password' => uniqid('password'),
+            'csrf' => 'csrfToken'
+        ];
+
+        $inputFilterMock = $this->getMock(InputFilterInterface::class);
+
+        $this->loginFormMock->expects($this->once())
+            ->method('setData')->with($data);
+
+        $this->loginFormMock->expects($this->once())
+            ->method('isValid')->will($this->returnValue(true));
+
+        $this->loginFormMock->expects($this->once())
+            ->method('getInputFilter')->will($this->returnValue($inputFilterMock));
+
+        $this->loginService->expects($this->once())
+            ->method('login')
+            ->with($inputFilterMock)
+            ->will($this->returnValue(false));
+
+        $this->controller->dispatch(
+            (new Request())
+                ->setMethod(Request::METHOD_POST)
+                ->setPost(new Parameters($data))
+        );
+
+        $this->assertResponseStatusCode(Response::STATUS_CODE_200);
+        $this->assertNotRedirect();
+    }
+
 }
