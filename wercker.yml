@@ -1,0 +1,21 @@
+box: wercker/php
+build:
+  steps:
+    - script:
+        name: Switch to php 5.5
+        code: |-
+            phpenv global 5.5
+    - script:
+        name: install dependencies
+        code: |-
+            composer install --no-interaction
+    - script:
+        name: PHPUnit integration tests
+        code: |-
+            mkdir -p build/logs
+            phpunit --configuration test/phpunit.xml --testdox --coverage-clover ../build/logs/clover.xml
+
+    - script:
+        name: Send coverage raport to coveralls
+        code: |-
+            php vendor/bin/coveralls -v
