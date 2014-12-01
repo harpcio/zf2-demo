@@ -47,13 +47,12 @@ abstract class AbstractRestfulJsonController extends AbstractRestfulController
     {
         /** @var \Zend\Http\Request $request */
         $request = $e->getRequest();
+        $method = strtoupper($request->getMethod());
+        $options = array_map('strtoupper', $this->getOptions());
 
-        if (in_array($request->getMethod(), $this->getOptions())) {
-            // method allowed, nothing to do
-            return true;
+        if (!in_array($method, $options)) {
+            throw new Exception\MethodNotAllowedException();
         }
-
-        throw new Exception\MethodNotAllowedException();
     }
 
     public function setEventManager(EventManagerInterface $events)
