@@ -73,7 +73,8 @@ abstract class AbstractRestfulJsonController extends AbstractRestfulController
         $method = strtoupper($request->getMethod());
 
         $routeMatch = $e->getRouteMatch();
-        $namespace = dirname($routeMatch->getParam('controller'));
+        $controllerName = $routeMatch->getParam('controller');
+        $namespace = substr($controllerName, 0, strrpos($controllerName, '\\'));
 
         // Was an "action" requested?
         $action = $routeMatch->getParam('action', false);
