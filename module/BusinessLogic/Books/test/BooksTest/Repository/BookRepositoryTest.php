@@ -12,6 +12,7 @@ use Library\QueryFilter\Exception\UnrecognizedFieldException;
 use Library\QueryFilter\Exception\UnsupportedTypeException;
 use Library\QueryFilter\QueryFilter;
 use Library\QueryFilter\Command;
+use LibraryTest\Repository\AbstractRepositoryTestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Test\Bootstrap;
 

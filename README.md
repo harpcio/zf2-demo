@@ -37,8 +37,7 @@ We can also combine all commands:
 
 ACL
 -----------------------
-With the new structure (Single Action Per Controller) we have now also restricted access to API (CREATE, PUT, DELETE).
-
+With the new structure (Single Action Per Controller) we have also the possibility to restrict access in API (CREATE, PUT, DELETE).
 
 TODO
 -----------------------

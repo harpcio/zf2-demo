@@ -1,6 +1,6 @@
 <?php
 
-namespace BusinessLogic\BooksTest\Repository;
+namespace LibraryTest\Repository;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
