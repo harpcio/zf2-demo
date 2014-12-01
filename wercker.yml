@@ -11,6 +11,10 @@ build:
         code: |-
             composer install --no-interaction
     - script:
+        name: Serve application
+        code: |-
+            php -S localhost:8000 >> /dev/null &
+    - script:
         name: PHPUnit integration tests
         code: |-
             mkdir -p build/logs
