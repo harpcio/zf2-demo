@@ -129,6 +129,17 @@ class Bootstrap
                     'autoregister_zf' => true,
                     'namespaces' => array(
                         __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+                        'AclTest' => ROOT_PATH . '/module/Acl/test/AclTest',
+                        'ApplicationTest' => ROOT_PATH . '/module/Application/test/ApplicationTest',
+                        'BusinessLogic\\BooksTest' => ROOT_PATH . '/module/BusinessLogic/Books/test/BooksTest',
+                        'BusinessLogic\\UsersTest' => ROOT_PATH . '/module/BusinessLogic/Users/test/UsersTest',
+                        'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
+                        'Module\\ApiTest' => ROOT_PATH . '/module/Module/Api/test/ApiTest',
+                        'Module\\ApiV1LibraryTest' => ROOT_PATH . '/module/Module/ApiV1Library/test/ApiV1LibraryTest',
+                        'Module\\ApiV1LibraryBooksTest' => ROOT_PATH . '/module/Module/ApiV1LibraryBooks/test/ApiV1LibraryBooksTest',
+                        'Module\\AuthTest' => ROOT_PATH . '/module/Module/Auth/test/AuthTest',
+                        'Module\\LibraryTest' => ROOT_PATH . '/module/Module/Library/test/LibraryTest',
+                        'Module\\LibraryBooksTest' => ROOT_PATH . '/module/Module/LibraryBooks/test/LibraryBooksTest',
                     ),
                 ),
             )
