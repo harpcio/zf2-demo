@@ -11,6 +11,7 @@ script:
   - mkdir -p build/logs
   - cd test
   - phpunit
+  - phpunit --testdox --coverage-clover ../build/logs/clover.xml
 
 after_script:
  - cd ..
