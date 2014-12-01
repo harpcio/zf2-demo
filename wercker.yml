@@ -20,8 +20,5 @@ build:
             mkdir -p build/logs
             phpunit --configuration test/phpunit.xml
             phpunit --configuration test/phpunit.xml --testdox --coverage-clover ../build/logs/clover.xml
-
-    - script:
-        name: send coverage raport to coveralls
-        code: |-
-            php vendor/bin/coveralls -v
+    - tcnksm/goveralls:
+        token: $COVERALLS_TOKEN
