@@ -1,3 +1,4 @@
+[![wercker status](https://app.wercker.com/status/f369e88718a1cbe522693eaad4c686f8/m "wercker status")](https://app.wercker.com/project/bykey/f369e88718a1cbe522693eaad4c686f8)
 [![Build Status](https://travis-ci.org/harpcio/zf2-demo.svg?branch=master)](https://travis-ci.org/harpcio/zf2-demo)
 [![Coverage Status](https://img.shields.io/coveralls/harpcio/zf2-demo.svg)](https://coveralls.io/r/harpcio/zf2-demo?branch=master)
 ZF2 Advanced demo
