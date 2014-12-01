@@ -3,19 +3,12 @@
 return [
     'service_manager' => [
         'invokables' => [
-            \Library\Form\Book\CreateFormInputFilter::class => \Library\Form\Book\CreateFormInputFilter::class,
-            \Library\Form\DeleteFormInputFilter::class => \Library\Form\DeleteFormInputFilter::class,
-        ],
-        'abstract_factories' => [
-        ],
-        'aliases' => [
+            \Library\Logger\Manager::class => \Library\Logger\Manager::class,
         ],
         'factories' => [
-            \Library\Repository\BookRepository::class => \Library\Repository\Factory\BookRepositoryFactory::class,
-            \Library\Form\Book\CreateForm::class => \Library\Form\Book\Factory\CreateFormFactory::class,
-            \Library\Form\DeleteForm::class => \Library\Form\Factory\DeleteFormFactory::class,
-            \Library\Service\Book\CrudService::class => \Library\Service\Book\Factory\CrudServiceFactory::class,
-            \Library\Service\Book\FilterResultsService::class => \Library\Service\Book\Factory\FilterResultsServiceFactory::class,
+            'Logger' => \Library\Logger\Factory\LoggerFactory::class,
+            \Library\QueryFilter\QueryFilter::class => \Library\QueryFilter\SLFactory\QueryFilterSLFactory::class,
+            \Library\QueryFilter\Command\Repository\CommandCollection::class => \Library\QueryFilter\Command\Repository\SLFactory\CommandCollectionSLFactory::class,
         ],
     ]
 ];

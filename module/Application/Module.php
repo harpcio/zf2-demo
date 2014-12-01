@@ -2,12 +2,11 @@
 
 namespace Application;
 
-use Application\View\Helper\FlashMessages;
+use Module\Api\Exception\AbstractException;
 use Zend\Log\Logger;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
-use Zend\View\HelperPluginManager;
 
 class Module
 {
@@ -24,9 +23,9 @@ class Module
             'Zend\Mvc\Application',
             MvcEvent::EVENT_DISPATCH_ERROR,
             function (MvcEvent $e) use ($sm) {
-                if ($e->getParam('exception')) {
+                if (($exception = $e->getParam('exception')) && !($exception instanceof AbstractException)) {
                     /** @var Logger $logger */
-                    $logger = $sm->get('Application\Logger');
+                    $logger = $sm->get('Logger');
                     $logger->crit($e->getParam('exception'));
                 }
             }
@@ -51,31 +50,10 @@ class Module
             StandardAutoloader::class => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/' . __NAMESPACE__ . 'Test'
                 ),
             ),
         );
     }
 
-    /**
-     * @return array
-     */
-    public function getViewHelperConfig()
-    {
-        return [
-            'factories' => [
-                'flashMessages' => function (HelperPluginManager $hpm) {
-                        $flashMessenger = $hpm->getServiceLocator()
-                            ->get('ControllerPluginManager')
-                            ->get('FlashMessenger');
-
-                        $messages = new FlashMessages();
-                        $messages->setFlashMessenger($flashMessenger);
-
-                        return $messages;
-                    },
-            ],
-            'invokables' => [
-            ]
-        ];
-    }
 }

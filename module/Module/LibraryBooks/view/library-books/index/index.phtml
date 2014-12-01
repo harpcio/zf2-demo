@@ -1,0 +1,92 @@
+<?php
+/**
+ * @var $book BusinessLogic\Books\Entity\BookEntity
+ */
+?>
+<h3>Index of books</h3>
+<hr/>
+<?php if ($this->isAllowed('Module\\LibraryBooks', 'Create::Index')): ?>
+    <p>
+        <a href="<?= $this->url('library/books/create'); ?>" class="btn btn-primary" role="button">Create new book</a>
+    </p>
+    <hr/>
+<?php endif; ?>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>ISBN</th>
+        <th>Publisher</th>
+        <th>Year</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if ($this->books): ?>
+        <?php foreach ($this->books as $book): ?>
+            <tr>
+                <td>
+                    <?= $this->escapeHtml($book->getId()); ?>
+                </td>
+                <td>
+                    <a href="<?= $this->url('library/books/read', ['id' => $book->getId()]); ?>"
+                       title="Read about the book">
+                        <?= $this->escapeHtml($book->getTitle()); ?>
+                    </a>
+                </td>
+                <td>
+                    <?= $this->escapeHtml($book->getIsbn()); ?>
+                </td>
+                <td>
+                    <?= $this->escapeHtml($book->getPublisher()); ?>
+                </td>
+                <td>
+                    <?= $this->escapeHtml($book->getYear()); ?>
+                </td>
+                <td>
+                    <?= $this->escapeHtml($book->getPrice()); ?>
+                </td>
+                <td>
+                    <?php
+                    $updateClass = '';
+                    $updateUrl = $this->url('library/books/update', ['id' => $book->getId()]);
+                    if (!$this->isAllowed('Module\\LibraryBooks', 'Update::Index')) {
+                        $updateClass = 'disabled';
+                        $updateUrl = '#udpate';
+                    }
+
+                    $deleteClass = '';
+                    $deleteUrl = $this->url('library/books/delete', ['id' => $book->getId()]);
+                    if (!$this->isAllowed('Module\\LibraryBooks', 'Delete::Index')) {
+                        $deleteClass = 'disabled';
+                        $deleteUrl = '#delete';
+                    }
+
+                    ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+                            Actions <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="<?= $updateClass; ?>">
+                                <a href="<?= $updateUrl; ?>">Update</a>
+                            </li>
+                            <li class="<?= $deleteClass; ?>">
+                                <a href="<?= $deleteUrl; ?>">Delete</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">
+                <h5>There are no books!</h5>
+            </td>
+        </tr>
+    <?php endif; ?>
+    </tbody>
+</table>

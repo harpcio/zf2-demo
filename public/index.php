@@ -10,7 +10,7 @@ use Zend\Log\Logger;
 chdir(dirname(__DIR__));
 
 define('ROOT_PATH', dirname(__DIR__));
-define('DEVELOPMENT_ENV', (getenv('APPLICATION_ENV') === 'development') ? true : false);
+define('DEVELOPMENT_ENV', (getenv('APPLICATION_ENV') === 'development' || true) ? true : false);
 
 if (DEVELOPMENT_ENV) {
     ini_set('display_errors', 1);
@@ -35,7 +35,7 @@ try {
     $app->run();
 } catch (\Exception $e) {
     /** @var Logger $logger */
-    $logger = $app->getServiceManager()->get('Application\Logger');
+    $logger = $app->getServiceManager()->get('Logger');
     $logger->crit($e);
 
     echo 'There was an error, please contact with the administrator.';

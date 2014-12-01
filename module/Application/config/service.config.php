@@ -3,7 +3,6 @@
 return [
     'service_manager' => [
         'invokables' => [
-            \Application\Library\Logger\Manager::class => \Application\Library\Logger\Manager::class,
         ],
         'abstract_factories' => [
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -13,9 +12,6 @@ return [
             'translator' => 'MvcTranslator',
         ],
         'factories' => [
-            'Application\Logger' => \Application\Library\Logger\Factory\LoggerFactory::class,
-            \Application\Library\QueryFilter\QueryFilter::class => \Application\Library\QueryFilter\SLFactory\QueryFilterSLFactory::class,
-            \Application\Library\QueryFilter\Command\Repository\CommandCollection::class => \Application\Library\QueryFilter\Command\Repository\SLFactory\CommandCollectionSLFactory::class,
         ],
     ]
 ];

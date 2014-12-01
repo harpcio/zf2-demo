@@ -3,10 +3,17 @@
 <phpunit bootstrap="Bootstrap.php">
     <testsuites>
         <testsuite name="Tests">
-            <directory suffix="Test.php">../module/Auth/test/AuthTest</directory>
+            <!--<directory suffix="Test.php">../module/Acl/test/AclTest</directory>-->
             <directory suffix="Test.php">../module/Application/test/ApplicationTest</directory>
+            <directory suffix="Test.php">../module/BusinessLogic/Books/test/BooksTest</directory>
+            <directory suffix="Test.php">../module/BusinessLogic/Users/test/UsersTest</directory>
             <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
-            <directory suffix="Test.php">../module/Api/test/ApiTest</directory>
+            <directory suffix="Test.php">../module/Module/Api/test/ApiTest</directory>
+            <directory suffix="Test.php">../module/Module/ApiV1Library/test/ApiV1LibraryTest</directory>
+            <directory suffix="Test.php">../module/Module/ApiV1LibraryBooks/test/ApiV1LibraryBooksTest</directory>
+            <directory suffix="Test.php">../module/Module/Auth/test/AuthTest</directory>
+            <directory suffix="Test.php">../module/Module/Library/test/LibraryTest</directory>
+            <directory suffix="Test.php">../module/Module/LibraryBooks/test/LibraryBooksTest</directory>
         </testsuite>
     </testsuites>
 
@@ -15,17 +22,29 @@
             <ini name="memory_limit" value="2048M"/>
         </php>
         <whitelist>
-            <directory suffix=".php">../module/Auth</directory>
+            <directory suffix=".php">../module/Acl</directory>
             <directory suffix=".php">../module/Application</directory>
+            <directory suffix=".php">../module/BusinessLogic/Books</directory>
+            <directory suffix=".php">../module/BusinessLogic/Users</directory>
             <directory suffix=".php">../module/Library</directory>
-            <directory suffix=".php">../module/Api</directory>
-            <directory suffix=".php">../module/User</directory>
+            <directory suffix=".php">../module/Module/Api</directory>
+            <directory suffix=".php">../module/Module/ApiV1Library</directory>
+            <directory suffix=".php">../module/Module/ApiV1LibraryBooks</directory>
+            <directory suffix=".php">../module/Module/Auth</directory>
+            <directory suffix=".php">../module/Module/Library</directory>
+            <directory suffix=".php">../module/Module/LibraryBooks</directory>
             <exclude>
-                <directory suffix=".php">../module/Auth/test</directory>
+                <directory suffix=".php">../module/Acl/test</directory>
                 <directory suffix=".php">../module/Application/test</directory>
+                <directory suffix=".php">../module/BusinessLogic/Books/test</directory>
+                <directory suffix=".php">../module/BusinessLogic/Users/test</directory>
                 <directory suffix=".php">../module/Library/test</directory>
-                <directory suffix=".php">../module/Api/test</directory>
-                <directory suffix=".php">../module/User/test</directory>
+                <directory suffix=".php">../module/Module/Api/test</directory>
+                <directory suffix=".php">../module/Module/ApiV1Library/test</directory>
+                <directory suffix=".php">../module/Module/ApiV1LibraryBooks/test</directory>
+                <directory suffix=".php">../module/Module/Auth/test</directory>
+                <directory suffix=".php">../module/Module/Library/test</directory>
+                <directory suffix=".php">../module/Module/LibraryBooks/test</directory>
             </exclude>
         </whitelist>
     </filter>

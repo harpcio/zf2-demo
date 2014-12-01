@@ -29,7 +29,7 @@ class Bootstrap
     {
         static::setupAutoloader();
         static::setupConfig();
-        static::setupServiceManager(self::$config);
+        static::setupServiceManager();
     }
 
     /**
@@ -48,10 +48,10 @@ class Bootstrap
         return static::$config;
     }
 
-    protected static function setupServiceManager($config)
+    public static function setupServiceManager()
     {
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', $config);
+        $serviceManager->setService('ApplicationConfig', static::$config);
         $serviceManager->get('ModuleManager')->loadModules();
 
         static::$serviceManager = $serviceManager;
@@ -76,9 +76,8 @@ class Bootstrap
         }
 
         $zf2ModulePaths = implode(PATH_SEPARATOR, $zf2ModulePaths) . PATH_SEPARATOR;
-        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS') ? : (defined(
-            'ZF2_MODULES_TEST_PATHS'
-        ) ? ZF2_MODULES_TEST_PATHS : '');
+        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS')
+            ?: (defined('ZF2_MODULES_TEST_PATHS') ? ZF2_MODULES_TEST_PATHS : '');
 
         // use ModuleManager to load this module and it's dependencies
         $baseConfig = array(
@@ -111,7 +110,9 @@ class Bootstrap
         $zf2Path = $vendorPath . '/zendframework/zendframework/library';
 
         if (!$zf2Path) {
-            throw new \RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
+            throw new \RuntimeException(
+                'Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.'
+            );
         }
 
         if (file_exists($vendorPath . '/autoload.php')) {
@@ -128,11 +129,6 @@ class Bootstrap
                     'autoregister_zf' => true,
                     'namespaces' => array(
                         __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
-                        'ApplicationTest' => ROOT_PATH . '/module/Application/test/ApplicationTest',
-                        'LibraryTest' => ROOT_PATH . '/module/Library/test/LibraryTest',
-                        'ApiTest' => ROOT_PATH . '/module/Api/test/ApiTest',
-                        'AuthTest' => ROOT_PATH . '/module/Auth/test/AuthTest',
-                        'UserTest' => ROOT_PATH . '/module/User/test/UserTest',
                     ),
                 ),
             )

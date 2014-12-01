@@ -5,11 +5,17 @@ return [
         'DoctrineModule',
         'DoctrineORMModule',
         'DluTwBootstrap',
-        'Auth',
+        'BusinessLogic\\Users',
+        'Module\\Auth',
+        'Acl',
         'Application',
-        'User',
+        'BusinessLogic\\Books',
         'Library',
-        'Api',
+        'Module\\Api',
+        'Module\\ApiV1Library',
+        'Module\\ApiV1LibraryBooks',
+        'Module\\Library',
+        'Module\\LibraryBooks',
     ],
     'module_listener_options' => [
         'config_glob_paths' => [
@@ -18,7 +24,6 @@ return [
         'module_paths'      => [
             'module',
             'vendor',
-            'test',
         ],
     ],
 ];
