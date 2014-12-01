@@ -2,6 +2,7 @@
 
 namespace BusinessLogic\Books;
 
+use Zend\Loader\ClassMapAutoloader;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
@@ -26,10 +27,13 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            ClassMapAutoloader::class => [
+                __DIR__ . '/autoload_classmap.php',
+            ],
             StandardAutoloader::class => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . basename(__NAMESPACE__),
-                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/' . basename(__NAMESPACE__) . 'Test'
+                    __NAMESPACE__ => __DIR__ . '/src/Books',
+                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/BooksTest'
                 ),
             ),
         );

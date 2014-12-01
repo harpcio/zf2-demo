@@ -28,8 +28,8 @@ class Module
         return array(
             StandardAutoloader::class => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . basename(__NAMESPACE__),
-                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/' . basename(__NAMESPACE__) . 'Test'
+                    __NAMESPACE__ => __DIR__ . '/src/Library',
+                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/LibraryTest'
                 ),
             ),
         );
