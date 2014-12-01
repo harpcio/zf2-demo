@@ -27,13 +27,13 @@ class Module
     public function getAutoloaderConfig()
     {
         return [
-//            ClassMapAutoloader::class => [
-//                __DIR__ . '/autoload_classmap.php',
-//            ],
+            ClassMapAutoloader::class => [
+                __DIR__ . '/autoload_classmap.php',
+            ],
             StandardAutoloader::class => [
                 'namespaces' => [
-                    __NAMESPACE__ => __DIR__ . '/src/' . basename(__NAMESPACE__),
-                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/' . basename(__NAMESPACE__) . 'Test'
+                    __NAMESPACE__ => __DIR__ . '/src/Users',
+                    __NAMESPACE__ . 'Test' => __DIR__ . '/test/UsersTest'
                 ],
             ],
         ];
