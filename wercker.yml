@@ -8,11 +8,13 @@ build:
     - script:
         name: install dependencies
         code: |-
+            composer self-update
             composer install --no-interaction
     - script:
         name: PHPUnit integration tests
         code: |-
             mkdir -p build/logs
+            phpunit --configuration test/phpunit.xml
             phpunit --configuration test/phpunit.xml --testdox --coverage-clover ../build/logs/clover.xml
 
     - script:
