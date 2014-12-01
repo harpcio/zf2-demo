@@ -10,7 +10,7 @@ before_script:
 script:
   - mkdir -p build/logs
   - cd test
-  - phpunit --testdox --coverage-clover ../build/logs/clover.xml
+  - phpunit
 
 after_script:
  - cd ..
