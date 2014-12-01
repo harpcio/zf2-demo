@@ -36,9 +36,9 @@ class Module implements DependencyIndicatorInterface
     public function getAutoloaderConfig()
     {
         return [
-            ClassMapAutoloader::class => [
-                __DIR__ . '/autoload_classmap.php',
-            ],
+//            ClassMapAutoloader::class => [
+//                __DIR__ . '/autoload_classmap.php',
+//            ],
             StandardAutoloader::class => [
                 'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' . basename(__NAMESPACE__),

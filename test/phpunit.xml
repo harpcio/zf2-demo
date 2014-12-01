@@ -3,9 +3,8 @@
 <phpunit bootstrap="Bootstrap.php">
     <testsuites>
         <testsuite name="Tests">
-            <!--<directory suffix="Test.php">../module/Acl/test/AclTest</directory>-->
+            <directory suffix="Test.php">../module/Acl/test/AclTest</directory>
             <directory suffix="Test.php">../module/Application/test/ApplicationTest</directory>
-            <directory suffix="Test.php">../module/BusinessLogic/Books/test/BooksTest</directory>
             <directory suffix="Test.php">../module/BusinessLogic/Users/test/UsersTest</directory>
             <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
             <directory suffix="Test.php">../module/Module/Api/test/ApiTest</directory>
@@ -14,6 +13,7 @@
             <directory suffix="Test.php">../module/Module/Auth/test/AuthTest</directory>
             <directory suffix="Test.php">../module/Module/Library/test/LibraryTest</directory>
             <directory suffix="Test.php">../module/Module/LibraryBooks/test/LibraryBooksTest</directory>
+            <directory suffix="Test.php">../module/BusinessLogic/Books/test/BooksTest</directory>
         </testsuite>
     </testsuites>
 

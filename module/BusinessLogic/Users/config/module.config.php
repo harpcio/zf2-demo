@@ -5,7 +5,7 @@ return [
         'driver' => [
             'business_logic_users_entities' => [
                 'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
-                'cache' => 'filesystem',
+                'cache' => 'array',
                 'paths' => [__DIR__ . '/../src/Users/Entity']
             ],
             'orm_default' => [
