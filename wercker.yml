@@ -5,6 +5,7 @@ build:
         name: Switch to php 5.5
         code: |-
             phpenv global 5.5
+            echo 'date.timezone = "Europe/Warsaw"' >> $HOME/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - script:
         name: install dependencies
         code: |-
