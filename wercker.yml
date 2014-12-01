@@ -8,7 +8,6 @@ build:
     - script:
         name: install dependencies
         code: |-
-            composer self-update
             composer install --no-interaction
     - script:
         name: PHPUnit integration tests
