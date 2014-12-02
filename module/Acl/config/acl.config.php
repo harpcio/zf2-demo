@@ -13,7 +13,7 @@ return [
             'deny' => []
         ],
         UserEntityInterface::ROLE_ADMIN => [
-            'parents' => ['guest'],
+            'parents' => [UserEntityInterface::ROLE_GUEST],
             'allow' => [],
             'deny' => []
         ]

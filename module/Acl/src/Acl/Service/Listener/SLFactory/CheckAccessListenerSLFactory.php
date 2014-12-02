@@ -1,13 +1,13 @@
 <?php
 
-namespace Acl\Service\SLFactory;
+namespace Acl\Service\Listener\SLFactory;
 
 use Acl\Service\AclService;
-use Acl\Service\AclFactory;
+use Acl\Service\Listener\CheckAccessListener;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
-class AclFactorySLFactory implements FactoryInterface
+class CheckAccessListenerSLFactory implements FactoryInterface
 {
 
     /**
@@ -20,12 +20,10 @@ class AclFactorySLFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var array $modules
-         * @var array $config
+         * @var AclService $checkAclService
          */
-        $modules = $serviceLocator->get('ApplicationConfig')['modules'];
-        $config = $serviceLocator->get('Config')['acl'];
+        $checkAclService = $serviceLocator->get(AclService::class);
 
-        return new AclFactory($modules, $config);
+        return new CheckAccessListener($checkAclService);
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Acl\Service\SLFactory;
 
-use Acl\Service\CheckAclService;
+use Acl\Model\NamesResolver;
+use Acl\Service\AclService;
 use Acl\Service\AclFactory;
 use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
 
-class CheckAclServiceSLFactory implements FactoryInterface
+class AclServiceSLFactory implements FactoryInterface
 {
 
     /**
@@ -16,7 +17,7 @@ class CheckAclServiceSLFactory implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return \Acl\Service\CheckAclService
+     * @return \Acl\Service\AclService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -26,9 +27,10 @@ class CheckAclServiceSLFactory implements FactoryInterface
          */
         $aclFactory = $serviceLocator->get(AclFactory::class);
         $authenticationService = $serviceLocator->get(AuthenticationService::class);
+        $namesResolver = $serviceLocator->get(NamesResolver::class);
 
         $acl = $aclFactory->create();
 
-        return new CheckAclService($authenticationService, $acl);
+        return new AclService($authenticationService, $acl, $namesResolver);
     }
 }

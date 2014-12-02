@@ -2,7 +2,8 @@
 
 namespace Acl;
 
-use Acl\Service\CheckAclService;
+use Acl\Service\AclService;
+use Acl\Service\Listener\CheckAccessListener;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\ModuleRouteListener;
@@ -13,7 +14,7 @@ class Module implements DependencyIndicatorInterface
 {
     public function getModuleDependencies()
     {
-        return ['BusinessLogic\\Users', 'Module\\Auth'];
+        return ['BusinessLogic\\Users', 'Module\\Auth', 'Module\\Api'];
     }
 
     public function onBootstrap(MvcEvent $e)
@@ -36,14 +37,12 @@ class Module implements DependencyIndicatorInterface
 
         $matchedRoute = $router->match($request);
         if (null !== $matchedRoute) {
+            $checkAccessListener = $sm->get(CheckAccessListener::class);
+
             $sharedManager->attach(
                 AbstractActionController::class,
                 MvcEvent::EVENT_DISPATCH,
-                function ($e) use ($sm) {
-                    /** @var CheckAclService $checkAclService */
-                    $checkAclService = $sm->get(CheckAclService::class);
-                    $checkAclService->checkAccess($e);
-                },
+                $checkAccessListener,
                 2
             );
         }

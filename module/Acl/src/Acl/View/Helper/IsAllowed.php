@@ -18,8 +18,12 @@ class IsAllowed extends AbstractHelper
         /** @var Acl $acl */
         $acl = $view->viewModel()->getRoot()->getVariable('acl');
 
-        if ($acl && $user && $acl->isAllowed($user->getRole(), strtolower($resource), strtolower($privilege))) {
-            return true;
+        if ($acl && $user) {
+            return $acl->isAllowed(
+                strtolower($user->getRole()),
+                strtolower($resource),
+                strtolower($privilege)
+            );
         }
 
         return false;

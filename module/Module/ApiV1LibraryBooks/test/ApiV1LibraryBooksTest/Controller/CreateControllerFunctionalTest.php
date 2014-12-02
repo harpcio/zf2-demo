@@ -46,9 +46,9 @@ class CreateControllerFunctionalTest extends AbstractFunctionalControllerTestCas
         $this->filter = $this->getApplicationServiceLocator()->get(CreateFormInputFilter::class);
     }
 
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        parent::tearDown();
+        parent::tearDownAfterClass();
 
         Bootstrap::setupServiceManager();
     }

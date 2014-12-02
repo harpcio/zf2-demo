@@ -40,9 +40,9 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
         $this->setMockToServiceLocator(FilterResultsService::class, $this->serviceMock);
     }
 
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        parent::tearDown();
+        parent::tearDownAfterClass();
 
         Bootstrap::setupServiceManager();
     }

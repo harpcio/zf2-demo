@@ -50,7 +50,8 @@ class AclFactory
     {
         foreach ($this->config as $roleName => $roleConfig) {
             $parents = isset($roleConfig['parents']) ? $roleConfig['parents'] : [];
-            $acl->addRole(new GenericRole($roleName), $parents);
+            $parents = array_map('strtolower', $parents);
+            $acl->addRole(new GenericRole(strtolower($roleName)), $parents);
         }
     }
 
