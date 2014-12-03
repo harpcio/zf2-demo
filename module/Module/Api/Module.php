@@ -22,14 +22,13 @@ class Module
 
     public function getJsonModelError(MvcEvent $e)
     {
-        $error = $e->getError();
-        if (!$error) {
+        if (!($error = $e->getError())) {
             return true;
         }
 
         $exception = $e->getParam('exception');
 
-        if (!$error || !($exception instanceof Exception\AbstractException)) {
+        if (!$exception || !($exception instanceof Exception\AbstractException)) {
             return true;
         }
 

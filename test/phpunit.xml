@@ -35,16 +35,27 @@
             <directory suffix=".php">../module/Module/LibraryBooks</directory>
             <exclude>
                 <directory suffix=".php">../module/Acl/test</directory>
+                <file>../module/Acl/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Application/test</directory>
+                <file>../module/Application/autoload_classmap.php</file>
                 <directory suffix=".php">../module/BusinessLogic/Books/test</directory>
+                <file>../module/BusinessLogic/Books/autoload_classmap.php</file>
                 <directory suffix=".php">../module/BusinessLogic/Users/test</directory>
+                <file>../module/BusinessLogic/Users/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Library/test</directory>
+                <file>../module/Library/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/Api/test</directory>
+                <file>../module/Module/Api/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/ApiV1Library/test</directory>
+                <file>../module/Module/ApiV1Library/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/ApiV1LibraryBooks/test</directory>
+                <file>../module/Module/ApiV1LibraryBooks/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/Auth/test</directory>
+                <file>../module/Module/Auth/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/Library/test</directory>
+                <file>../module/Module/Library/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/LibraryBooks/test</directory>
+                <file>../module/Module/LibraryBooks/autoload_classmap.php</file>
             </exclude>
         </whitelist>
     </filter>

@@ -1,6 +1,6 @@
 {
-    "name": "Zend Framework 2 Advanced Demo",
-    "description": "Skeleton Application for ZF2 with API based on 'Single Action Per Controller' standards, using PHP5.5, Doctrine2",
+    "name": "harpcio/zf2-demo",
+    "description": "Advanced skeleton application for ZF2 with API based on 'Single Action Per Controller' standards, using PHP5.5, Doctrine2",
     "license": "MIT",
     "keywords": [
         "framework",
@@ -23,8 +23,8 @@
     "homepage": "https://github.com/harpcio/zf2-demo",
     "require": {
         "php": ">=5.5.0",
-        "zendframework/zendframework": "2.3.*",
-        "doctrine/doctrine-orm-module": "0.7.*",
+        "zendframework/zendframework": "2.3.3",
+        "doctrine/doctrine-orm-module": "0.8.0",
         "dlu/dlutwbootstrap": "dev-master"
     },
     "require-dev": {

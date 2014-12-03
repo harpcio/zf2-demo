@@ -2,26 +2,31 @@
 
 namespace Library\Logger;
 
-use Zend\Log\Filter\Priority;
 use Zend\Log\Logger;
-use Zend\Log\Writer\Stream;
 
 class Manager
 {
     /**
-     * @var string
+     * @var Factory\ComponentsFactory
      */
-    private $path;
+    private $componentsFactory;
 
     /**
      * @var string
      */
-    private $separator;
+    private $defaultPath;
 
-    public function __construct()
+    /**
+     * @var string
+     */
+    private $defaultSeparator;
+
+    public function __construct(Factory\ComponentsFactory $componentsFactory)
     {
-        $this->path = ROOT_PATH . '/data/log/';
-        $this->separator = PHP_EOL . '-' . PHP_EOL;
+        $this->componentsFactory = $componentsFactory;
+
+        $this->defaultPath = ROOT_PATH . '/data/log/';
+        $this->defaultSeparator = PHP_EOL . '-' . PHP_EOL;
     }
 
     /**
@@ -33,20 +38,20 @@ class Manager
      */
     public function createErrorInfoLog($name = 'app', $path = null, $separator = null)
     {
-        $this->preparePath($path);
-        $this->prepareSeparator($separator);
+        $path = $this->preparePath($path);
+        $separator = $this->prepareSeparator($separator);
 
-        $logger = new Logger();
+        $logger = $this->componentsFactory->createLogger();
 
-        $filePathName = $this->path . date('Ymd') . sprintf('.%s.error.log', $name);
-        $errorWriter = new Stream($filePathName, null, $this->separator);
-        $errorFilter = new Priority(Logger::ERR, '<=');
+        $filePathName = $path . date('Ymd') . sprintf('.%s.error.log', $name);
+        $errorWriter = $this->componentsFactory->createStreamWriter($filePathName, null, $separator);
+        $errorFilter = $this->componentsFactory->createPriority(Logger::ERR, '<=');
         $errorWriter->addFilter($errorFilter);
         $logger->addWriter($errorWriter);
 
-        $filePathName = $this->path . date('Ymd') . sprintf('.%s.info.log', $name);
-        $errorWriter = new Stream($filePathName, null, $this->separator);
-        $errorFilter = new Priority(Logger::WARN, '>=');
+        $filePathName = $path . date('Ymd') . sprintf('.%s.info.log', $name);
+        $errorWriter = $this->componentsFactory->createStreamWriter($filePathName, null, $separator);
+        $errorFilter = $this->componentsFactory->createPriority(Logger::WARN, '>=');
         $errorWriter->addFilter($errorFilter);
         $logger->addWriter($errorWriter);
 
@@ -62,29 +67,43 @@ class Manager
      */
     public function createLog($name = 'app', $path = null, $separator = null)
     {
-        $this->preparePath($path);
-        $this->prepareSeparator($separator);
+        $path = $this->preparePath($path);
+        $separator = $this->prepareSeparator($separator);
 
-        $logger = new Logger();
+        $logger = $this->componentsFactory->createLogger();
 
-        $filePathName = $this->path . date('Ymd') . sprintf('.%s.log', $name);
-        $errorWriter = new Stream($filePathName, null, $this->separator);
+        $filePathName = $path . date('Ymd') . sprintf('.%s.log', $name);
+        $errorWriter = $this->componentsFactory->createStreamWriter($filePathName, null, $separator);
         $logger->addWriter($errorWriter);
 
         return $logger;
     }
 
+    /**
+     * @param string|null $path
+     *
+     * @return string
+     */
     private function preparePath($path = null)
     {
         if (null !== $path && is_dir($path)) {
-            $this->path = $path;
+            return $path;
         }
+
+        return $this->defaultPath;
     }
 
+    /**
+     * @param string|null $separator
+     *
+     * @return string
+     */
     private function prepareSeparator($separator = null)
     {
         if (null !== $separator) {
-            $this->separator = $separator;
+            return $separator;
         }
+
+        return $this->defaultSeparator;
     }
 }

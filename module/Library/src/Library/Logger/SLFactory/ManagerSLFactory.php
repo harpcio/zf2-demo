@@ -2,12 +2,12 @@
 
 namespace Library\Logger\SLFactory;
 
+use Library\Logger\Factory\ComponentsFactory;
 use Library\Logger\Manager;
-use Zend\Log\Logger;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class LoggerSLFactory implements FactoryInterface
+class ManagerSLFactory implements FactoryInterface
 {
 
     /**
@@ -15,13 +15,13 @@ class LoggerSLFactory implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return Logger
+     * @return Manager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /** @var Manager $loggerManager */
-        $loggerManager = $serviceLocator->get(Manager::class);
+        /** @var ComponentsFactory $loggerFactory */
+        $loggerFactory = $serviceLocator->get(ComponentsFactory::class);
 
-        return $loggerManager->createErrorInfoLog();
+        return new Manager($loggerFactory);
     }
 }
