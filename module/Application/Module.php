@@ -2,8 +2,8 @@
 
 namespace Application;
 
-use Module\Api\Exception\AbstractException;
-use Zend\Log\Logger;
+use Application\Service\Listener\LogExceptionListener;
+use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
@@ -18,17 +18,12 @@ class Module
 
         $sharedManager = $eventManager->getSharedManager();
         $sm = $e->getApplication()->getServiceManager();
+        $logExceptionListener = $sm->get(LogExceptionListener::class);
 
         $sharedManager->attach(
-            'Zend\Mvc\Application',
+            Application::class,
             MvcEvent::EVENT_DISPATCH_ERROR,
-            function (MvcEvent $e) use ($sm) {
-                if (($exception = $e->getParam('exception')) && !($exception instanceof AbstractException)) {
-                    /** @var Logger $logger */
-                    $logger = $sm->get('Logger');
-                    $logger->crit($e->getParam('exception'));
-                }
-            }
+            $logExceptionListener
         );
     }
 

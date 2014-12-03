@@ -1,12 +1,12 @@
 <?php
 
-namespace Library\Logger\Factory;
+namespace Library\Logger\SLFactory;
 
 use Library\Logger\Manager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class LoggerFactory implements FactoryInterface
+class LoggerSLFactory implements FactoryInterface
 {
 
     /**

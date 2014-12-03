@@ -12,6 +12,7 @@ return [
             'translator' => 'MvcTranslator',
         ],
         'factories' => [
+            \Application\Service\Listener\LogExceptionListener::class => \Application\Service\Listener\SLFactory\LogExceptionListenerSLFactory::class,
         ],
     ]
 ];

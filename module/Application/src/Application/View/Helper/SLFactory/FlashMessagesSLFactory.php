@@ -24,9 +24,6 @@ class FlashMessagesSLFactory implements FactoryInterface
         $flashMessenger = $serviceLocator->get('ControllerPluginManager')
             ->get('FlashMessenger');
 
-        $messages = new FlashMessages();
-        $messages->setFlashMessenger($flashMessenger);
-
-        return $messages;
+        return new FlashMessages($flashMessenger);
     }
 }

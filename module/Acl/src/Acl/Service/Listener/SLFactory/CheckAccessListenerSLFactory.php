@@ -20,10 +20,10 @@ class CheckAccessListenerSLFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var AclService $checkAclService
+         * @var AclService $aclService
          */
-        $checkAclService = $serviceLocator->get(AclService::class);
+        $aclService = $serviceLocator->get(AclService::class);
 
-        return new CheckAccessListener($checkAclService);
+        return new CheckAccessListener($aclService);
     }
 }

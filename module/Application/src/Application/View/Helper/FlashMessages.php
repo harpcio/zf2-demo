@@ -12,7 +12,7 @@ class FlashMessages extends AbstractHelper
      */
     protected $flashMessenger;
 
-    public function setFlashMessenger(FlashMessenger $flashMessenger)
+    public function __construct(FlashMessenger $flashMessenger)
     {
         $this->flashMessenger = $flashMessenger;
     }
@@ -23,6 +23,7 @@ class FlashMessages extends AbstractHelper
             FlashMessenger::NAMESPACE_ERROR => [],
             FlashMessenger::NAMESPACE_SUCCESS => [],
             FlashMessenger::NAMESPACE_INFO => [],
+            FlashMessenger::NAMESPACE_WARNING => [],
             FlashMessenger::NAMESPACE_DEFAULT => []
         );
 

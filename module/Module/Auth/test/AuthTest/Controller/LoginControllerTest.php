@@ -211,4 +211,17 @@ class LoginControllerTest extends AbstractControllerTestCase
         $this->assertNotRedirect();
     }
 
+    public function testAction_WhenUserIsLogged()
+    {
+        $this->authenticateUser();
+
+        $this->controller->dispatch(
+            (new Request())
+                ->setMethod(Request::METHOD_GET)
+        );
+
+        $this->assertResponseStatusCode(Response::STATUS_CODE_302);
+        $this->assertRedirectTo('/');
+    }
+
 }
