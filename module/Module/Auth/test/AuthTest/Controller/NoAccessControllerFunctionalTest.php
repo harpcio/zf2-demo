@@ -11,7 +11,8 @@ use Zend\Http\Response;
 
 class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestCase
 {
-    const LOGIN_URL = '/auth/login';
+    const LOGIN_URL = '/auth/login',
+        UNKNOWN_USER_ROLE = 'unknown';
 
     public function setUp()
     {
@@ -43,9 +44,9 @@ class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestC
         $ref = new \ReflectionClass(UserEntity::class);
         $prop = $ref->getProperty('allowedRoles');
         $prop->setAccessible(true);
-        $prop->setValue($userEntity, ['admin', 'superman']);
+        $prop->setValue($userEntity, ['admin', self::UNKNOWN_USER_ROLE]);
 
-        $userEntity->setRole('superman');
+        $userEntity->setRole(self::UNKNOWN_USER_ROLE);
 
         $this->prepareAuthenticateMock(true, $userEntity);
     }
@@ -53,7 +54,7 @@ class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestC
     private function prepareConfigAclForSuperman()
     {
         $config = $this->getApplicationServiceLocator()->get('Config');
-        $config['acl']['superman'] = [
+        $config['acl'][self::UNKNOWN_USER_ROLE] = [
             'parents' => [],
             'allow' => [],
             'deny' => []

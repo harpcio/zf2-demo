@@ -11,9 +11,9 @@ abstract class AbstractObjectTypeCollection extends AbstractTypeCollection
      */
     public function checkType($value)
     {
-        if ($this->type && !is_a($value, $this->type)) {
+        if ($this->interfaceOrObjectName && !is_a($value, $this->interfaceOrObjectName)) {
             throw new \UnexpectedValueException(
-                sprintf('Illegal class name, expected: %s, got %s', $this->type, get_class($value))
+                sprintf('Illegal class name, expected: %s, got %s', $this->interfaceOrObjectName, get_class($value))
             );
         }
     }

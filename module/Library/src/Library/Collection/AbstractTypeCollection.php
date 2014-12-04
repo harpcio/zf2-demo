@@ -4,14 +4,14 @@ namespace Library\Collection;
 
 abstract class AbstractTypeCollection implements \ArrayAccess, \IteratorAggregate
 {
-    protected $type = null;
+    protected $interfaceOrObjectName = null;
 
     private $elements = array();
 
     public function __construct(array $elements = [])
     {
-        if (!$this->type) {
-            throw new \LogicException('Type not defined');
+        if (!$this->interfaceOrObjectName) {
+            throw new \LogicException('Variable $interfaceOrObjectName not defined');
         }
 
         foreach ($elements as $element) {

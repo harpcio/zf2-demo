@@ -6,5 +6,5 @@ use Library\Collection\AbstractInterfaceTypeCollection;
 
 class InvalidMyClassInterfaceCollection extends AbstractInterfaceTypeCollection
 {
-    protected $type = null;
+    protected $interfaceOrObjectName = null;
 }

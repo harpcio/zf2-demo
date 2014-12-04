@@ -8,5 +8,6 @@ class NoAccessController extends AbstractActionController
 {
     public function indexAction()
     {
+        return [];
     }
 }

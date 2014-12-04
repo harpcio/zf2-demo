@@ -20,10 +20,10 @@ class LogExceptionListener
 
     public function __invoke(MvcEvent $event)
     {
-        $exception = $event->getParam('exception');
-
-        if ($exception && !($exception instanceof AbstractException)) {
-            $this->logger->crit($exception);
+        if (($exception = $event->getParam('exception'))) {
+            if (!($exception instanceof AbstractException) || DEVELOPMENT_ENV) {
+                $this->logger->crit($exception);
+            }
         }
     }
 }

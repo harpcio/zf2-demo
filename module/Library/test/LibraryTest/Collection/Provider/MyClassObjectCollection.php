@@ -6,5 +6,5 @@ use Library\Collection\AbstractObjectTypeCollection;
 
 class MyClassObjectCollection extends AbstractObjectTypeCollection
 {
-    protected $type = MyClass::class;
+    protected $interfaceOrObjectName = MyClass::class;
 }

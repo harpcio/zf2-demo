@@ -77,7 +77,7 @@ class InterfaceTypeCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInitializeInterfaceTypeCollectionWithoutType()
     {
-        $this->setExpectedException('LogicException', 'Type not defined');
+        $this->setExpectedException('LogicException', 'Variable $interfaceOrObjectName not defined');
 
         new Provider\InvalidMyClassInterfaceCollection(
             [

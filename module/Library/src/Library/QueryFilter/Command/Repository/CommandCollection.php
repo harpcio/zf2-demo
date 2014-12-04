@@ -6,5 +6,5 @@ use Library\Collection\AbstractInterfaceTypeCollection;
 
 class CommandCollection extends AbstractInterfaceTypeCollection
 {
-    protected $type = CommandInterface::class;
+    protected $interfaceOrObjectName = CommandInterface::class;
 }

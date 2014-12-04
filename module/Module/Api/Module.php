@@ -3,6 +3,7 @@
 namespace Module\Api;
 
 use Module\Api\Exception;
+use Module\Api\Listener\ResolveExceptionToJsonModelListener;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
@@ -16,45 +17,11 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, [$this, 'getJsonModelError'], 0);
-        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, [$this, 'getJsonModelError'], 0);
-    }
+        $sm = $e->getApplication()->getServiceManager();
+        $resolveExceptionToJsonModelListener = $sm->get(ResolveExceptionToJsonModelListener::class);
 
-    public function getJsonModelError(MvcEvent $e)
-    {
-        if (!($error = $e->getError())) {
-            return true;
-        }
-
-        $exception = $e->getParam('exception');
-
-        if (!$exception || !($exception instanceof Exception\AbstractException)) {
-            return true;
-        }
-
-        /** @var \Zend\Http\Response $response */
-        $response = $e->getResponse();
-        $response->setStatusCode($exception->getCode());
-
-        $errorJson = [
-            'errorCode' => $exception->getCode(),
-            'message' => $exception->getMessage()
-        ];
-
-        if (DEVELOPMENT_ENV) {
-            $errorJson['exception'] = [
-                'class' => get_class($exception),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'message' => $exception->getMessage(),
-                'stacktrace' => $exception->getTraceAsString()
-            ];
-        }
-
-        $model = new JsonModel($errorJson);
-        $e->setResult($model);
-
-        return $model;
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, $resolveExceptionToJsonModelListener, 0);
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, $resolveExceptionToJsonModelListener, 0);
     }
 
     public function getConfig()
@@ -62,7 +29,8 @@ class Module
         return array_merge(
             include __DIR__ . '/config/controller.config.php',
             include __DIR__ . '/config/module.config.php',
-            include __DIR__ . '/config/router.config.php'
+            include __DIR__ . '/config/router.config.php',
+            include __DIR__ . '/config/service.config.php'
         );
     }
 

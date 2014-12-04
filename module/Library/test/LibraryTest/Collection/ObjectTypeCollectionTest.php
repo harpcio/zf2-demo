@@ -77,7 +77,7 @@ class ObjectTypeCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInitializeObjectTypeCollectionWithoutType()
     {
-        $this->setExpectedException('LogicException', 'Type not defined');
+        $this->setExpectedException('LogicException', 'Variable $interfaceOrObjectName not defined');
 
         new Provider\InvalidMyClassObjectCollection(
             [

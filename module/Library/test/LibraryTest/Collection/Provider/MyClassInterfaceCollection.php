@@ -6,5 +6,5 @@ use Library\Collection\AbstractInterfaceTypeCollection;
 
 class MyClassInterfaceCollection extends AbstractInterfaceTypeCollection
 {
-    protected $type = MyClassInterface::class;
+    protected $interfaceOrObjectName = MyClassInterface::class;
 }

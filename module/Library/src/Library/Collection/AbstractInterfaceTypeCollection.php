@@ -11,9 +11,9 @@ abstract class AbstractInterfaceTypeCollection extends AbstractTypeCollection
      */
     public function checkType($value)
     {
-        if ($this->type && !($value instanceof $this->type)) {
+        if ($this->interfaceOrObjectName && !($value instanceof $this->interfaceOrObjectName)) {
             throw new \UnexpectedValueException(
-                sprintf('Illegal object, expected instance of: %s', $this->type)
+                sprintf('Illegal object, expected instance of: %s', $this->interfaceOrObjectName)
             );
         }
     }
