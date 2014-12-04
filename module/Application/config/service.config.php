@@ -13,6 +13,7 @@ return [
         ],
         'factories' => [
             \Application\Service\Listener\LogExceptionListener::class => \Application\Service\Listener\SLFactory\LogExceptionListenerSLFactory::class,
+            'navigation' => \Zend\Navigation\Service\DefaultNavigationFactory::class,
         ],
     ]
 ];

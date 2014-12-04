@@ -1,0 +1,18 @@
+<?php
+
+use BusinessLogic\Users\Entity\UserEntityInterface;
+
+$role = UserEntityInterface::ROLE_GUEST;
+/** @var UserEntityInterface $userEntity */
+if (($userEntity = $this->identity())) {
+    $role = $userEntity->getRole();
+}
+$this->navigation()->setAcl($this->acl)->setRole($role);
+
+echo $this->navigation('navigation')
+    ->menu()
+    ->setMinDepth(0)
+    ->setMaxDepth(0)
+    ->setUlClass('nav navbar-nav')
+    ->setPartial(array('partial/navigation-top-menu', 'Application'));
+?>

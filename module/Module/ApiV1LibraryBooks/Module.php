@@ -29,7 +29,8 @@ class Module implements DependencyIndicatorInterface
             include __DIR__ . '/config/controller.config.php',
             include __DIR__ . '/config/module.config.php',
             include __DIR__ . '/config/router.config.php',
-            include __DIR__ . '/config/view.config.php'
+            include __DIR__ . '/config/view.config.php',
+            include __DIR__ . '/config/navigation.config.php'
         );
     }
 

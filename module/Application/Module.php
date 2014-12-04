@@ -35,7 +35,8 @@ class Module
             include __DIR__ . '/config/router.config.php',
             include __DIR__ . '/config/console-router.config.php',
             include __DIR__ . '/config/service.config.php',
-            include __DIR__ . '/config/view.config.php'
+            include __DIR__ . '/config/view.config.php',
+            include __DIR__ . '/config/navigation.config.php'
         );
     }
 

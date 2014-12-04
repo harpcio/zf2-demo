@@ -44,13 +44,9 @@
             </a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="<?= $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                <li><a href="<?= $this->url('library/books') ?>">Books in library</a></li>
-                <li><a href="<?= $this->url('api/library/books') ?>">Api for books in library</a></li>
-            </ul>
+            <?= $this->partial('partial/top-menu'); ?>
             <ul class="nav navbar-nav navbar-right">
-            <?php /** @var \User\Entity\UserEntity $identity */ ?>
+            <?php /** @var \BusinessLogic\Users\Entity\UserEntity $identity */ ?>
             <?php if (($identity = $this->identity())): ?>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -75,7 +71,7 @@
     </div>
 </nav>
 <div class="container">
-    <?= $this->partial('/partial/messages.phtml') ?>
+    <?= $this->partial('partial/messages') ?>
     <?php echo $this->content; ?>
     <hr>
     <footer>

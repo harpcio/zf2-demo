@@ -91,6 +91,6 @@ TODO
 6. implement admin panel
 7. ~~transfer updating/creating/deleting privileges of books to administrator~~
 8. ~~implement query filtering in API with multiple options and special commands~~
-9. implement navigation with acl filtering
+9. ~~implement navigation with acl filtering~~
 10. pagination, sorting, filtering on lists
 
