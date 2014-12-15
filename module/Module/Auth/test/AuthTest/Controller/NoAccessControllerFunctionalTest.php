@@ -28,8 +28,8 @@ class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestC
 
     public function testNotFoundAction()
     {
-        $this->prepareUserAuthenticationForSuperMan();
-        $this->prepareConfigAclForSuperman();
+        $this->prepareUserAuthenticationForUnknownRole();
+        $this->prepareConfigAclForUnknownRole();
 
         $this->dispatch(self::LOGIN_URL, Request::METHOD_GET);
 
@@ -37,7 +37,7 @@ class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestC
         $this->assertRedirectTo('/auth/no-access');
     }
 
-    private function prepareUserAuthenticationForSuperMan()
+    private function prepareUserAuthenticationForUnknownRole()
     {
         $userEntity = UserEntityProvider::createEntityWithRandomData();
 
@@ -51,12 +51,16 @@ class NoAccessControllerFunctionalTest extends AbstractFunctionalControllerTestC
         $this->prepareAuthenticateMock(true, $userEntity);
     }
 
-    private function prepareConfigAclForSuperman()
+    private function prepareConfigAclForUnknownRole()
     {
         $config = $this->getApplicationServiceLocator()->get('Config');
         $config['acl'][self::UNKNOWN_USER_ROLE] = [
             'parents' => [],
-            'allow' => [],
+            'allow' => [
+                'Module\\Auth' => [
+                    'NoAccess:index'
+                ]
+            ],
             'deny' => []
         ];
 
