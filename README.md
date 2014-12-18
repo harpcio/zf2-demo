@@ -114,4 +114,5 @@ TODO
 8. ~~implement query filtering in API with multiple options and special commands~~
 9. ~~implement navigation with acl filtering~~
 10. pagination, sorting, filtering on lists
+11. ~~implement lang && locale support~~
 
