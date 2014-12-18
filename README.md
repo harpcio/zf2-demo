@@ -47,15 +47,22 @@ to restrict access for API by user (ie. CREATE, PUT, DELETE only for admin).
 Lang & Locale
 -------------
 - if parameter $config['language']['should_redirect_to_recognized_language'] is disabled
-    - then default language will have all urls without "lang" parameter:
-        - "/" will be recognized as language EN
-        - "/tw" (not available language) will be redirect to "/" automatically
-        - "/en" will be redirect to "/" automatically
-    - other available languages will have urls with lang parameter: 
+    - if your default language is "en"
+        - all URLS in your application for that default language will not have LANG parameter
+            - "/" will be recognized as language EN
+            - "/tw" (not available language) will be redirect to "/" automatically
+            - "/en" will be redirect to "/" automatically
+    - for other available languages URLS will have LANG parameter: 
         - ie. '/de/auth/login', '/pl/auth/login'
 
-With the new feature, now we have possibility to have default language, ie "en", 
-and all urls without language parameter: "/auth/login"
+- if parameter $config['language']['should_redirect_to_recognized_language'] is enabled
+    - then default language will be your local browser language if it is available
+        - "/" will be redirected to "en" if your local browser language is "en"
+        - "/" will be redirected to "pl" if your local browser language is "pl"
+        - "/tw" (not available) will be redirected to "de" if your local browser language is "de"
+
+With the new feature, now we have possibility to have default language, ie. "en", 
+and all urls without LANG parameter, ie.: "/auth/login", "/library/books"
 
 
 Installation

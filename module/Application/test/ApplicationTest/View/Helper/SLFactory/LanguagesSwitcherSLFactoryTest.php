@@ -4,6 +4,7 @@ namespace ApplicationTest\View\Helper\SLFactory;
 
 use Application\View\Helper\LanguagesSwitcher;
 use Application\View\Helper\SLFactory\LanguagesSwitcherSLFactory;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Test\Bootstrap;
 use Zend\Mvc\Application;
 use Zend\Mvc\Router\Http\RouteMatch;
@@ -16,8 +17,18 @@ class LanguageSwitcherSLFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $testedObj;
 
+    /**
+     * @var MockObject
+     */
+    private $applicationMock;
+
     public function setUp()
     {
+        $this->applicationMock = $this->getMockBuilder(Application::class)
+            ->setMethods(['getMvcEvent', 'getRouteMatch'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->testedObj = new LanguagesSwitcherSLFactory();
     }
 
@@ -30,13 +41,21 @@ class LanguageSwitcherSLFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateService()
     {
-        /** @var Application $app */
-        $app = Bootstrap::getServiceManager()->get('Application');
-        $app->bootstrap();
-        $app->getMvcEvent()->setRouteMatch(new RouteMatch([]));
+        $this->applicationMock->expects($this->once())
+            ->method('getMvcEvent')
+            ->willReturnSelf();
+
+        $this->applicationMock->expects($this->once())
+            ->method('getRouteMatch')
+            ->willReturn(new RouteMatch([]));
+
+        $sl = Bootstrap::getServiceManager();
+        $sl->setAllowOverride(true);
+        $sl->setService('Application', $this->applicationMock);
+        $sl->setAllowOverride(false);
 
         $helperPluginManager = new HelperPluginManager();
-        $helperPluginManager->setServiceLocator(Bootstrap::getServiceManager());
+        $helperPluginManager->setServiceLocator($sl);
 
         $result = $this->testedObj->createService($helperPluginManager);
 
