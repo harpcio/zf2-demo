@@ -21,6 +21,7 @@ return [
         'invokables' => [],
         'factories' => [
             'flashMessages' => Application\View\Helper\SLFactory\FlashMessagesSLFactory::class,
+            'languagesSwitcher' => \Application\View\Helper\SLFactory\LanguagesSwitcherSLFactory::class,
         ],
     ],
 ];

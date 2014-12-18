@@ -1,9 +1,9 @@
 <?php
 
-namespace ApplicationTest\Service\Listener\SLFactory;
+namespace ApplicationTest\Listener\Log\SLFactory;
 
-use Application\Service\Listener\LogExceptionListener;
-use Application\Service\Listener\SLFactory\LogExceptionListenerSLFactory;
+use Application\Listener\Log\LogExceptionListener;
+use Application\Listener\Log\SLFactory\LogExceptionListenerSLFactory;
 use Test\Bootstrap;
 
 class LogExceptionListenerSLFactoryTest extends \PHPUnit_Framework_TestCase

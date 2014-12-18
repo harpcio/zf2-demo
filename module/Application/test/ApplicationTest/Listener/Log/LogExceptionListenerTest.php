@@ -1,8 +1,8 @@
 <?php
 
-namespace ApplicationTest\Service\Listener;
+namespace ApplicationTest\Listener\Log;
 
-use Application\Service\Listener\LogExceptionListener;
+use Application\Listener\Log\LogExceptionListener;
 use Module\Api\Exception\MethodNotAllowedException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Log\LoggerInterface;
@@ -11,7 +11,7 @@ use Zend\Mvc\MvcEvent;
 class LogExceptionListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var LogExceptionListener
+     * @var \Application\Listener\Log\LogExceptionListener
      */
     private $testedObject;
 

@@ -1,0 +1,141 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: zf2-demo\n"
+"POT-Creation-Date: 2014-12-14 22:22+0100\n"
+"PO-Revision-Date: 2014-12-14 22:31+0100\n"
+"Last-Translator: Rafal Ksiazek <harpcio@gmail.com>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: C:\\xampp\\htdocs\\zf2-demo.local\\module\\Application\n"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:2
+#, php-format
+msgid "This is advanced %sZF2%s demo"
+msgstr "Dies ist fortgeschrittenen %sZF2%s Demo"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:4
+msgid "Requirements"
+msgstr "Bedarf"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:10
+msgid "Books in library"
+msgstr "Bücher in der Bibliothek"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:13
+msgid ""
+"Simple library of books, you can there create new, read, update and delete existing "
+"ones."
+msgstr ""
+"Einfache Bibliothek Bücher, können Sie es schaffen neue, lesen, aktualisieren und "
+"bestehende löschen."
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:14
+msgid "Go to books index"
+msgstr "Zum Bücher-Index"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:21
+msgid "API for books in library"
+msgstr "API für Bücher in der Bibliothek"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:24
+msgid ""
+"API for simple library of books, you can there create new, read, update and delete "
+"existing ones."
+msgstr ""
+"API für einfache Bibliothek für Bücher, können Sie es schaffen neue, lesen, "
+"aktualisieren und bestehende löschen."
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/application/index/index.phtml:25
+msgid "Go to books index by API"
+msgstr "Zum Bücher Index API"
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:1
+msgid "A 404 error occurred"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:10
+msgid "The requested controller was unable to dispatch the request."
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:13
+msgid "The requested controller could not be mapped to an existing controller class."
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:16
+msgid "The requested controller was not dispatchable."
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:19
+msgid "The requested URL could not be matched by routing."
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:22
+msgid "We cannot determine at this time why a 404 was generated."
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:34
+msgid "Controller"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:41
+#, php-format
+msgid "resolves to %s"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:53
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:8
+msgid "Additional information"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:56
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:81
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:11
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:36
+msgid "File"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:60
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:85
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:15
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:40
+msgid "Message"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:64
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:89
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:19
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:44
+msgid "Stack trace"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:75
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:30
+msgid "Previous exceptions"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/404.phtml:104
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:59
+msgid "No Exception available"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/error/index.phtml:1
+msgid "An error occurred"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/layout/layout.phtml:43
+msgid "Demo"
+msgstr ""
+
+#: C:\xampp\htdocs\zf2-demo.local\module\Application/view/partial/authenticate.phtml:19
+msgid "Login"
+msgstr "Einloggen"
+
+msgid "Home"
+msgstr "Zuhause"

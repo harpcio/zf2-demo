@@ -2,7 +2,8 @@
 
 namespace Application;
 
-use Application\Service\Listener\LogExceptionListener;
+use Application\Listener\Lang\LangListener;
+use Application\Listener\Log\LogExceptionListener;
 use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -12,19 +13,36 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        $this->setDefaultLocaleInWhichTheApplicationIsWritten();
+
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
         $sharedManager = $eventManager->getSharedManager();
         $sm = $e->getApplication()->getServiceManager();
-        $logExceptionListener = $sm->get(LogExceptionListener::class);
 
+        $logExceptionListener = $sm->get(LogExceptionListener::class);
         $sharedManager->attach(
             Application::class,
             MvcEvent::EVENT_DISPATCH_ERROR,
             $logExceptionListener
         );
+
+        $langListener = $sm->get(LangListener::class);
+        $eventManager->attach(
+            MvcEvent::EVENT_ROUTE,
+            $langListener
+        );
+    }
+
+    /**
+     * If you written your application in other language than english,
+     * please change this locale to your default character language
+     */
+    private function setDefaultLocaleInWhichTheApplicationIsWritten()
+    {
+        \Locale::setDefault(APPLICATION_LOCALE);
     }
 
     public function getConfig()

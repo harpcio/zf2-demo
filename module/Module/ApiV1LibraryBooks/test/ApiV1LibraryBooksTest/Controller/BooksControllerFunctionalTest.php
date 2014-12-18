@@ -17,10 +17,10 @@ class BooksControllerFunctionalTest extends AbstractFunctionalControllerTestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        parent::tearDown();
-        
+        parent::tearDownAfterClass();
+
         Bootstrap::setupServiceManager();
     }
 

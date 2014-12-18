@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Service\Listener;
+namespace Application\Listener\Log;
 
 use Module\Api\Exception\AbstractException;
 use Zend\Log\LoggerInterface;

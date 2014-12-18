@@ -9,6 +9,8 @@ use Zend\Stdlib\ArrayUtils;
 
 define('ROOT_PATH', dirname(__DIR__));
 define('DEVELOPMENT_ENV', (getenv('APPLICATION_ENV') === 'development') ? true : false);
+define('APPLICATION_LOCALE', 'en_GB');
+define('APPLICATION_LANGUAGE', 'en');
 
 /**
  * Test bootstrap, for setting up auto loading

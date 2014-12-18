@@ -15,7 +15,7 @@ return [
             'deny' => []
         ],
         UserEntityInterface::ROLE_ADMIN => [
-            'parents' => ['guest'],
+            'parents' => [],
             'allow' => [
                 'Module\LibraryBooks' => [],
             ],

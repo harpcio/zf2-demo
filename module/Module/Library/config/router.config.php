@@ -1,19 +1,27 @@
 <?php
 
 use Zend\Mvc\Router\Http;
+use Library\Router\Http\SkippableSegment;
 
 return [
     'router' => [
         'routes' => [
             'library' => [
-                'type'          => Http\Literal::class,
+                'type'          => SkippableSegment::class,
                 'options'       => [
-                    'route'    => '/library',
+                    'route' => '[/:lang]/library',
                     'defaults' => [
                         '__NAMESPACE__' => 'Module\Library\Controller',
                         'controller'    => 'index',
                         'action'        => 'index',
+                        'lang'          => '',
                     ],
+                    'constraints' => array(
+                        'lang' => '[a-z]{2}(-[a-zA-Z]{2}){0,1}'
+                    ),
+                    'skippable' => [
+                        'lang' => true
+                    ]
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [

@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Service\Listener\SLFactory;
+namespace Application\Listener\Log\SLFactory;
 
-use Application\Service\Listener\LogExceptionListener;
+use Application\Listener\Log\LogExceptionListener;
 use Zend\Log\LoggerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
@@ -15,7 +15,7 @@ class LogExceptionListenerSLFactory implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return LogExceptionListener
+     * @return \Application\Listener\Log\LogExceptionListener
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

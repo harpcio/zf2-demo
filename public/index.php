@@ -9,8 +9,14 @@ use Zend\Log\Logger;
  */
 chdir(dirname(__DIR__));
 
+/** I really don't like something like this: __DIR__ . '../../../../../../../' */
 define('ROOT_PATH', dirname(__DIR__));
+/** Is development environment or not */
 define('DEVELOPMENT_ENV', (getenv('APPLICATION_ENV') === 'development') ? true : false);
+/** The locale in which the whole application is written */
+define('APPLICATION_LOCALE', 'en_GB');
+/** The language in which the whole application is written ie. en, en-us, pt-br */
+define('APPLICATION_LANGUAGE', 'en');
 
 if (DEVELOPMENT_ENV) {
     ini_set('display_errors', 1);
@@ -31,7 +37,6 @@ $config = require ROOT_PATH . '/config/application.config.php';
 $app = Application::init($config);
 
 try {
-    // Run the application!
     $app->run();
 } catch (\Exception $e) {
     /** @var Logger $logger */

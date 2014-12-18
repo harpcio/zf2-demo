@@ -82,7 +82,9 @@ class AclService
         }
 
         $response->setStatusCode(302);
+        $response->getHeaders()->clearHeaders();
         $response->getHeaders()->addHeaderLine('Location', $url);
+
         $e->stopPropagation();
 
         return $response;

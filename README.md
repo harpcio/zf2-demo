@@ -44,6 +44,20 @@ ACL
 With the new structure (Single Action Per Controller) we have also the possibility 
 to restrict access for API by user (ie. CREATE, PUT, DELETE only for admin).
 
+Lang & Locale
+-------------
+- if parameter $config['language']['should_redirect_to_recognized_language'] is disabled
+    - then default language will have all urls without "lang" parameter:
+        - "/" will be recognized as language EN
+        - "/tw" (not available language) will be redirect to "/" automatically
+        - "/en" will be redirect to "/" automatically
+    - other available languages will have urls with lang parameter: 
+        - ie. '/de/auth/login', '/pl/auth/login'
+
+With the new feature, now we have possibility to have default language, ie "en", 
+and all urls without language parameter: "/auth/login"
+
+
 Installation
 ------------
 

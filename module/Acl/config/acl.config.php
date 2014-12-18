@@ -8,13 +8,21 @@ return [
             'parents' => [],
             'allow' => [
                 'Application' => [],
-                'Module\Auth' => [],
+                'Module\\Auth' => [],
             ],
-            'deny' => []
+            'deny' => [
+                'Module\\Auth' => [
+                    'NoAccess:index'
+                ]
+            ]
         ],
         UserEntityInterface::ROLE_ADMIN => [
             'parents' => [UserEntityInterface::ROLE_GUEST],
-            'allow' => [],
+            'allow' => [
+                'Module\\Auth' => [
+                    'NoAccess:index'
+                ]
+            ],
             'deny' => []
         ]
     ]

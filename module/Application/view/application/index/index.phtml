@@ -1,37 +1,29 @@
 <div class="jumbotron">
-    <h1>This is <span class="zf-green">ZF2</span> demo</h1>
+    <h1><?= sprintf($this->translate('This is advanced %sZF2%s demo'), '<span class="zf-green">', '</span>'); ?></h1>
 
-    <p>Requirements: php 5.5+</p>
+    <p><?= $this->translate('Requirements'); ?>: php 5.5+</p>
 </div>
-
 <div class="row">
-
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo $this->translate('Books in library') ?></h3>
             </div>
             <div class="panel-body">
-                <p>Simple library of books, you can there create new, read, update and delete existing ones.</p>
-
-                <p><a class="btn btn-success pull-right" href="<?= $this->url('library/books') ?>">Go to book
-                        index &raquo;</a></p>
+                <p><?= $this->translate('Simple library of books, you can there create new, read, update and delete existing ones.'); ?></p>
+                <p><a class="btn btn-success pull-right" href="<?= $this->url('library/books') ?>"><?= $this->translate('Go to books index'); ?> &raquo;</a></p>
             </div>
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Apii for books in library') ?></h3>
+                <h3 class="panel-title"><?php echo $this->translate('API for books in library') ?></h3>
             </div>
             <div class="panel-body">
-                <p>Api for simple library of books, you can there create new, read, update and delete existing ones.</p>
-
-                <p><a class="btn btn-success pull-right" href="<?= $this->url('api/library/books') ?>">Go to book
-                        index by api &raquo;</a></p>
+                <p><?= $this->translate('API for simple library of books, you can there create new, read, update and delete existing ones.'); ?></p>
+                <p><a class="btn btn-success pull-right" href="<?= $this->url('api/library/books') ?>"><?= $this->translate('Go to books index by API'); ?> &raquo;</a></p>
             </div>
         </div>
     </div>
-
 </div>
