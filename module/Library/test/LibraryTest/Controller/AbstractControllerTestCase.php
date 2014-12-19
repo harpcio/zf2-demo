@@ -83,6 +83,7 @@ abstract class AbstractControllerTestCase extends \PHPUnit_Framework_TestCase
         $sm = Bootstrap::getServiceManager();
         $sm->setAllowOverride(true);
         $sm->setService(AuthenticationService::class, $authMock);
+        $sm->setAllowOverride(false);
     }
 
     protected function assertResponseStatusCode($code)

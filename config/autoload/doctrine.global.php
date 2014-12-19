@@ -41,5 +41,12 @@ return [
                 'directory' => ROOT_PATH . '/data/cache/doctrine-module',
             ),
         ),
+        'connection' => [
+            'orm_default' => [
+                'params'            => [
+                    'serverVersion' => '5.6' //skip platform autodetection
+                ]
+            ]
+        ]
     ],
 ];

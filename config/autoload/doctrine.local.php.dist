@@ -11,6 +11,10 @@ return [
                     'user' => '',
                     'password' => '',
                     'dbname' => 'zf2demo_library',
+                    'driverOptions' => [
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+                    ],
+                    'serverVersion' => '5.6' // skip platform autodetection
                 ]
             ]
         ]

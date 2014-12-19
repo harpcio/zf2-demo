@@ -8,6 +8,7 @@ use Module\ApiTest\Fixture\SampleClass;
 use Module\ApiTest\Fixture\SampleRestfulJsonController;
 use Module\ApiTest\Fixture\SampleRestfulJsonWithOverriddenReDispatchController;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Test\Bootstrap;
 use Zend\Http\Header\ContentType;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Http\Request;
@@ -35,6 +36,13 @@ class AbstractRestfulJsonControllerTest extends AbstractControllerTestCase
 
         $this->controller = new SampleRestfulJsonWithOverriddenReDispatchController($this->sampleMock);
         $this->controller->setEvent($this->event);
+    }
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+
+        Bootstrap::setupServiceManager();
     }
 
     public function testDeleteWithId()
