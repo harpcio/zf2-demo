@@ -54,7 +54,7 @@
                 <file>../module/Module/Auth/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/Library/test</directory>
                 <file>../module/Module/Library/autoload_classmap.php</file>
-                <file>../module/Module/Library/src/Library/Route/Http/SkippableSegment.php</file>
+                <file>../module/Module/Library/src/Library/Router/Http/SkippableSegment.php</file>
                 <directory suffix=".php">../module/Module/LibraryBooks/test</directory>
                 <file>../module/Module/LibraryBooks/autoload_classmap.php</file>
             </exclude>
