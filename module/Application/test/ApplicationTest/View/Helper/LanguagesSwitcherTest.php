@@ -56,9 +56,14 @@ class LanguagesSwitcherTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    private function prepareTestedObject($config)
+    private function prepareTestedObject($config, $routeMatch = true)
     {
-        $this->testedObject = new LanguagesSwitcher($this->routeMatchMock, new LangConfig($config));
+        if ($routeMatch) {
+            $this->testedObject = new LanguagesSwitcher($this->routeMatchMock, new LangConfig($config));
+        } else {
+            $this->testedObject = new LanguagesSwitcher(null, new LangConfig($config));
+        }
+
         $this->testedObject->setView($this->viewMock);
     }
 
@@ -123,6 +128,10 @@ class LanguagesSwitcherTest extends \PHPUnit_Framework_TestCase
             ->method('url')
             ->willReturn('/pl/some/test');
 
+        $this->viewMock->expects($this->at(3))
+            ->method('url')
+            ->willReturn('/pt-br/some/test');
+
         $result = $this->testedObject->__invoke();
 
         $expected = <<<HTML
@@ -133,7 +142,7 @@ class LanguagesSwitcherTest extends \PHPUnit_Framework_TestCase
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="/de/some/test" title="Deutsch (German)"><span class="glyphicon bfh-flag-DE"></span>Deutsch</a></li><li class="disabled"><a href="/some/test" title="English (English)"><span class="glyphicon bfh-flag-GB"></span>English</a></li><li><a href="/pl/some/test" title="polski (Polish)"><span class="glyphicon bfh-flag-PL"></span>polski</a></li><li><a href="" title="português (Brasil) (Portuguese)"><span class="glyphicon bfh-flag-BR"></span>português (Brasil)</a></li>
+        <li><a href="/de/some/test" title="Deutsch (German)"><span class="glyphicon bfh-flag-DE"></span>Deutsch</a></li><li class="disabled"><a href="/some/test" title="English (English)"><span class="glyphicon bfh-flag-GB"></span>English</a></li><li><a href="/pl/some/test" title="polski (Polish)"><span class="glyphicon bfh-flag-PL"></span>polski</a></li><li><a href="/pt-br/some/test" title="português (Brasil) (Portuguese)"><span class="glyphicon bfh-flag-BR"></span>português (Brasil)</a></li>
     </ul>
 </li>
 HTML;
@@ -175,6 +184,10 @@ HTML;
             ->method('url')
             ->willReturn('/pl/some/test');
 
+        $this->viewMock->expects($this->at(3))
+            ->method('url')
+            ->willReturn('/pt-br/some/test');
+
         $result = $this->testedObject->__invoke();
 
         $expected = <<<HTML
@@ -185,7 +198,47 @@ HTML;
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="/de/some/test" title="Deutsch (German)"><span class="glyphicon bfh-flag-DE"></span>Deutsch</a></li><li class="disabled"><a href="/en/some/test" title="English (English)"><span class="glyphicon bfh-flag-GB"></span>English</a></li><li><a href="/pl/some/test" title="polski (Polish)"><span class="glyphicon bfh-flag-PL"></span>polski</a></li><li><a href="" title="português (Brasil) (Portuguese)"><span class="glyphicon bfh-flag-BR"></span>português (Brasil)</a></li>
+        <li><a href="/de/some/test" title="Deutsch (German)"><span class="glyphicon bfh-flag-DE"></span>Deutsch</a></li><li class="disabled"><a href="/en/some/test" title="English (English)"><span class="glyphicon bfh-flag-GB"></span>English</a></li><li><a href="/pl/some/test" title="polski (Polish)"><span class="glyphicon bfh-flag-PL"></span>polski</a></li><li><a href="/pt-br/some/test" title="português (Brasil) (Portuguese)"><span class="glyphicon bfh-flag-BR"></span>português (Brasil)</a></li>
+    </ul>
+</li>
+HTML;
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function testInvokeMethod_WhenRouteMatchIsEmptyObject()
+    {
+        $this->prepareTestedObject($this->prepareConfig(true), false);
+
+        \Locale::setDefault('en_GB');
+
+        $this->viewMock->expects($this->at(0))
+            ->method('url')
+            ->willReturn('/de/');
+
+        $this->viewMock->expects($this->at(1))
+            ->method('url')
+            ->willReturn('/');
+
+        $this->viewMock->expects($this->at(2))
+            ->method('url')
+            ->willReturn('/pl/');
+
+        $this->viewMock->expects($this->at(3))
+            ->method('url')
+            ->willReturn('/pt-br/');
+
+        $result = $this->testedObject->__invoke();
+
+        $expected = <<<HTML
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon bfh-flag-GB"></span>
+        English
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="/de/" title="Deutsch (German)"><span class="glyphicon bfh-flag-DE"></span>Deutsch</a></li><li class="disabled"><a href="/" title="English (English)"><span class="glyphicon bfh-flag-GB"></span>English</a></li><li><a href="/pl/" title="polski (Polish)"><span class="glyphicon bfh-flag-PL"></span>polski</a></li><li><a href="/pt-br/" title="português (Brasil) (Portuguese)"><span class="glyphicon bfh-flag-BR"></span>português (Brasil)</a></li>
     </ul>
 </li>
 HTML;

@@ -107,4 +107,36 @@ Class ManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(LoggerInterface::class, $result);
     }
+
+    public function testCreateLogWithBrokenPathAndWithAnotherSeparator()
+    {
+        $wrongPath = ROOT_PATH . '/not-exists/path';
+        $separator = '###';
+        $rightFileNamePath = ROOT_PATH . '/data/log/' . date('Ymd') . sprintf('.%s.log', 'test');
+
+        $this->componentsFactoryMock->expects($this->once())
+            ->method('createLogger')
+            ->will($this->returnValue($this->loggerMock));
+
+        $this->componentsFactoryMock->expects($this->once())
+            ->method('createStreamWriter')
+            ->with($rightFileNamePath, null, $separator)
+            ->willReturn($this->streamMock);
+
+        $this->componentsFactoryMock->expects($this->never())
+            ->method('createPriority')
+            ->willReturn($this->priorityMock);
+
+        $this->streamMock->expects($this->any())
+            ->method('addFilter')
+            ->with($this->priorityMock);
+
+        $this->loggerMock->expects($this->once())
+            ->method('addWriter')
+            ->with($this->streamMock);
+
+        $result = $this->testedObject->createLog('test', $wrongPath, $separator);
+
+        $this->assertInstanceOf(LoggerInterface::class, $result);
+    }
 }

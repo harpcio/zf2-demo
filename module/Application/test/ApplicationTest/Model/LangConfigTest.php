@@ -18,6 +18,41 @@ class LangConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($testedObject->shouldRedirectToRecognizedLanguage());
     }
 
+    public function testConstructor_WithEmptyDefaultKey()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            "Options [language][default] must exist and must be array (ie. ['en' => 'en_GB'])"
+        );
+
+        new LangConfig(
+            [
+                'language' => [
+                    'default' => null
+                ]
+            ]
+        );
+    }
+
+    public function testConstructor_WithEmptyAvailableKey()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            "Options [language][available] must exist and must be array (ie. ['de' => 'de_DE', 'pl' => 'pl_PL', 'pt-br' => 'pt_BR])"
+        );
+
+        new LangConfig(
+            [
+                'language' => [
+                    'default' => [
+                        'en' => 'en_GB'
+                    ],
+                    'available' => null
+                ]
+            ]
+        );
+    }
+
     public function testConstructor_WithNotEmptyConfig_WhenShouldRedirectIsDisabled()
     {
         $testedObject = new LangConfig($this->prepareConfig(false));
