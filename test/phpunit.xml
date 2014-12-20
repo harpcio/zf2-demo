@@ -44,6 +44,7 @@
                 <file>../module/BusinessLogic/Users/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Library/test</directory>
                 <file>../module/Library/autoload_classmap.php</file>
+                <file>../module/Library/src/Library/Router/Http/SkippableSegment.php</file>
                 <directory suffix=".php">../module/Module/Api/test</directory>
                 <file>../module/Module/Api/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/ApiV1Library/test</directory>
@@ -54,7 +55,6 @@
                 <file>../module/Module/Auth/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Module/Library/test</directory>
                 <file>../module/Module/Library/autoload_classmap.php</file>
-                <file>../module/Module/Library/src/Library/Router/Http/SkippableSegment.php</file>
                 <directory suffix=".php">../module/Module/LibraryBooks/test</directory>
                 <file>../module/Module/LibraryBooks/autoload_classmap.php</file>
             </exclude>

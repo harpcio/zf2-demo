@@ -108,11 +108,11 @@ Class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(LoggerInterface::class, $result);
     }
 
-    public function testCreateLogWithBrokenPathAndWithAnotherSeparator()
+    public function testCreateLogWithAnotherGoodPathAndWithAnotherSeparator()
     {
-        $wrongPath = ROOT_PATH . '/not-exists/path';
+        $path = ROOT_PATH . '/data';
         $separator = '###';
-        $rightFileNamePath = ROOT_PATH . '/data/log/' . date('Ymd') . sprintf('.%s.log', 'test');
+        $rightFileNamePath = ROOT_PATH . '/data/' . date('Ymd') . sprintf('.%s.log', 'test');
 
         $this->componentsFactoryMock->expects($this->once())
             ->method('createLogger')
@@ -135,7 +135,7 @@ Class ManagerTest extends \PHPUnit_Framework_TestCase
             ->method('addWriter')
             ->with($this->streamMock);
 
-        $result = $this->testedObject->createLog('test', $wrongPath, $separator);
+        $result = $this->testedObject->createLog('test', $path, $separator);
 
         $this->assertInstanceOf(LoggerInterface::class, $result);
     }

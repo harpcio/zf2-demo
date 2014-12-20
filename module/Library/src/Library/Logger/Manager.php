@@ -87,7 +87,7 @@ class Manager
     private function preparePath($path = null)
     {
         if (null !== $path && is_dir($path)) {
-            return $path;
+            return rtrim($path, '/') . '/';
         }
 
         return $this->defaultPath;
