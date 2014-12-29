@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   `publisher` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `book` (`id`, `title`, `description`, `isbn`, `year`, `publisher`, `price`) VALUES
 (1, 'Agile Principles, Patterns, and Practices in C#', 'With the award-winning book Agile Software Development: Principles, Patterns, and Practices, Robert C. Martin helped bring Agile principles to tens of thousands of Java and C++ programmers. Now .NET programmers have a definitive guide to agile methods with this completely updated volume from Robert C. Martin and Micah Martin, Agile Principles, Patterns, and Practices in C#.\r\n\r\nThis book presents a series of case studies illustrating the fundamentals of Agile development and Agile design, and moves quickly from UML models to real C# code. The introductory chapters lay out the basics of the agile movement, while the later chapters show proven techniques in action. The book includes many source code examples that are also available for download from the authorsâ€™ Web site.', '978-83-246-1177-5', 2006, 'Prentice Hall', 47.36),
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `role` enum('admin') COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `user` (`id`, `name`, `login`, `email`, `password`) VALUES
+INSERT INTO `user` (`id`, `name`, `login`, `email`, `password`, `role`) VALUES
 (1, 'Administrator', 'admin', 'admin@zf2-demo.local', '$2y$10$f/mSA9WnIRem2IHLtQWjROgvchksKtJwwbx4aB8ga2xnnEOWbj66i', 'admin'); -- password: admin

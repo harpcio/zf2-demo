@@ -10,12 +10,12 @@ return array(
                 'pattern' => '%s.mo',
             ),
         ),
-        'cache' => array(
+        'cache' => DEVELOPMENT_ENV ? null : array(
             'adapter' => array(
                 'name' => 'Filesystem',
                 'options' => array(
                     'cache_dir' => ROOT_PATH . '/data/cache',
-                    'ttl' => DEVELOPMENT_ENV ? 0 : 3600
+                    'ttl' => 3600
                 )
             ),
             'plugins' => array(
@@ -30,7 +30,7 @@ return array(
         ),
     ),
     'language' => [
-        'should_redirect_to_recognized_language' => true,
+        'should_redirect_to_recognized_language' => false,
         'default' => [
             APPLICATION_LANGUAGE => APPLICATION_LOCALE
         ],

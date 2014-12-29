@@ -6,15 +6,15 @@ return [
             'orm_default' => [
                 // metadata cache instance to use. The retrieved service name will
                 // be `doctrine.cache.$thisSetting`
-                'metadata_cache'    => 'filesystem',
+                'metadata_cache'    => DEVELOPMENT_ENV ? 'array' : 'filesystem',
 
                 // DQL queries parsing cache instance to use. The retrieved service
                 // name will be `doctrine.cache.$thisSetting`
-                'query_cache'       => 'filesystem',
+                'query_cache'       => DEVELOPMENT_ENV ? 'array' : 'filesystem',
 
                 // ResultSet cache to use.  The retrieved service name will be
                 // `doctrine.cache.$thisSetting`
-                'result_cache'      => 'filesystem',
+                'result_cache'      => DEVELOPMENT_ENV ? 'array' : 'filesystem',
 
                 // Mapping driver instance to use. Change this only if you don't want
                 // to use the default chained driver. The retrieved service name will
@@ -44,7 +44,7 @@ return [
         'connection' => [
             'orm_default' => [
                 'params'            => [
-                    'serverVersion' => '5.6' //skip platform autodetection
+                    'serverVersion' => '5.6' //skip platform auto detection
                 ]
             ]
         ]
