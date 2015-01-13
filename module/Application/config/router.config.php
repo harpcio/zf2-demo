@@ -1,7 +1,7 @@
 <?php
 
 use Zend\Mvc\Router\Http;
-use Library\Router\Http\SkippableSegment;
+use ApplicationLibrary\Router\Http\SkippableSegment;
 
 return [
     'router' => [

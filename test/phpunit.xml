@@ -3,17 +3,19 @@
 <phpunit bootstrap="Bootstrap.php">
     <testsuites>
         <testsuite name="Tests">
-            <directory suffix="Test.php">../module/Acl/test/AclTest</directory>
+            <directory suffix="Test.php">../module/ApplicationCoreAcl/test/ApplicationCoreAclTest</directory>
+            <directory suffix="Test.php">../module/ApplicationCoreAuth/test/ApplicationCoreAuthTest</directory>
+            <directory suffix="Test.php">../module/ApplicationCoreLang/test/ApplicationCoreLangTest</directory>
             <directory suffix="Test.php">../module/Application/test/ApplicationTest</directory>
-            <directory suffix="Test.php">../module/BusinessLogic/Books/test/BooksTest</directory>
-            <directory suffix="Test.php">../module/BusinessLogic/Users/test/UsersTest</directory>
-            <directory suffix="Test.php">../module/Library/test/LibraryTest</directory>
-            <directory suffix="Test.php">../module/Module/Api/test/ApiTest</directory>
-            <directory suffix="Test.php">../module/Module/ApiV1Library/test/ApiV1LibraryTest</directory>
-            <directory suffix="Test.php">../module/Module/ApiV1LibraryBooks/test/ApiV1LibraryBooksTest</directory>
-            <directory suffix="Test.php">../module/Module/Auth/test/AuthTest</directory>
-            <directory suffix="Test.php">../module/Module/Library/test/LibraryTest</directory>
-            <directory suffix="Test.php">../module/Module/LibraryBooks/test/LibraryBooksTest</directory>
+            <directory suffix="Test.php">../module/BusinessLogicDomainBooks/test/BusinessLogicDomainBooksTest</directory>
+            <directory suffix="Test.php">../module/BusinessLogicDomainUsers/test/BusinessLogicDomainUsersTest</directory>
+            <directory suffix="Test.php">../module/ApplicationLibrary/test/ApplicationLibraryTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureApi/test/ApplicationFeatureApiTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureApiV1Library/test/ApplicationFeatureApiV1LibraryTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureApiV1LibraryBooks/test/ApplicationFeatureApiV1LibraryBooksTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureAccess/test/ApplicationFeatureAccessTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureLibrary/test/ApplicationFeatureLibraryTest</directory>
+            <directory suffix="Test.php">../module/ApplicationFeatureLibraryBooks/test/ApplicationFeatureLibraryBooksTest</directory>
         </testsuite>
     </testsuites>
 
@@ -22,41 +24,47 @@
             <ini name="memory_limit" value="2048M"/>
         </php>
         <whitelist>
-            <directory suffix=".php">../module/Acl</directory>
+            <directory suffix=".php">../module/ApplicationCoreAcl</directory>
+            <directory suffix=".php">../module/ApplicationCoreAuth</directory>
+            <directory suffix=".php">../module/ApplicationCoreLang</directory>
             <directory suffix=".php">../module/Application</directory>
-            <directory suffix=".php">../module/BusinessLogic/Books</directory>
-            <directory suffix=".php">../module/BusinessLogic/Users</directory>
-            <directory suffix=".php">../module/Library</directory>
-            <directory suffix=".php">../module/Module/Api</directory>
-            <directory suffix=".php">../module/Module/ApiV1Library</directory>
-            <directory suffix=".php">../module/Module/ApiV1LibraryBooks</directory>
-            <directory suffix=".php">../module/Module/Auth</directory>
-            <directory suffix=".php">../module/Module/Library</directory>
-            <directory suffix=".php">../module/Module/LibraryBooks</directory>
+            <directory suffix=".php">../module/BusinessLogicDomainBooks</directory>
+            <directory suffix=".php">../module/BusinessLogicDomainUsers</directory>
+            <directory suffix=".php">../module/ApplicationLibrary</directory>
+            <directory suffix=".php">../module/ApplicationFeatureApi</directory>
+            <directory suffix=".php">../module/ApplicationFeatureApiV1Library</directory>
+            <directory suffix=".php">../module/ApplicationFeatureApiV1LibraryBooks</directory>
+            <directory suffix=".php">../module/ApplicationFeatureAccess</directory>
+            <directory suffix=".php">../module/ApplicationFeatureLibrary</directory>
+            <directory suffix=".php">../module/ApplicationFeatureLibraryBooks</directory>
             <exclude>
-                <directory suffix=".php">../module/Acl/test</directory>
-                <file>../module/Acl/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationCoreAcl/test</directory>
+                <file>../module/ApplicationCoreAcl/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationCoreLang/test</directory>
+                <file>../module/ApplicationCoreLang/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationCoreAuth/test</directory>
+                <file>../module/ApplicationCoreAuth/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Application/test</directory>
                 <file>../module/Application/autoload_classmap.php</file>
-                <directory suffix=".php">../module/BusinessLogic/Books/test</directory>
-                <file>../module/BusinessLogic/Books/autoload_classmap.php</file>
-                <directory suffix=".php">../module/BusinessLogic/Users/test</directory>
-                <file>../module/BusinessLogic/Users/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Library/test</directory>
-                <file>../module/Library/autoload_classmap.php</file>
-                <file>../module/Library/src/Library/Router/Http/SkippableSegment.php</file>
-                <directory suffix=".php">../module/Module/Api/test</directory>
-                <file>../module/Module/Api/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Module/ApiV1Library/test</directory>
-                <file>../module/Module/ApiV1Library/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Module/ApiV1LibraryBooks/test</directory>
-                <file>../module/Module/ApiV1LibraryBooks/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Module/Auth/test</directory>
-                <file>../module/Module/Auth/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Module/Library/test</directory>
-                <file>../module/Module/Library/autoload_classmap.php</file>
-                <directory suffix=".php">../module/Module/LibraryBooks/test</directory>
-                <file>../module/Module/LibraryBooks/autoload_classmap.php</file>
+                <directory suffix=".php">../module/BusinessLogicDomainBooks/test</directory>
+                <file>../module/BusinessLogicDomainBooks/autoload_classmap.php</file>
+                <directory suffix=".php">../module/BusinessLogicDomainUsers/test</directory>
+                <file>../module/BusinessLogicDomainUsers/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationLibrary/test</directory>
+                <file>../module/ApplicationLibrary/autoload_classmap.php</file>
+                <file>../module/ApplicationLibrary/src/ApplicationLibrary/Router/Http/SkippableSegment.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureApi/test</directory>
+                <file>../module/ApplicationFeatureApi/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureApiV1Library/test</directory>
+                <file>../module/ApplicationFeatureApiV1Library/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureApiV1LibraryBooks/test</directory>
+                <file>../module/ApplicationFeatureApiV1LibraryBooks/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureAccess/test</directory>
+                <file>../module/ApplicationFeatureAccess/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureLibrary/test</directory>
+                <file>../module/ApplicationFeatureLibrary/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationFeatureLibraryBooks/test</directory>
+                <file>../module/ApplicationFeatureLibraryBooks/autoload_classmap.php</file>
             </exclude>
         </whitelist>
     </filter>

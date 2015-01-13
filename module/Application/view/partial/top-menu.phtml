@@ -1,6 +1,6 @@
 <?php
 
-use BusinessLogic\Users\Entity\UserEntityInterface;
+use BusinessLogicDomainUsers\Entity\UserEntityInterface;
 
 $role = UserEntityInterface::ROLE_GUEST;
 /** @var UserEntityInterface $userEntity */
@@ -15,4 +15,3 @@ echo $this->navigation('navigation')
     ->setMaxDepth(0)
     ->setUlClass('nav navbar-nav')
     ->setPartial(array('partial/navigation-top-menu', 'Application'));
-?>

@@ -12,7 +12,7 @@
 namespace ApplicationTest\Listener\Log;
 
 use Application\Listener\Log\LogExceptionListener;
-use Module\Api\Exception\MethodNotAllowedException;
+use ApplicationFeatureApi\Exception\MethodNotAllowedException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\Log\LoggerInterface;
 use Zend\Mvc\MvcEvent;
@@ -38,7 +38,7 @@ class LogExceptionListenerTest extends \PHPUnit_Framework_TestCase
         $this->testedObject = new LogExceptionListener($this->loggerMock);
     }
 
-    public function testInvoke_WhenExceptionIsNotFromAPI()
+    public function testExecute_WhenExceptionIsNotFromAPI()
     {
         $exception = new \Exception();
 
@@ -49,20 +49,6 @@ class LogExceptionListenerTest extends \PHPUnit_Framework_TestCase
             ->method('crit')
             ->with($exception);
 
-        $this->testedObject->__invoke($event);
-    }
-
-    public function testInvoke_WhenExceptionIsFromAPI()
-    {
-        $exception = new MethodNotAllowedException();
-
-        $event = new MvcEvent();
-        $event->setParam('exception', $exception);
-
-        $this->loggerMock->expects($this->never())
-            ->method('crit')
-            ->with($exception);
-
-        $this->testedObject->__invoke($event);
+        $this->testedObject->execute($event);
     }
 }

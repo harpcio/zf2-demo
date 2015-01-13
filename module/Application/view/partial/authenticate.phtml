@@ -1,4 +1,4 @@
-<?php /** @var \BusinessLogic\Users\Entity\UserEntity $identity */ ?>
+<?php /** @var \BusinessLogicDomainUsers\Entity\UserEntity $identity */ ?>
 <?php if (($identity = $this->identity())): ?>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -9,12 +9,12 @@
         <ul class="dropdown-menu" role="menu">
             <li><a href="#">Edit profile</a></li>
             <li class="divider"></li>
-            <li><a href="<?= $this->url('auth/default', ['controller' => 'logout']); ?>">
+            <li><a href="<?= $this->url('access/default', ['controller' => 'logout']); ?>">
                     <span class="glyphicon glyphicon-off"></span> Logout
                 </a>
             </li>
         </ul>
     </li>
 <?php else: ?>
-    <li><a href="<?= $this->url('auth/default', ['controller' => 'login']); ?>"><?= $this->translate('Login');?></a></li>
+    <li><a href="<?= $this->url('access/default', ['controller' => 'login']); ?>"><?= $this->translate('Login');?></a></li>
 <?php endif; ?>

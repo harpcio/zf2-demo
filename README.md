@@ -115,4 +115,6 @@ TODO
 9. ~~implement navigation with acl filtering~~
 10. pagination, sorting, filtering on lists
 11. ~~implement lang && locale support~~
+12. implement hexagonal structure (Business Logic, Data Access, Framework - Application)
+13. implement one page application (based on AngularJS)
 

@@ -1,0 +1,35 @@
+<?php
+/**
+ * This file is part of Zf2-demo package
+ *
+ * @author Rafal Ksiazek <harpcio@gmail.com>
+ * @copyright Rafal Ksiazek F.H.U. Studioars
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace ApplicationLibrary\QueryFilter\Command\Condition;
+
+use ApplicationLibrary\QueryFilter\Command\CommandInterface;
+use ApplicationLibrary\QueryFilter\Criteria;
+use ApplicationLibrary\QueryFilter\QueryFilter;
+
+class MinMaxCommand implements CommandInterface
+{
+    public static $commandRegex = '/^\$(min|max)\(([^\)]*)\)/';
+
+    public function execute($key, $value, QueryFilter $queryFilter)
+    {
+        if (!preg_match(static::$commandRegex, $value, $matches)) {
+            return false;
+        }
+
+        $command = trim($matches[1]);
+        $data = trim($matches[2]);
+
+        $queryFilter->addCriteria(new Criteria($command, $key, $data));
+
+        return true;
+    }
+}

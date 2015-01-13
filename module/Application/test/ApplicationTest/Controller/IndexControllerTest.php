@@ -12,7 +12,7 @@
 namespace ApplicationTest\Controller;
 
 use Application\Controller\IndexController;
-use LibraryTest\Controller\AbstractControllerTestCase;
+use ApplicationLibraryTest\Controller\AbstractControllerTestCase;
 use Zend\Http\Request;
 use Zend\Http\Response;
 

@@ -1,0 +1,48 @@
+<?php
+/**
+ * @var $book \BusinessLogicDomainBooks\Entity\BookEntity
+ */
+$book = $this->book;
+?>
+<h3>Read the book</h3>
+<hr/>
+<p>
+    <a href="<?= $this->url('library/books'); ?>" class="btn btn-primary" role="button">Back to index</a>
+    <?php if ($this->isAllowed('ApplicationFeatureLibraryBooks', 'Update::Index')): ?>
+        <a href="<?= $this->url('library/books/update', ['id' => $book->getId()]); ?>" class="btn btn-warning" role="button">Update</a>
+    <?php endif; ?>
+    <?php if ($this->isAllowed('ApplicationFeatureLibraryBooks', 'Delete::Index')): ?>
+        <a href="<?= $this->url('library/books/delete', ['id' => $book->getId()]); ?>" class="btn btn-danger" role="button">Delete</a>
+    <?php endif; ?>
+</p>
+<hr/>
+<table class="table table-bordered">
+    <tr>
+        <th>Id</th>
+        <td><?= $this->escapeHtml($book->getId()); ?></td>
+    </tr>
+    <tr>
+        <th>Title</th>
+        <td><?= $this->escapeHtml($book->getTitle()); ?></td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td><?= $this->escapeHtml($book->getDescription()); ?></td>
+    </tr>
+    <tr>
+        <th>ISBN</th>
+        <td><?= $this->escapeHtml($book->getIsbn()); ?></td>
+    </tr>
+    <tr>
+        <th>Publisher</th>
+        <td><?= $this->escapeHtml($book->getPublisher()); ?></td>
+    </tr>
+    <tr>
+        <th>Year</th>
+        <td><?= $this->escapeHtml($book->getYear()); ?></td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td><?= $this->escapeHtml($book->getPrice()); ?></td>
+    </tr>
+</table>

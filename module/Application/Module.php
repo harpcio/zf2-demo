@@ -11,9 +11,7 @@
 
 namespace Application;
 
-use Application\Listener\Lang\LangListener;
 use Application\Listener\Log\LogExceptionListener;
-use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Loader\StandardAutoloader;
@@ -31,18 +29,9 @@ class Module
         $sharedManager = $eventManager->getSharedManager();
         $sm = $e->getApplication()->getServiceManager();
 
+        /** @var LogExceptionListener $logExceptionListener */
         $logExceptionListener = $sm->get(LogExceptionListener::class);
-        $sharedManager->attach(
-            Application::class,
-            MvcEvent::EVENT_DISPATCH_ERROR,
-            $logExceptionListener
-        );
-
-        $langListener = $sm->get(LangListener::class);
-        $eventManager->attach(
-            MvcEvent::EVENT_ROUTE,
-            $langListener
-        );
+        $logExceptionListener->attachShared($sharedManager);
     }
 
     /**

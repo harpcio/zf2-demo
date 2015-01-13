@@ -7,12 +7,14 @@
         "zf2",
         "skeleton",
         "advanced",
+        "demo",
         "single action per controller",
         "solid",
         "doctrine2",
         "phpunit",
         "tdd",
-        "api"
+        "api",
+        "hexagonal structure"
     ],
     "authors": [
         {
