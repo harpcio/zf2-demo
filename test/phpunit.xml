@@ -50,6 +50,8 @@
                 <file>../module/ApplicationCoreAuth/autoload_classmap.php</file>
                 <directory suffix=".php">../module/Application/test</directory>
                 <file>../module/Application/autoload_classmap.php</file>
+                <directory suffix=".php">../module/ApplicationDataAccessDoctrineORMLibrary/test</directory>
+                <file>../module/ApplicationDataAccessDoctrineORMLibrary/autoload_classmap.php</file>
                 <directory suffix=".php">../module/ApplicationFeatureApi/test</directory>
                 <file>../module/ApplicationFeatureApi/autoload_classmap.php</file>
                 <directory suffix=".php">../module/ApplicationFeatureApiV1Library/test</directory>

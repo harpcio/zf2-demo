@@ -15,6 +15,10 @@ build:
         code: |-
             php -S localhost:8000 >> /dev/null &
     - script:
+        name: New settings in php.ini
+        code: |-
+            echo 'xdebug.max_nesting_level=200' >> $HOME/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - script:
         name: PHPUnit integration tests
         code: |-
             mkdir -p build/logs
