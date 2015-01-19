@@ -11,17 +11,22 @@
 
 namespace BusinessLogicDomainBooksTest\Repository;
 
+use ApplicationDataAccessDoctrineORMLibrary\QueryFilter\Command\Repository\BetweenCommand;
+use ApplicationDataAccessDoctrineORMLibrary\QueryFilter\Command\Repository\OffsetCommand;
+use ApplicationLibraryTest\Repository\AbstractRepositoryTestCase;
 use BusinessLogicDomainBooks\Entity\BookEntity;
 use BusinessLogicDomainBooks\Repository\BooksRepository;
 use BusinessLogicDomainBooksTest\Entity\Provider\BookEntityProvider;
+use BusinessLogicLibrary\QueryFilter\Command\Repository\CommandCollection;
+use BusinessLogicLibrary\QueryFilter\Exception\UnrecognizedFieldException;
+use BusinessLogicLibrary\QueryFilter\Exception\UnsupportedTypeException;
+use BusinessLogicLibrary\QueryFilter\QueryFilterVisitor;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
-use ApplicationLibrary\QueryFilter\Command;
-use ApplicationLibraryTest\Repository\AbstractRepositoryTestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Test\Bootstrap;
 
@@ -51,6 +56,27 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
         $this->hydratorMock = $this->getMockBuilder(DoctrineObject::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->classMetadataMock = $this->getMockBuilder(ClassMetadata::class)
+            ->setConstructorArgs([BookEntity::class])
+            ->setMethods(null)
+            ->getMock();
+
+        $fieldNames = [
+            'id' => array('columnName' => 'id', 'type' => Type::INTEGER),
+            'author' => array('columnName' => 'author', 'type' => Type::STRING),
+            'title' => array('columnName' => 'title', 'type' => Type::STRING),
+            'year' => array('columnName' => 'year', 'type' => Type::INTEGER),
+            'price' => array('columnName' => 'price', 'type' => Type::FLOAT),
+            'name' => array('columnName' => 'name', 'type' => Type::STRING),
+            'status' => array('columnName' => 'status', 'type' => Type::BOOLEAN)
+        ];
+
+        $this->classMetadataMock->fieldMappings = $fieldNames;
+
+        $this->entityManagerMock->expects($this->any())
+            ->method('getClassMetadata')
+            ->willReturn($this->classMetadataMock);
 
         $this->testedObj = new BooksRepository($this->entityManagerMock, $this->classMetadataMock);
         $this->testedObj->setHydrator($this->hydratorMock);
@@ -168,11 +194,15 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
     {
         $sm = Bootstrap::getServiceManager();
 
+        $limit = 5;
+        $page = 1;
+        $offset = ($page - 1) * $limit;
+
         $queryData = [
             '$fields' => 'id,author,title',
             '$sort' => '-year,price',
-            '$limit' => '5',
-            '$offset' => '1',
+            '$limit' => $limit,
+            '$page' => $page,
             'year' => '$between(2014,2005)',
             'price' => [
                 '$min(20)',
@@ -186,25 +216,13 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
             'author' => '"Robert C. Marting"'
         ];
 
-        $fieldNames = [
-            'id',
-            'author',
-            'title',
-            'year',
-            'price',
-            'name',
-            'status'
-        ];
-
         /** @var QueryFilter $queryFilter */
         $queryFilter = $sm->get(QueryFilter::class);
         $queryFilter->setQueryParameters($queryData);
+        /** @var CommandCollection $commandCollection */
+        $commandCollection = $sm->get(CommandCollection::class);
 
-        $commandCollection = $sm->get(Command\Repository\CommandCollection::class);
-
-        $this->classMetadataMock->expects($this->any())
-            ->method('getFieldNames')
-            ->will($this->returnValue($fieldNames));
+        $queryFilterVisitor = new QueryFilterVisitor($queryFilter, $commandCollection);
 
         // here we are checking private method that provide us QueryBuilder
         $reflector = new \ReflectionObject($this->testedObj);
@@ -212,18 +230,17 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
         $method->setAccessible(true);
 
         /** @var QueryBuilder $qb */
-        $qb = $method->invoke($this->testedObj, $queryFilter, $commandCollection);
+        $qb = $method->invoke($this->testedObj, $queryFilterVisitor);
 
         $this->assertSame(
-            "SELECT b.id, b.author, b.title FROM  b WHERE (b.year BETWEEN '2005' AND '2014') AND b.price >= '20' AND b.price <= '50' AND b.name LIKE 'a%' AND b.name LIKE '%z' AND b.status IN('packaging', 'shipping') AND b.author = 'Robert C. Marting' ORDER BY b.year desc, b.price asc",
+            "SELECT b.id, b.author, b.title FROM BusinessLogicDomainBooks\\Entity\\BookEntity b WHERE (b.year BETWEEN '2005' AND '2014') AND b.price >= '20' AND b.price <= '50' AND b.name LIKE 'a%' AND b.name LIKE '%z' AND b.status IN('packaging', 'shipping') AND b.author = 'Robert C. Marting' ORDER BY b.year desc, b.price asc",
             $this->getRawSQLFromORMQueryBuilder($qb)
         );
 
-        $this->queryMock->expects($this->once())
-            ->method('getResult')
-            ->with($hydrationMode = Query::HYDRATE_OBJECT);
+        $this->assertSame($offset, $qb->getFirstResult());
+        $this->assertSame($limit, $qb->getMaxResults());
 
-        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+        $this->testedObj->findByQueryFilter($queryFilterVisitor);
     }
 
     public function testFindByQueryFilter_WithNotFoundCriteriaCommand()
@@ -248,20 +265,22 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
         $queryFilter = $sm->get(QueryFilter::class);
         $queryFilter->setQueryParameters($queryData);
 
-        $commandCollection = new Command\Repository\CommandCollection(
+        $commandCollection = new CommandCollection(
             [
-                new Command\Repository\BetweenCommand(),
-                new Command\Repository\OffsetCommand(),
+                new BetweenCommand(),
+                new OffsetCommand(),
             ]
         );
+
+        $queryFilterVisitor = new QueryFilterVisitor($queryFilter, $commandCollection);
 
         $this->classMetadataMock->expects($this->any())
             ->method('getFieldNames')
             ->will($this->returnValue($fieldNames));
 
-        $this->setExpectedException(UnsupportedTypeException::class, 'Unsupported condition type: fields');
+        $this->setExpectedException(UnsupportedTypeException::class, 'Tried to filter by field "fields" that is not supported');
 
-        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+        $this->testedObj->findByQueryFilter($queryFilterVisitor);
     }
 
     public function testFindByQueryFilter_WithUnrecognizedField()
@@ -269,26 +288,20 @@ class BookRepositoryTest extends AbstractRepositoryTestCase
         $sm = Bootstrap::getServiceManager();
 
         $queryData = [
-            '$fields' => 'id,author,title',
-        ];
-
-        $fieldNames = [
-            'author',
-            'title',
+            '$fields' => 'id,author,is_thick_cover',
         ];
 
         /** @var QueryFilter $queryFilter */
         $queryFilter = $sm->get(QueryFilter::class);
         $queryFilter->setQueryParameters($queryData);
 
-        $commandCollection = $sm->get(Command\Repository\CommandCollection::class);
+        /** @var CommandCollection $commandCollection */
+        $commandCollection = $sm->get(CommandCollection::class);
 
-        $this->classMetadataMock->expects($this->any())
-            ->method('getFieldNames')
-            ->will($this->returnValue($fieldNames));
+        $queryFilterVisitor = new QueryFilterVisitor($queryFilter, $commandCollection);
 
-        $this->setExpectedException(UnrecognizedFieldException::class, 'Field unrecognized in entity: id');
+        $this->setExpectedException(UnrecognizedFieldException::class, 'Tried to filter by field "is_thick_cover" which does not exist in entity');
 
-        $this->testedObj->findByQueryFilter($queryFilter, $commandCollection);
+        $this->testedObj->findByQueryFilter($queryFilterVisitor);
     }
 }

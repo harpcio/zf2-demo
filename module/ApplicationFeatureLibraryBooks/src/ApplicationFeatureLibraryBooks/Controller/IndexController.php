@@ -11,10 +11,12 @@
 
 namespace ApplicationFeatureLibraryBooks\Controller;
 
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
+use BusinessLogicLibrary\Pagination\Exception\PaginationException;
+use BusinessLogicLibrary\Pagination\PaginatorAdapter;
+use BusinessLogicLibrary\Pagination\PaginatorInfoFactory;
+use BusinessLogicLibrary\QueryFilter\Exception\QueryFilterException;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class IndexController extends AbstractActionController
@@ -29,28 +31,44 @@ class IndexController extends AbstractActionController
      */
     private $queryFilter;
 
-    public function __construct(FilterResultsService $service, QueryFilter $queryFilter)
-    {
+    /**
+     * @var PaginatorInfoFactory
+     */
+    private $paginatorInfoFactory;
+
+    public function __construct(
+        FilterResultsService $service,
+        QueryFilter $queryFilter,
+        PaginatorInfoFactory $paginatorInfoFactory
+    ) {
         $this->service = $service;
         $this->queryFilter = $queryFilter;
+        $this->paginatorInfoFactory = $paginatorInfoFactory;
     }
 
     public function indexAction()
     {
-        $books = [];
-
         try {
-            $this->queryFilter->setQueryParameters($this->params()->fromQuery());
+            $filterParams = $this->paginatorInfoFactory->prepareFilterParams($this->params()->fromQuery());
+            $this->queryFilter->setQueryParameters($filterParams);
 
-            $books = $this->service->getFilteredResults($this->queryFilter);
-        } catch (UnrecognizedFieldException $e) {
+            /** @var PaginatorAdapter $paginator */
+            $paginator = $this->service->getFilteredResults($this->queryFilter);
+            $paginatorInfo = $this->paginatorInfoFactory->create($paginator->count());
+            $paginatorInfo->preparePagesToShow();
+
+            return [
+                'books' => $paginator->getIterator(),
+                'paginator' => $paginatorInfo,
+                'route' => 'library/books/*', // this should go to paginator view helper
+                'query' => $filterParams
+            ];
+        } catch (QueryFilterException $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
-        } catch (UnsupportedTypeException $e) {
+        } catch (PaginationException $e) {
             $this->flashMessenger()->addErrorMessage($e->getMessage());
         }
 
-        return [
-            'books' => $books
-        ];
+        return array('books' => array());
     }
 }

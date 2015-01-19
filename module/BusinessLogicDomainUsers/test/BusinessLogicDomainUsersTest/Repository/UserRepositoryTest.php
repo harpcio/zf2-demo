@@ -11,8 +11,10 @@
 
 namespace BusinessLogicDomainUsersTest\Repository;
 
+use BusinessLogicDomainUsers\Entity\UserEntity;
 use BusinessLogicDomainUsers\Repository\UsersRepository;
 use ApplicationLibraryTest\Repository\AbstractRepositoryTestCase;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class UserRepositoryTest extends AbstractRepositoryTestCase
 {
@@ -24,6 +26,11 @@ class UserRepositoryTest extends AbstractRepositoryTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->classMetadataMock = $this->getMockBuilder(ClassMetadata::class)
+            ->setConstructorArgs([UserEntity::class])
+            ->setMethods(null)
+            ->getMock();
 
         $this->testedObject = new UsersRepository($this->entityManagerMock, $this->classMetadataMock);
     }

@@ -11,11 +11,11 @@
 
 namespace ApplicationFeatureLibraryBooksTest\Service;
 
-use BusinessLogicDomainBooksTest\Entity\Provider\BookEntityProvider;
-use ApplicationLibrary\QueryFilter\QueryFilter;
-use ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection;
-use BusinessLogicDomainBooks\Repository\BooksRepositoryInterface;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
+use BusinessLogicDomainBooks\Repository\BooksRepositoryInterface;
+use BusinessLogicDomainBooksTest\Entity\Provider\BookEntityProvider;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\QueryFilter\Command\Repository\CommandCollection;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class FilterResultsServiceTest extends \PHPUnit_Framework_TestCase

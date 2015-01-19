@@ -17,8 +17,8 @@ Filtering:
 - special commands:
     - $fields (ie: /api/library/books?$fields=id,title,price)
     - $sort (ie: /api/library/books?$sort=-year,price) will sort by year [desc] and price [asc]
-    - $limit (ie: /api/library/books?$limit=1)
-    - $offset (ie: /api/library/books?$offset=1)
+    - $limit (ie: /api/library/books?$limit=5)
+    - $page (ie: /api/library/books?$page=3)
 - criteria commands:
     - $between(x, y) (ie: /api/library/books?year=$between(1999,2014))
     - $startswith(x) (ie: /api/library/books?publisher=$startswith("o're"))
@@ -34,10 +34,10 @@ Filtering:
     - ie: /api/library/books?title[]=$startswith("clean")&title[]=$endswith("ship")
 
 We can also combine all commands:
-- ie: /api/library/books?year=$between(2000,2014)&price[]=$min(32)&price[]=$max(40)&$sort=-year&$limit=2&$offset=1
+- ie: /api/library/books?year=$between(2000,2014)&price[]=$min(32)&price[]=$max(40)&$sort=-year&$limit=5&$page=2
 
 We can also do this on books list:
-- ie. /library/books?year=$between(2000,2014)&price[]=$min(32)&price[]=$max(40)&$sort=-year&$limit=2&$offset=1
+- ie. /library/books?year=$between(2000,2014)&price[]=$min(32)&price[]=$max(40)&$sort=-year&$limit=5&$page=2
 
 ACL
 -----------------------
@@ -62,7 +62,7 @@ Lang & Locale
         - "/tw" (not available) will be redirected to "de" if your local browser language is "de"
 
 With the new feature, now we have possibility to have default language, ie. "en", 
-and all urls without LANG parameter, ie.: "/auth/login", "/library/books"
+and all urls without that LANG parameter, ie.: "/auth/login", "/library/books"
 
 
 Installation
@@ -113,8 +113,8 @@ TODO
 7. ~~transfer updating/creating/deleting privileges of books to administrator~~
 8. ~~implement query filtering in API with multiple options and special commands~~
 9. ~~implement navigation with acl filtering~~
-10. pagination, sorting, filtering on lists
+10. ~~pagination~~, sorting, filtering on lists
 11. ~~implement lang && locale support~~
-12. implement hexagonal structure (Business Logic, Data Access, Framework - Application)
+12. implement hexagonal structure (Business Logic, Data Access, Application as Framework)
 13. implement one page application (based on AngularJS)
 

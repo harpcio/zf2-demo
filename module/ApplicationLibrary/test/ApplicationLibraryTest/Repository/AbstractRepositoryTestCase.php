@@ -11,22 +11,27 @@
 
 namespace ApplicationLibraryTest\Repository;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use DoctrineORMModule\Service\ConfigurationFactory;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Test\Bootstrap;
 
 abstract class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var MockObject
+     * @var MockObject|EntityManager
      */
     protected $entityManagerMock;
 
     /**
-     * @var MockObject
+     * @var MockObject|ClassMetadata
      */
     protected $classMetadataMock;
 
@@ -42,17 +47,21 @@ abstract class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->entityManagerMock = $this->getMockBuilder(EntityManager::class)
+        $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['persist', 'flush', 'remove', 'getClassMetadata', 'createQueryBuilder'])
             ->getMock();
 
-        $this->classMetadataMock = $this->getMockBuilder(ClassMetadata::class)
+        $connection->expects($this->any())
+            ->method('getDatabasePlatform')
+            ->willReturn(new MySqlPlatform());
+
+        $this->entityManagerMock = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
+            ->setMethods(['persist', 'flush', 'remove', 'getConnection', 'getClassMetadata', 'createQueryBuilder', 'getConfiguration'])
             ->getMock();
 
         $this->queryBuilderMock = $this->getMockBuilder(QueryBuilder::class)
-            ->setMethods(['__construct', 'getQuery'])
+            ->setMethods(['__construct'])
             ->setConstructorArgs([$this->entityManagerMock])
             ->getMock();
 
@@ -63,15 +72,23 @@ abstract class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 
         $this->queryBuilderMock->expects($this->any())
             ->method('getQuery')
-            ->will($this->returnValue($this->queryMock));
+            ->willReturn($this->queryMock);
 
         $this->entityManagerMock->expects($this->any())
             ->method('createQueryBuilder')
-            ->will($this->returnValue($this->queryBuilderMock));
+            ->willReturn($this->queryBuilderMock);
 
         $this->entityManagerMock->expects($this->any())
-            ->method('getClassMetadata')
-            ->will($this->returnValue($this->classMetadataMock));
+            ->method('getConnection')
+            ->willReturn($connection);
+
+        $configurationFactory = new ConfigurationFactory('orm_default');
+        /** @var Configuration $configuration */
+        $configuration = $configurationFactory->createService(clone Bootstrap::getServiceManager());
+
+        $this->entityManagerMock->expects($this->any())
+            ->method('getConfiguration')
+            ->willReturn($configuration);
     }
 
     /**

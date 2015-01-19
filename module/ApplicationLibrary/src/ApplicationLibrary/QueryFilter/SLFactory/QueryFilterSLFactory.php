@@ -11,8 +11,8 @@
 
 namespace ApplicationLibrary\QueryFilter\SLFactory;
 
-use ApplicationLibrary\QueryFilter\Command;
-use ApplicationLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\QueryFilter\Command;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -32,7 +32,9 @@ class QueryFilterSLFactory implements FactoryInterface
                 new Command\Special\FieldsCommand(),
                 new Command\Special\SortCommand(),
                 new Command\Special\LimitCommand(),
-                new Command\Special\OffsetCommand(),
+                new Command\Special\PageCommand(), // this must be after limitCommand
+            ],
+            [
                 new Command\Condition\BetweenCommand(),
                 new Command\Condition\MinMaxCommand(),
                 new Command\Condition\StartsEndsWithCommand(),

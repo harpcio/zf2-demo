@@ -11,10 +11,13 @@
 
 namespace ApplicationFeatureLibraryBooksTest\Controller;
 
+use BusinessLogicLibrary\Pagination\PaginatorAdapter;
+use BusinessLogicLibrary\Pagination\PaginatorInfo;
+use BusinessLogicLibrary\Pagination\PaginatorInfoFactory;
 use BusinessLogicDomainBooksTest\Entity\Provider\BookEntityProvider;
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\QueryFilter\Exception\UnrecognizedFieldException;
+use BusinessLogicLibrary\QueryFilter\Exception\UnsupportedTypeException;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
 use ApplicationLibraryTest\Controller\AbstractControllerTestCase;
 use ApplicationFeatureLibraryBooks\Controller\IndexController;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
@@ -30,14 +33,19 @@ class IndexControllerTest extends AbstractControllerTestCase
     private $bookEntityProvider;
 
     /**
-     * @var MockObject
+     * @var MockObject|FilterResultsService
      */
     private $filterResultsServiceMock;
 
     /**
-     * @var QueryFilter
+     * @var \BusinessLogicLibrary\QueryFilter\QueryFilter
      */
     private $queryFilter;
+
+    /**
+     * @var MockObject|PaginatorInfoFactory
+     */
+    protected $paginatorInfoFactoryMock;
 
     /**
      * @var IndexController
@@ -56,7 +64,17 @@ class IndexControllerTest extends AbstractControllerTestCase
 
         $this->queryFilter = new QueryFilter([], []);
 
-        $this->controller = new IndexController($this->filterResultsServiceMock, $this->queryFilter);
+        $this->paginatorInfoFactoryMock = $this->getMockBuilder(PaginatorInfoFactory::class)
+            ->setConstructorArgs([['pagination' => ['itemsPerPage' => 10]]])
+            ->setMethods(array('create'))
+            ->getMock();
+
+        $this->controller = new IndexController(
+            $this->filterResultsServiceMock,
+            $this->queryFilter,
+            $this->paginatorInfoFactoryMock
+        );
+
         $this->controller->setEvent($this->event);
     }
 
@@ -70,14 +88,45 @@ class IndexControllerTest extends AbstractControllerTestCase
             $bookEntityTwo
         ];
 
+        $paginatorMock = $this->getMockBuilder(PaginatorAdapter::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('count', 'getIterator'))
+            ->getMock();
+
+        $paginatorMock->expects($this->any())
+            ->method('count')
+            ->willReturn(2);
+
+        $paginatorMock->expects($this->any())
+            ->method('getIterator')
+            ->willReturn($books);
+
         $this->filterResultsServiceMock->expects($this->once())
             ->method('getFilteredResults')
-            ->will($this->returnValue($books));
+            ->will($this->returnValue($paginatorMock));
+
+        $paginator = new PaginatorInfo(2, 1, 10);
+
+        $this->paginatorInfoFactoryMock->expects($this->once())
+            ->method('create')
+            ->with(2)
+            ->willReturn($paginator);
 
         $result = $this->controller->dispatch(new Request());
 
         $this->assertResponseStatusCode(Response::STATUS_CODE_200);
-        $this->assertSame(['books' => $books], $result);
+
+        $expectedResult = array(
+            'books' => $books,
+            'paginator' => $paginator,
+            'route' => 'library/books/*',
+            'query' => array(
+                '$page' => 1,
+                '$limit' => 10
+            )
+        );
+
+        $this->assertSame($expectedResult, $result);
     }
 
     public function testIndexAction_WithUnrecognizedFieldException()

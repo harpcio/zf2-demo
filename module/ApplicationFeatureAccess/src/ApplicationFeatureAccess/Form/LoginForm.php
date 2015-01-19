@@ -39,6 +39,7 @@ class LoginForm extends Form
                 'attributes' => [
                     'class' => 'form-control',
                     'required' => 'required',
+                    'placeholder' => 'default: admin',
                 ],
             ]
         );
@@ -53,6 +54,7 @@ class LoginForm extends Form
                 'attributes' => [
                     'class' => 'form-control',
                     'required' => 'required',
+                    'placeholder' => 'default: admin',
                 ],
             ]
         );

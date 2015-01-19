@@ -12,10 +12,11 @@
 namespace ApplicationFeatureApiV1LibraryBooksTest\Controller;
 
 use BusinessLogicDomainBooksTest\Entity\Provider\BookEntityProvider;
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
+use BusinessLogicLibrary\QueryFilter\Exception\UnrecognizedFieldException;
+use BusinessLogicLibrary\QueryFilter\Exception\UnsupportedTypeException;
 use ApplicationLibraryTest\Controller\AbstractFunctionalControllerTestCase;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Test\Bootstrap;
 use Zend\Http\Request;
@@ -64,9 +65,22 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
             $data[] = $this->bookEntityProvider->getDataFromBookEntity($bookEntity);
         }
 
+        $paginatorMock = $this->getMockBuilder(Paginator::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('count', 'getIterator'))
+            ->getMock();
+
+        $paginatorMock->expects($this->any())
+            ->method('count')
+            ->willReturn(2);
+
+        $paginatorMock->expects($this->any())
+            ->method('getIterator')
+            ->willReturn($data);
+
         $this->serviceMock->expects($this->once())
             ->method('getFilteredResults')
-            ->will($this->returnValue($data));
+            ->will($this->returnValue($paginatorMock));
 
         $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);
 
@@ -78,9 +92,22 @@ class GetListControllerFunctionalTest extends AbstractFunctionalControllerTestCa
 
     public function testGetListRequest_WhenEntitiesDoNotExist()
     {
+        $paginatorMock = $this->getMockBuilder(Paginator::class)
+            ->disableOriginalConstructor()
+            ->setMethods(array('count', 'getIterator'))
+            ->getMock();
+
+        $paginatorMock->expects($this->any())
+            ->method('count')
+            ->willReturn(2);
+
+        $paginatorMock->expects($this->any())
+            ->method('getIterator')
+            ->willReturn([]);
+
         $this->serviceMock->expects($this->once())
             ->method('getFilteredResults')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue($paginatorMock));
 
         $this->dispatch(self::GET_LIST_URL, Request::METHOD_GET);
 

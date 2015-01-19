@@ -82,20 +82,25 @@ class LanguagesSwitcher extends AbstractHelper
     private function prepareParamsAndRouteName()
     {
         // default $params and $routeName
-        $params['__NAMESPACE__'] = 'Application\\Controller';
-        $params['action'] = null;
-        $params['controller'] = 'index';
+        $params = [];
         $routeName = 'home';
 
         // when error occurred (404) we don't have routeMatch
         if ($this->routeMatch) {
             $params = $this->routeMatch->getParams();
             if ($params['action'] === 'index') {
-                $params['action'] = null;
+                unset($params['action']);
             }
+
             $params['controller'] = $params['__CONTROLLER__'];
+            if ($params['controller'] === 'index') {
+                unset($params['controller']);
+            }
 
             $routeName = $this->routeMatch->getMatchedRouteName();
+
+            unset($params['__NAMESPACE__']);
+            unset($params['__CONTROLLER__']);
         }
 
         return [$params, $routeName];

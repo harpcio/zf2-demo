@@ -11,9 +11,9 @@
 
 namespace ApplicationFeatureLibraryBooks\Service\SLFactory;
 
-use ApplicationLibrary\QueryFilter\Command\Repository;
-use BusinessLogicDomainBooks\Repository\BooksRepository;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
+use BusinessLogicDomainBooks\Repository\BooksRepository;
+use BusinessLogicLibrary\QueryFilter\Command\Repository;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -30,7 +30,8 @@ class FilterResultsServiceSLFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $bookRepository BooksRepository
+         * @var BooksRepository              $bookRepository
+         * @var Repository\CommandCollection $commandCollection
          */
         $bookRepository = $serviceLocator->get(BooksRepository::class);
         $commandCollection = $serviceLocator->get(Repository\CommandCollection::class);

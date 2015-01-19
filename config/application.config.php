@@ -5,6 +5,8 @@ $config = [
         'DoctrineModule',
         'DoctrineORMModule',
         'DluTwBootstrap',
+        'ApplicationDataAccessDoctrineORMLibrary',
+        'BusinessLogicLibrary',
         'BusinessLogicDomainUsers',
         'BusinessLogicDomainBooks',
         'Application',

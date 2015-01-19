@@ -14,9 +14,11 @@ namespace ApplicationFeatureApiV1LibraryBooks\Controller;
 use ApplicationFeatureApi\Controller\AbstractApiActionController;
 use ApplicationFeatureApi\Exception;
 use ApplicationFeatureLibraryBooks\Service\FilterResultsService;
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\Pagination\PaginatorAdapter;
+use BusinessLogicLibrary\QueryFilter\Exception\QueryFilterException;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\Pagination\PaginatorInfoFactory;
+use BusinessLogicLibrary\Pagination\Exception\PaginationException;
 use Doctrine\ORM\Query;
 use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
@@ -30,26 +32,49 @@ class GetListController extends AbstractApiActionController
     private $service;
 
     /**
-     * @var QueryFilter
+     * @var \BusinessLogicLibrary\QueryFilter\QueryFilter
      */
     private $queryFilter;
 
-    public function __construct(FilterResultsService $service, QueryFilter $queryFilter)
-    {
+    /**
+     * @var PaginatorInfoFactory
+     */
+    private $paginatorInfoFactory;
+
+    public function __construct(
+        FilterResultsService $service,
+        QueryFilter $queryFilter,
+        PaginatorInfoFactory $paginatorInfoFactory
+    ) {
         $this->service = $service;
         $this->queryFilter = $queryFilter;
+        $this->paginatorInfoFactory = $paginatorInfoFactory;
     }
 
     public function indexAction()
     {
         try {
-            $this->queryFilter->setQueryParameters($this->params()->fromQuery());
-            $books = $this->service->getFilteredResults($this->queryFilter, $hydrationMode = Query::HYDRATE_ARRAY);
+            $this->queryFilter->setQueryParameters(
+                $this->paginatorInfoFactory->prepareFilterParams($this->params()->fromQuery())
+            );
 
-            return new JsonModel(['data' => $books]);
-        } catch (UnrecognizedFieldException $e) {
+            /** @var PaginatorAdapter $paginator */
+            $paginator = $this->service->getFilteredResults(
+                $this->queryFilter,
+                $hydrationMode = Query::HYDRATE_ARRAY
+            );
+
+            $paginatorInfo = $this->paginatorInfoFactory->create($paginator->count());
+
+            $data = array('data' => $paginator->getIterator());
+            if ($paginatorInfo->shouldDisplay()) {
+                $data['pagination'] = $paginatorInfo->toArray();
+            }
+
+            return new JsonModel($data);
+        } catch (QueryFilterException $e) {
             throw new Exception\BadRequestException($e->getMessage(), Response::STATUS_CODE_400, $e);
-        } catch (UnsupportedTypeException $e) {
+        } catch (PaginationException $e) {
             throw new Exception\BadRequestException($e->getMessage(), Response::STATUS_CODE_400, $e);
         } catch (\PDOException $e) {
             throw new Exception\PDOServiceUnavailableException();

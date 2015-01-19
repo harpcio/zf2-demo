@@ -11,21 +11,18 @@
 
 namespace BusinessLogicDomainBooks\Repository;
 
-use ApplicationLibrary\QueryFilter\Criteria;
-use ApplicationLibrary\QueryFilter\Exception\UnrecognizedFieldException;
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
-use ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection;
-use ApplicationLibrary\QueryFilter\Command\Repository\CommandInterface;
-use ApplicationLibrary\Traits\DoctrineHydratorAwareInterface;
-use ApplicationLibrary\Traits\DoctrineHydratorAwareTrait;
+use BusinessLogicLibrary\Pagination\PaginatorAdapter;
+use BusinessLogicLibrary\QueryFilter\QueryFilterVisitorInterface;
+use BusinessLogicDomainBooks\Entity\BookEntity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
-use BusinessLogicDomainBooks\Entity\BookEntity;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zend\Stdlib\Hydrator\HydratorAwareInterface;
+use Zend\Stdlib\Hydrator\HydratorAwareTrait;
 
-class BooksRepository extends EntityRepository implements BooksRepositoryInterface, DoctrineHydratorAwareInterface
+class BooksRepository extends EntityRepository implements BooksRepositoryInterface, HydratorAwareInterface
 {
-    use DoctrineHydratorAwareTrait;
+    use HydratorAwareTrait;
 
     /**
      * @return BookEntity
@@ -43,7 +40,11 @@ class BooksRepository extends EntityRepository implements BooksRepositoryInterfa
      */
     public function hydrate(BookEntity $bookEntity, array $data)
     {
-        return $this->getHydrator()->hydrate($data, $bookEntity);
+        if (!($hydrator = $this->getHydrator())) {
+            throw new \LogicException('Hydrator has not been injected!');
+        }
+
+        return $hydrator->hydrate($data, $bookEntity);
     }
 
     /**
@@ -53,7 +54,11 @@ class BooksRepository extends EntityRepository implements BooksRepositoryInterfa
      */
     public function extract(BookEntity $bookEntity)
     {
-        return $this->getHydrator()->extract($bookEntity);
+        if (!($hydrator = $this->getHydrator())) {
+            throw new \LogicException('Hydrator has not been injected!');
+        }
+
+        return $hydrator->extract($bookEntity);
     }
 
     /**
@@ -83,58 +88,40 @@ class BooksRepository extends EntityRepository implements BooksRepositoryInterfa
     }
 
     /**
-     * @param QueryFilter       $queryFilter
-     * @param CommandCollection $criteriaCommands
-     * @param int               $hydrationMode
+     * @param QueryFilterVisitorInterface $queryFilterVisitor
+     * @param int                         $hydrationMode
      *
-     * @throws UnrecognizedFieldException
-     * @throws UnsupportedTypeException
-     * @return array|BookEntity[]
+     * @return PaginatorAdapter
      */
     public function findByQueryFilter(
-        QueryFilter $queryFilter,
-        CommandCollection $criteriaCommands,
+        QueryFilterVisitorInterface $queryFilterVisitor,
         $hydrationMode = Query::HYDRATE_OBJECT
     ) {
-        $qb = $this->provideQueryBuilderToFindByQueryFilter($queryFilter, $criteriaCommands);
+        $qb = $this->provideQueryBuilderToFindByQueryFilter($queryFilterVisitor);
 
-        return $qb->getQuery()->getResult($hydrationMode);
+        $query = $qb->getQuery();
+        $query->setHydrationMode($hydrationMode);
+
+        $paginator = new Paginator($query);
+        if ($hydrationMode === Query::HYDRATE_ARRAY) {
+            $paginator->setUseOutputWalkers(false);
+        }
+
+        return new PaginatorAdapter($paginator);
     }
 
     /**
-     * @param QueryFilter       $queryFilter
-     * @param CommandCollection $criteriaCommands
+     * @param QueryFilterVisitorInterface $queryFilterVisitor
      *
      * @return \Doctrine\ORM\QueryBuilder
-     * @throws \ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException
      */
-    private function provideQueryBuilderToFindByQueryFilter(
-        QueryFilter $queryFilter,
-        CommandCollection $criteriaCommands
-    ) {
-        $i = 0;
-        $alias = 'b';
-        $qb = $this->createQueryBuilder($alias);
-
+    private function provideQueryBuilderToFindByQueryFilter(QueryFilterVisitorInterface $queryFilterVisitor)
+    {
         $entityFieldNames = $this->getEntityFieldNames();
 
-        /** @var $criteria Criteria */
-        foreach ($queryFilter->getCriteria() as $criteria) {
-            /** @var CommandInterface $command */
-            foreach ($criteriaCommands as $command) {
-                if ($command->execute($qb, $criteria, $entityFieldNames, $alias, $i)) {
-                    $i += 1;
-                    continue 2;
-                }
-            }
+        $qb = $this->createQueryBuilder('b');
 
-            throw new UnsupportedTypeException(sprintf(
-                'Unsupported condition type: %s',
-                $criteria->getType()
-            ));
-        }
-
-        return $qb;
+        return $queryFilterVisitor->visit($qb, $entityFieldNames);
     }
 
     /**

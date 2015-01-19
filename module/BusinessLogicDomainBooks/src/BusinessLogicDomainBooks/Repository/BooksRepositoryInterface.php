@@ -11,11 +11,11 @@
 
 namespace BusinessLogicDomainBooks\Repository;
 
-use ApplicationLibrary\QueryFilter\Exception\UnsupportedTypeException;
-use ApplicationLibrary\QueryFilter\QueryFilter;
-use ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
 use BusinessLogicDomainBooks\Entity\BookEntity;
+use BusinessLogicLibrary\Pagination\PaginatorAdapter;
+use BusinessLogicLibrary\QueryFilter\Exception\UnsupportedTypeException;
+use BusinessLogicLibrary\QueryFilter\QueryFilterVisitorInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 interface BooksRepositoryInterface extends ObjectRepository
 {
@@ -52,13 +52,12 @@ interface BooksRepositoryInterface extends ObjectRepository
     public function delete(BookEntity $bookEntity, $flush = true);
 
     /**
-     * @param QueryFilter                                                           $queryFilter
-     * @param \ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection $criteriaCommands
-     * @param int                                                                   $hydrationMode
+     * @param QueryFilterVisitorInterface $queryFilterVisitor
+     * @param int                         $hydrationMode
      *
-     * @return array|BookEntity[]
+     * @return PaginatorAdapter
      * @throws UnsupportedTypeException
      */
-    public function findByQueryFilter(QueryFilter $queryFilter, CommandCollection $criteriaCommands, $hydrationMode);
+    public function findByQueryFilter(QueryFilterVisitorInterface $queryFilterVisitor, $hydrationMode);
 
 }

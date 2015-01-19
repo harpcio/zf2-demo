@@ -1,0 +1,46 @@
+<?php
+/** @var \BusinessLogicLibrary\Pagination\PaginatorInfo $paginator */
+$paginator = $this->paginator;
+?>
+<div class="col-xs-6">
+    <?= ($paginator) ? $paginator->getShowingText() : null; ?>
+</div>
+<div class="col-xs-6">
+    <?php if ($paginator && $paginator->shouldDisplay()): ?>
+        <div class="pull-right">
+            <ul class="pagination" style="margin-top: 0">
+                <li <?= $paginator->getPreviousPage() === $paginator->getCurrentPage() ? 'class="disabled"' : ''; ?>>
+                    <a href="<?= $this->url($this->route, array(), array(
+                        'query' => array_merge($this->query, array('$page' => $paginator->getFirstPage()))
+                    )); ?>">&laquo;</a>
+                </li>
+                <li <?= $paginator->getPreviousPage() === $paginator->getCurrentPage() ? 'class="disabled"' : ''; ?>>
+                    <a href="<?= $this->url($this->route, array(), array(
+                        'query' => array_merge($this->query, array('$page' => $paginator->getPreviousPage()))
+                    )); ?>">&lsaquo;</a>
+                </li>
+                <!-- Numbered page links -->
+                <?php foreach ($paginator->getPagesToShow() as $page): ?>
+                    <li <?= $page == $paginator->getCurrentPage() ? 'class="active"' : ''; ?>>
+                        <a href="<?= $this->url($this->route, array(),
+                            array('query' => array_merge($this->query, array('$page' => $page)))); ?>">
+                            <?= $page; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+                <!-- Next page link -->
+                <li <?= $paginator->getNextPage() === $paginator->getCurrentPage() ? 'class="disabled"' : ''; ?>>
+                    <a href="<?= $this->url($this->route, array(), array(
+                        'query' => array_merge($this->query, array('$page' => $paginator->getNextPage()))
+                    )); ?>">&rsaquo;</a>
+                </li>
+                <!-- Last page link -->
+                <li <?= $paginator->getNextPage() === $paginator->getCurrentPage() ? 'class="disabled"' : ''; ?>>
+                    <a href="<?= $this->url($this->route, array(), array(
+                        'query' => array_merge($this->query, array('$page' => $paginator->getLastPage()))
+                    )); ?>">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>

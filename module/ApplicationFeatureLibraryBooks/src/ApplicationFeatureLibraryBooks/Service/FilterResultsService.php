@@ -11,11 +11,12 @@
 
 namespace ApplicationFeatureLibraryBooks\Service;
 
-use ApplicationLibrary\QueryFilter\QueryFilter;
-use ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection;
-use Doctrine\ORM\Query;
 use BusinessLogicDomainBooks\Entity\BookEntity;
 use BusinessLogicDomainBooks\Repository\BooksRepositoryInterface;
+use BusinessLogicLibrary\QueryFilter\QueryFilter;
+use BusinessLogicLibrary\QueryFilter\Command\Repository\CommandCollection;
+use BusinessLogicLibrary\QueryFilter\QueryFilterVisitor;
+use Doctrine\ORM\Query;
 
 class FilterResultsService
 {
@@ -26,7 +27,7 @@ class FilterResultsService
     private $bookRepository;
 
     /**
-     * @var \ApplicationLibrary\QueryFilter\Command\Repository\CommandCollection
+     * @var CommandCollection
      */
     private $commandCollection;
 
@@ -44,6 +45,8 @@ class FilterResultsService
      */
     public function getFilteredResults(QueryFilter $queryFilter, $hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->bookRepository->findByQueryFilter($queryFilter, $this->commandCollection, $hydrationMode);
+        $queryBuilderVisitor = new QueryFilterVisitor($queryFilter, $this->commandCollection);
+
+        return $this->bookRepository->findByQueryFilter($queryBuilderVisitor, $hydrationMode);
     }
 }
