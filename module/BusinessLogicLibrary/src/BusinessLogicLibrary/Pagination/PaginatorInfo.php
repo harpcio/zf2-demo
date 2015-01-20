@@ -114,7 +114,12 @@ class PaginatorInfo
     protected function prepareShowingText()
     {
         $currentPageFirstItem = (($this->currentPage - 1) * $this->itemsPerPage) + 1;
-        $currentPageLastItem = $this->currentPage * $this->itemsPerPage;
+
+        if ($this->currentPage === $this->lastPage) {
+            $currentPageLastItem = $this->numberOfItems;
+        } else {
+            $currentPageLastItem = $this->currentPage * $this->itemsPerPage;
+        }
 
         $this->showingText = sprintf(
             self::SHOWING_TEXT_PATTERN,

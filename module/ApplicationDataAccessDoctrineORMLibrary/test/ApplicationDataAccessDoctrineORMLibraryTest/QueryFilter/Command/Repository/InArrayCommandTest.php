@@ -61,12 +61,12 @@ class InArrayCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName IN(:columnName:filterBy:InArray)',
+            't.columnName IN(:columnNameFilterByInArray)',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:InArray' => ['something', 'anything'],
+                ':columnNameFilterByInArray' => ['something', 'anything'],
             ],
             $queryBuilder->getParameters()
         );

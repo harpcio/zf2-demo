@@ -34,8 +34,8 @@ class BetweenCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $paramLeft = ':' . $columnName . ':filterBy:BetweenLeft';
-        $paramRight = ':' . $columnName . ':filterBy:BetweenRight';
+        $paramLeft = ':' . $columnName . 'FilterByBetweenLeft';
+        $paramRight = ':' . $columnName . 'FilterByBetweenRight';
 
         $queryBuilder->andWhere($queryBuilder->expr()->between($preparedColumnName, $paramLeft, $paramRight))
             ->setParameters(

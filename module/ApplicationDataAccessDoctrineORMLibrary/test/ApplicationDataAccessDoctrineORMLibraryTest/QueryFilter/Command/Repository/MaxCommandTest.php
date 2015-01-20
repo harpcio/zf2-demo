@@ -61,12 +61,12 @@ class MaxCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName <= :columnName:filterBy:Max',
+            't.columnName <= :columnNameFilterByMax',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:Max' => 'something',
+                ':columnNameFilterByMax' => 'something',
             ],
             $queryBuilder->getParameters()
         );

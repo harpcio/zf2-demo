@@ -61,12 +61,12 @@ class EndsWithCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName LIKE :columnName:filterBy:EndsWith',
+            't.columnName LIKE :columnNameFilterByEndsWith',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:EndsWith' => '%something',
+                ':columnNameFilterByEndsWith' => '%something',
             ],
             $queryBuilder->getParameters()
         );

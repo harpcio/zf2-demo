@@ -34,7 +34,7 @@ class MinCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:Min';
+        $param = ':' . $columnName . 'FilterByMin';
         $queryBuilder->andWhere($queryBuilder->expr()->gte($preparedColumnName, $param))
             ->setParameter($param, $criteria->getValue());
 

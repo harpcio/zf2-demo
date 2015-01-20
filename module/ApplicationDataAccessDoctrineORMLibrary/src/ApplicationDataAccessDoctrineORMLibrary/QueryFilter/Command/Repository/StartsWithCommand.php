@@ -34,7 +34,7 @@ class StartsWithCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:StartsWith';
+        $param = ':' . $columnName . 'FilterByStartsWith';
         $queryBuilder->andWhere($queryBuilder->expr()->like($preparedColumnName, $param))
             ->setParameter($param, $criteria->getValue() . '%');
 

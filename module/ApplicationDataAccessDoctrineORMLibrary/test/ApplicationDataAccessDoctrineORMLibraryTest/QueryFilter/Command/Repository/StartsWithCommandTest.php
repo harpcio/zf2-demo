@@ -61,12 +61,12 @@ class StartsWithCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName LIKE :columnName:filterBy:StartsWith',
+            't.columnName LIKE :columnNameFilterByStartsWith',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:StartsWith' => 'something%',
+                ':columnNameFilterByStartsWith' => 'something%',
             ],
             $queryBuilder->getParameters()
         );

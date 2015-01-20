@@ -61,12 +61,12 @@ class EqualCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName = :columnName:filterBy:Equal',
+            't.columnName = :columnNameFilterByEqual',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:Equal' => 'something',
+                ':columnNameFilterByEqual' => 'something',
             ],
             $queryBuilder->getParameters()
         );

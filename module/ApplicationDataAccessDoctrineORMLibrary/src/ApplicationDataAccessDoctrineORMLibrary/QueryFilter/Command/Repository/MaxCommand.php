@@ -34,7 +34,7 @@ class MaxCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:Max';
+        $param = ':' . $columnName . 'FilterByMax';
         $queryBuilder->andWhere($queryBuilder->expr()->lte($preparedColumnName, $param))
             ->setParameter($param, $criteria->getValue());
 

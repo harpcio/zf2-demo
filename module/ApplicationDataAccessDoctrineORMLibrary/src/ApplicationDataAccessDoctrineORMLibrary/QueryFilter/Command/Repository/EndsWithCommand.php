@@ -34,7 +34,7 @@ class EndsWithCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:EndsWith';
+        $param = ':' . $columnName . 'FilterByEndsWith';
         $queryBuilder->andWhere($queryBuilder->expr()->like($preparedColumnName, $param))
             ->setParameter($param, '%' . $criteria->getValue());
 

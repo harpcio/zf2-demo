@@ -61,13 +61,13 @@ class BetweenCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName BETWEEN :columnName:filterBy:BetweenLeft AND :columnName:filterBy:BetweenRight',
+            't.columnName BETWEEN :columnNameFilterByBetweenLeft AND :columnNameFilterByBetweenRight',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:BetweenLeft' => 'left',
-                ':columnName:filterBy:BetweenRight' => 'right'
+                ':columnNameFilterByBetweenLeft' => 'left',
+                ':columnNameFilterByBetweenRight' => 'right'
             ],
             $queryBuilder->getParameters()
         );

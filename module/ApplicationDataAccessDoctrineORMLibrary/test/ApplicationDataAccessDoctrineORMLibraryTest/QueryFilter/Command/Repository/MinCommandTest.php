@@ -61,12 +61,12 @@ class MinCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
         $this->assertSame(
-            't.columnName >= :columnName:filterBy:Min',
+            't.columnName >= :columnNameFilterByMin',
             (string)$queryBuilder->getQueryPart('where')
         );
         $this->assertSame(
             [
-                ':columnName:filterBy:Min' => 'something',
+                ':columnNameFilterByMin' => 'something',
             ],
             $queryBuilder->getParameters()
         );

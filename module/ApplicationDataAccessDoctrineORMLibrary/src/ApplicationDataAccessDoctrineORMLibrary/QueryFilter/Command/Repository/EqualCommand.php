@@ -34,7 +34,7 @@ class EqualCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:Equal';
+        $param = ':' . $columnName . 'FilterByEqual';
 
         $queryBuilder->andWhere($queryBuilder->expr()->eq($preparedColumnName, $param))
             ->setParameter($param, $criteria->getValue());

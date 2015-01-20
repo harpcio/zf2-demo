@@ -34,7 +34,7 @@ class InArrayCommand implements CommandInterface
         $columnName = $criteria->getKey();
         $preparedColumnName = reset($aliases) . '.' . $columnName;
 
-        $param = ':' . $columnName . ':filterBy:InArray';
+        $param = ':' . $columnName . 'FilterByInArray';
         $queryBuilder->andWhere($queryBuilder->expr()->in($preparedColumnName, $param))
             ->setParameter($param, $criteria->getValue());
 
