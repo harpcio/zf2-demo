@@ -6,7 +6,7 @@ return [
             'business_logic_books_entities' => [
                 'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Books/Entity']
+                'paths' => [__DIR__ . '/../src/BusinessLogicDomainBooks/Entity']
             ],
             'orm_default' => [
                 'drivers' => [
