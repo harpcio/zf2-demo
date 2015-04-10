@@ -7,7 +7,7 @@ return [
                 'class' => Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver::class,
 //                'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Users/Entity']
+                'paths' => [__DIR__ . '/../src/BusinessLogicDomainUsers/Entity']
             ],
             'orm_default' => [
                 'drivers' => [
